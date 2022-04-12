@@ -11,13 +11,9 @@ package net.catenax.irs.aaswrapper.registry.domain;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-
 import net.catenax.irs.annotations.ExcludeFromCodeCoverageGeneratedReport;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
  * Digital Twin Registry Rest Client
  */
 @Profile("prod")
-@FeignClient(
-      contextId = "digitalTwinRegistryClientContextId",
-      value = "digitalTwinRegistryClient",
-      url = "${feign.client.config.digitalTwinRegistry.url}",
-      configuration = DigitalTwinRegistryClientConfiguration.class)
+@FeignClient(contextId = "digitalTwinRegistryClientContextId", value = "digitalTwinRegistryClient",
+        url = "${feign.client.config.digitalTwinRegistry.url}",
+        configuration = DigitalTwinRegistryClientConfiguration.class)
 interface DigitalTwinRegistryClient {
 
     /**
@@ -38,7 +32,8 @@ interface DigitalTwinRegistryClient {
      * @return Returns a specific Asset Administration Shell Descriptor
      */
     @GetMapping(value = "/registry/shell-descriptors/{aasIdentifier}", consumes = APPLICATION_JSON_VALUE)
-    AssetAdministrationShellDescriptor getAssetAdministrationShellDescriptor(@PathVariable("aasIdentifier") String aasIdentifier);
+    AssetAdministrationShellDescriptor getAssetAdministrationShellDescriptor(
+            @PathVariable("aasIdentifier") String aasIdentifier);
 
 }
 
@@ -55,16 +50,3 @@ class DigitalTwinRegistryClientLocalStub implements DigitalTwinRegistryClient {
         return testdataCreator.createDummyAssetAdministrationShellDescriptorForId(aasIdentifier);
     }
 }
-
-/*@Service
-class AsyncDigitalTwinRegistryClient implements DigitalTwinRegistryClient {
-
-    @Override
-    @Async
-    public CompletableFuture<AssetAdministrationShellDescriptor> getAssetAdministrationShellDescriptor(final String aasIdentifier) {
-
-        final AssetAdministrationShellTestdataCreator testdataCreator = new AssetAdministrationShellTestdataCreator();
-
-        return CompletableFuture.completedFuture(testdataCreator.createDummyAssetAdministrationShellDescriptorForId(aasIdentifier));
-    }
-}*/
