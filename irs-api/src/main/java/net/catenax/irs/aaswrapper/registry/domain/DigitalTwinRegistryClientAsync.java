@@ -29,7 +29,7 @@ public class DigitalTwinRegistryClientAsync {
      * Retrieve an Asset Administration Shell by id
      *
      * @param aasIdentifier The Asset Administration Shell’s unique id
-     * @return Returns a specific Asset Administration Shell Descriptor
+     * @return A specific Asset Administration Shell Descriptor
      */
     @Async
     public CompletableFuture<AssetAdministrationShellDescriptor> getAASDescriptorAsync(final String aasIdentifier) {
