@@ -20,8 +20,9 @@ class DigitalTwinRegistryFacadeTest {
     @Test
     void shouldReturnSubmodelEndpointsWhenRequestingWithCatenaXId() {
         final String catenaXId = "8a61c8db-561e-4db0-84ec-a693fc5ffdf6";
-        final List<SubmodelEndpoint> aasSubmodelEndpointAddresses = digitalTwinRegistryFacade.getAASSubmodelEndpoints(
-                catenaXId);
+        final List<SubmodelEndpoint> aasSubmodelEndpointAddresses =
+                digitalTwinRegistryFacade.getAASSubmodelEndpoints(catenaXId);
+
         assertThat(aasSubmodelEndpointAddresses).isNotNull().hasSize(1);
         assertThat(aasSubmodelEndpointAddresses.get(0).getAddress()).isEqualTo(catenaXId);
     }

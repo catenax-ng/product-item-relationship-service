@@ -10,21 +10,27 @@
 package net.catenax.irs.aaswrapper.registry.domain;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.catenax.irs.dto.SubmodelEndpoint;
 import net.catenax.irs.dto.SubmodelType;
 import org.springframework.stereotype.Service;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Public API Facade for digital twin registry domain
  */
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class DigitalTwinRegistryFacade {
 
-    private final DigitalTwinRegistryClient digitalTwinRegistryClient;
+    private final DigitalTwinRegistryClient client;
 
     /**
      * Combines required data from Digital Twin Registry Service
@@ -33,22 +39,30 @@ public class DigitalTwinRegistryFacade {
      * @return list of submodel addresses
      */
     public List<SubmodelEndpoint> getAASSubmodelEndpoints(final String aasIdentifier) {
-        final List<SubmodelDescriptor> submodelDescriptors = digitalTwinRegistryClient.getAssetAdministrationShellDescriptor(
-                aasIdentifier).getSubmodelDescriptors();
+        final CompletableFuture<AssetAdministrationShellDescriptor> aasDescriptor =
+                this.client.getAssetAdministrationShellDescriptor(aasIdentifier);
 
-        return submodelDescriptors.stream()
-                                  .filter(this::isAssemblyPartRelationship)
-                                  .map(submodelDescriptor ->
-                                        new SubmodelEndpoint(
-                                          submodelDescriptor.getEndpoint()
-                                                            .getProtocolInformation()
-                                                            .getEndpointAddress(),
-                                              SubmodelType.ASSEMBLY_PART_RELATIONSHIP))
-                                  .collect(Collectors.toList());
+        try {
+            return aasDescriptor.thenApply(descriptor -> descriptor.getSubmodelDescriptors()
+                                                                   .stream()
+                                                                   .filter(this::isAssemblyPartRelationship)
+                                                                   .map(submodelDescriptor -> new SubmodelEndpoint(
+                                                                           submodelDescriptor.getEndpoint()
+                                                                                             .getProtocolInformation()
+                                                                                             .getEndpointAddress(),
+                                                                           SubmodelType.ASSEMBLY_PART_RELATIONSHIP))
+                                                                   .collect(Collectors.toList()))
+                                .get();
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("{}", e.getMessage());
+        }
+
+        return emptyList();
     }
 
     /**
      * TODO: Adjust when we will know how to distinguish assembly part relationships
+     *
      * @param submodelDescriptor the submodel descriptor
      * @return True, if AssemblyPartRelationship
      */

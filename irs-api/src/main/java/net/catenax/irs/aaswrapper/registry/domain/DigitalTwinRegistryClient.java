@@ -9,30 +9,36 @@
 //
 package net.catenax.irs.aaswrapper.registry.domain;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import java.util.concurrent.CompletableFuture;
 
 import net.catenax.irs.annotations.ExcludeFromCodeCoverageGeneratedReport;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Digital Twin Registry Rest Client
  */
 @Profile("prod")
 @FeignClient(contextId = "digitalTwinRegistryClientContextId", value = "digitalTwinRegistryClient",
-        url = "${feign.client.config.digitalTwinRegistry.url}",
-        configuration = DigitalTwinRegistryClientConfiguration.class)
+             url = "${feign.client.config.digitalTwinRegistry.url}",
+             configuration = DigitalTwinRegistryClientConfiguration.class)
 interface DigitalTwinRegistryClient {
 
     /**
+     * Retrieve asynchronously an Asset Administration Shell by id
+     *
      * @param aasIdentifier The Asset Administration Shell’s unique id
-     * @return Returns a specific Asset Administration Shell Descriptor
+     * @return A specific Asset Administration Shell Descriptor
      */
+    @Async
     @GetMapping(value = "/registry/shell-descriptors/{aasIdentifier}", consumes = APPLICATION_JSON_VALUE)
-    AssetAdministrationShellDescriptor getAssetAdministrationShellDescriptor(
+    CompletableFuture<AssetAdministrationShellDescriptor> getAssetAdministrationShellDescriptor(
             @PathVariable("aasIdentifier") String aasIdentifier);
 
 }
@@ -45,8 +51,11 @@ interface DigitalTwinRegistryClient {
 class DigitalTwinRegistryClientLocalStub implements DigitalTwinRegistryClient {
 
     @Override
-    public AssetAdministrationShellDescriptor getAssetAdministrationShellDescriptor(final String aasIdentifier) {
+    public CompletableFuture<AssetAdministrationShellDescriptor> getAssetAdministrationShellDescriptor(
+            final String aasIdentifier) {
         final AssetAdministrationShellTestdataCreator testdataCreator = new AssetAdministrationShellTestdataCreator();
-        return testdataCreator.createDummyAssetAdministrationShellDescriptorForId(aasIdentifier);
+
+        return CompletableFuture.completedFuture(
+                testdataCreator.createDummyAssetAdministrationShellDescriptorForId(aasIdentifier));
     }
 }
