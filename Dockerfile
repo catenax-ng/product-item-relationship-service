@@ -44,7 +44,7 @@ RUN wget -q -O applicationinsights-agent.jar $appInsightsAgentURL
 RUN wget -q -O jmx-prometheus-agent.jar $jmxPrometheusAgentURL
 
 # Copy the jar and build image
-FROM adoptopenjdk:11-jre-hotspot AS runtime
+FROM adoptopenjdk:16-jre-hotspot AS runtime
 
 WORKDIR /app
 
