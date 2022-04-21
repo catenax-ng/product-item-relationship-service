@@ -66,8 +66,8 @@ class IrsControllerTest {
 
     @Test
     void cancelJobById_throwEntityNotFoundException() throws Exception {
-        given(this.service.cancelJobById(jobId)).willThrow(
-                new EntityNotFoundException("No job exists with id " + jobId));
+        given(this.service.cancelJobById(jobId))
+                .willThrow(new EntityNotFoundException("No job exists with id " + jobId));
 
         this.mockMvc.perform(put("/irs/jobs/" + jobId))
                     .andExpect(status().isNotFound())

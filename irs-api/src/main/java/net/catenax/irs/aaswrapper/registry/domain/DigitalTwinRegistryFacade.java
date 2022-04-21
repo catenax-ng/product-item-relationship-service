@@ -54,7 +54,7 @@ public class DigitalTwinRegistryFacade {
                                                                    .collect(Collectors.toList()))
                                 .get();
         } catch (InterruptedException | ExecutionException e) {
-            log.error("{}", e.getMessage());
+            log.error("getAASSubmodelEndpoints {}", e.getMessage());
         }
 
         return emptyList();

@@ -96,9 +96,7 @@ public class IrsItemGraphQueryService implements IIrsItemGraphQueryService {
 
     @Override
     public Job cancelJobById(final @NonNull UUID jobId) {
-        final String idAsString = String.valueOf(jobId);
-
-        final Optional<MultiTransferJob> canceled = this.jobStore.cancelJob(idAsString);
+        final Optional<MultiTransferJob> canceled = this.jobStore.cancelJob(jobId.toString());
         if (canceled.isPresent()) {
             final MultiTransferJob job = canceled.get();
 
