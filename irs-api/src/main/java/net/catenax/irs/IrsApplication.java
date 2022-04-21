@@ -27,7 +27,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class IrsApplication {
 
     /** The IRS API version. */
-    public static final String API_VERSION = "0.2";
+    public static final String API_VERSION = "1.0";
 
     /** The URL prefix for IRS API URLs. */
     public static final String API_PREFIX = "irs";
