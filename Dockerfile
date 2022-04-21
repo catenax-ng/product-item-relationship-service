@@ -1,5 +1,5 @@
 # Dependencies
-FROM maven:3-openjdk-17 AS maven
+FROM maven:3-openjdk-18 AS maven
 ARG BUILD_TARGET=irs-api
 
 WORKDIR /build
