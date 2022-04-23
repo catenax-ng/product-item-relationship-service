@@ -53,8 +53,10 @@ public class DigitalTwinRegistryFacade {
                                                                            SubmodelType.ASSEMBLY_PART_RELATIONSHIP))
                                                                    .collect(Collectors.toList()))
                                 .get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (ExecutionException | InterruptedException e) {
             log.error("getAASSubmodelEndpoints {}", e.getMessage());
+            //re-interrupt the current thread
+            Thread.currentThread().interrupt();
         }
 
         return emptyList();
