@@ -11,6 +11,7 @@ package net.catenax.irs.aaswrapper.submodel.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,19 @@ public class SubmodelFacade {
      */
     @Retry(name = "submodelRetryer")
     public AssemblyPartRelationshipDTO getSubmodel(final String submodelEndpointAddress) {
-        final AssemblyPartRelationship submodel = this.submodelClient.getSubmodel(submodelEndpointAddress, AssemblyPartRelationship.class);
+        final CompletableFuture<AssemblyPartRelationship> assemblyPartRelationship =
+                this.submodelClient.getSubmodel(submodelEndpointAddress, AssemblyPartRelationship.class);
 
+        return assemblyPartRelationship.thenApply(this:: mapAssemblyPartRelationship).join();
+    }
+
+    private AssemblyPartRelationshipDTO mapAssemblyPartRelationship(final AssemblyPartRelationship submodel) {
         final Set<ChildDataDTO> childParts = new HashSet<>();
+
         submodel.getChildParts()
                 .forEach(childData -> childParts.add(ChildDataDTO.builder()
                                                                  .withChildCatenaXId(childData.getChildCatenaXId())
-                                                                 .withLifecycleContext(
-                                                                         childData.getLifecycleContext().getValue())
+                                                                 .withLifecycleContext(childData.getLifecycleContext().getValue())
                                                                  .build()));
 
         return AssemblyPartRelationshipDTO.builder()

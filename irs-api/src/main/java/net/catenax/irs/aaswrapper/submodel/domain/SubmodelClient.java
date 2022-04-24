@@ -9,6 +9,9 @@
 //
 package net.catenax.irs.aaswrapper.submodel.domain;
 
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +23,8 @@ interface SubmodelClient {
     /**
      * @return Returns the Submodel
      */
-    <T> T getSubmodel(String submodelEndpointAddress, Class<T> submodelClass);
+    @Async("asyncExecutor")
+    <T> CompletableFuture<T> getSubmodel(String submodelEndpointAddress, Class<T> submodelClass);
 
 }
 
@@ -31,10 +35,12 @@ interface SubmodelClient {
 class SubmodelClientLocalStub implements SubmodelClient {
 
     @Override
-    public <T> T getSubmodel(final String submodelEndpointAddress, final Class<T> submodelClass) {
+    public <T> CompletableFuture<T> getSubmodel(final String submodelEndpointAddress, final Class<T> submodelClass) {
         final SubmodelTestdataCreator submodelTestdataCreator = new SubmodelTestdataCreator();
 
-        return (T) submodelTestdataCreator.createDummyAssemblyPartRelationshipForId(submodelEndpointAddress);
+        final T result = (T) submodelTestdataCreator.createDummyAssemblyPartRelationshipForId(submodelEndpointAddress);
+
+        return CompletableFuture.completedFuture(result);
     }
 
 }
@@ -43,12 +49,10 @@ class SubmodelClientLocalStub implements SubmodelClient {
  * Submodel Rest Client Implementation
  */
 class SubmodelClientImpl implements SubmodelClient {
-
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public <T> T getSubmodel(final String submodelEndpointAddress, final Class<T> submodelClass) {
-        return restTemplate.getForEntity(submodelEndpointAddress, submodelClass).getBody();
+    public <T> CompletableFuture<T> getSubmodel(final String submodelEndpointAddress, final Class<T> submodelClass) {
+        return CompletableFuture.supplyAsync(() -> restTemplate.getForEntity(submodelEndpointAddress, submodelClass).getBody());
     }
-
 }
