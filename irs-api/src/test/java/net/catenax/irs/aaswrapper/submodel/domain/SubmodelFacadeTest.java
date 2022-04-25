@@ -50,7 +50,7 @@ class SubmodelFacadeTest {
     }
 
     @Test
-    void asyncEndpointShouldSleepAndReturnObjectWithCompletableFuture() {
+    void asyncEndpointShouldReturnObjectWithCompletableFuture() {
         final SubmodelClient asyncClient = Mockito.mock(SubmodelClient.class);
         final SubmodelFacade facade = new SubmodelFacade(asyncClient);
         when(asyncClient.getSubmodel(anyString(), any())).thenReturn(this.processRequest());
@@ -61,18 +61,10 @@ class SubmodelFacadeTest {
 
     // Invoke AAS wrapper via the submodel rest client
     private CompletableFuture<Object> processRequest() {
-        AssemblyPartRelationship response = null;
-        try {
-            // AAS wrapper process time
-            Thread.sleep(2000);
+        final SubmodelTestdataCreator submodelCreator = new SubmodelTestdataCreator();
+        final AssemblyPartRelationship response =
+                submodelCreator.createDummyAssemblyPartRelationshipForId(SubmodelFacadeTest.CATENA_X);
 
-            final SubmodelTestdataCreator submodelCreator = new SubmodelTestdataCreator();
-            response = submodelCreator.createDummyAssemblyPartRelationshipForId(SubmodelFacadeTest.CATENA_X);
-        } catch (InterruptedException e) {
-            log.error("processRequest() {}", e.getMessage());
-            //re-interrupt the current thread
-            Thread.currentThread().interrupt();
-        }
         return CompletableFuture.completedFuture(response);
     }
 }
