@@ -1,21 +1,11 @@
 package net.catenax.irs.services;
 
-import static net.catenax.irs.util.TestMother.registerJobWithDepth;
-import static net.catenax.irs.util.TestMother.registerJobWithoutDepth;
-import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.given;
-//import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.Duration;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import net.catenax.irs.TestConfig;
+import net.catenax.irs.component.Job;
 import net.catenax.irs.component.JobHandle;
 import net.catenax.irs.component.RegisterJob;
 import net.catenax.irs.connector.job.JobState;
@@ -26,8 +16,19 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+
+import static net.catenax.irs.util.TestMother.registerJobWithDepth;
+import static net.catenax.irs.util.TestMother.registerJobWithoutDepth;
+import static org.awaitility.Awaitility.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = { "test" })
@@ -36,7 +37,7 @@ class IrsItemGraphQueryServiceTest {
 
     private final UUID jobId = UUID.randomUUID();
 
-    @Autowired
+    @MockBean
     private JobStore jobStore;
 
     @Autowired
@@ -54,9 +55,9 @@ class IrsItemGraphQueryServiceTest {
 
         // then
         given().ignoreException(EntityNotFoundException.class)
-           .await()
-           .atMost(10, TimeUnit.SECONDS)
-           .until(() -> getRelationshipsSize(registeredJob.getJobId()), equalTo(expectedRelationshipsSizeFullTree));
+               .await()
+               .atMost(10, TimeUnit.SECONDS)
+               .until(() -> getRelationshipsSize(registeredJob.getJobId()), equalTo(expectedRelationshipsSizeFullTree));
     }
 
     @Test
@@ -71,9 +72,10 @@ class IrsItemGraphQueryServiceTest {
 
         // then
         given().ignoreException(EntityNotFoundException.class)
-            .await()
-            .atMost(10, TimeUnit.SECONDS)
-            .until(() -> getRelationshipsSize(registeredJob.getJobId()), equalTo(expectedRelationshipsSizeFirstDepth));
+               .await()
+               .atMost(10, TimeUnit.SECONDS)
+               .until(() -> getRelationshipsSize(registeredJob.getJobId()),
+                      equalTo(expectedRelationshipsSizeFirstDepth));
     }
 
     @Test
@@ -88,20 +90,26 @@ class IrsItemGraphQueryServiceTest {
 
     @Test
     void cancelJobById() {
-        final String idAsString = String.valueOf(jobId);
         final MultiTransferJob multiTransferJob = MultiTransferJob.builder()
-                                                                  .jobId(idAsString)
-                                                                  .state(JobState.UNSAVED)
+                                                                  .jobId(jobId.toString())
+                                                                  .state(JobState.CANCELED)
                                                                   .errorDetail("Job should be canceled")
                                                                   .build();
 
-        jobStore.create(multiTransferJob);
+        when(jobStore.cancelJob(jobId.toString())).thenReturn(Optional.ofNullable(multiTransferJob));
+        final Job job = service.cancelJobById(jobId);
 
-        assertNotNull(service.cancelJobById(jobId));
-        assertFalse(jobStore.find(idAsString).isEmpty());
+        assertNotNull(job);
+        assertEquals(job.getJobId(), jobId);
+        assertEquals(job.getJobState().name(), JobState.CANCELED.name());
+    }
 
-        final JobState state = jobStore.find(idAsString).get().getState();
-        assertEquals(state, JobState.CANCELED);
+    @Test
+    void cancelJobById_throwEntityNotFoundException() {
+        when(jobStore.cancelJob(jobId.toString()))
+                .thenThrow(new EntityNotFoundException("No job exists with id " + jobId));
+
+        assertThrows(EntityNotFoundException.class, () -> service.cancelJobById(jobId));
     }
 
     private int getRelationshipsSize(final UUID jobId) {
