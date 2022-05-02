@@ -20,14 +20,13 @@ import java.nio.file.Path;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-class AssetAdministrationShellTestdataCreatorTest {
+class AAShellTestdataCreatorTest {
 
     private final AssetAdministrationShellTestdataCreator assetAdministrationShellTestdataCreator = new AssetAdministrationShellTestdataCreator();
 
     @Test
     void shouldReturnAssetAdministrationShellDescriptorWhenRequestingWithCatenaXId() {
         final String catenaXId = "8a61c8db-561e-4db0-84ec-a693fc5ffdf6";
-
         final AssetAdministrationShellDescriptor aasDescriptor = assetAdministrationShellTestdataCreator.createDummyAssetAdministrationShellDescriptorForId(
                 catenaXId);
 
