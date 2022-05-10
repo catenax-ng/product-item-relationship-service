@@ -108,3 +108,8 @@ readinessProbe:
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 1
+
+wrapper:
+  edc:
+    fs:
+      config: /config/configuration.properties
