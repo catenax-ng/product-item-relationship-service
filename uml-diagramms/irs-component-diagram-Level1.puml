@@ -1,0 +1,39 @@
+@startuml 
+skinparam monochrome true
+skinparam shadowing false
+
+component [**IRS**] <<System>> as IRS {
+    component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler
+    component [**IrsController**] <<Component>> as IrsController
+    component [**IrsItemGraphQueryService**] <<Component>> as IrsItemGraphQueryService
+    component [**JobOrchestrator**] <<Component>> as JobOrchestrator
+    component [**TransferProcessManager**] <<Component>> as TransferProcessManager
+
+    interface BlobStoreInterface
+    interface JobStoreInterface
+    interface API
+
+    IrsController - IrsItemGraphQueryService
+
+    IrsItemGraphQueryService -- JobOrchestrator
+    IrsItemGraphQueryService - JobStoreInterface
+    IrsItemGraphQueryService - BlobStoreInterface
+    JobOrchestrator - JobStoreInterface
+    JobOrchestrator -- TransferProcessManager
+    JobOrchestrator --- RecursiveJobHandler
+    TransferProcessManager - BlobStoreInterface
+
+}
+component [**AASProxy**] <<System>> as AASProxy
+TransferProcessManager -- AASProxy
+
+database BlobStore
+database JobStore
+BlobStoreInterface )- BlobStore
+JobStoreInterface )- JobStore
+
+actor IrsApiConsumer
+
+API - IrsController
+IrsApiConsumer --( API
+@enduml
