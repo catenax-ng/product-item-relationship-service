@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: { { include "edcprovider.fullname" . } }
   labels:
-    { { - include "edcprovider.labels" . | nindent 4 } }
+    environment: development
+    app: edcprovider
 spec:
   { { - if not .Values.autoscaling.enabled } }
   replicas: { { .Values.replicaCount } }
@@ -88,10 +89,10 @@ spec:
             items:
                 - key: configuration.properties
                   path: configuration.properties
-                    - key: opentelemetry.properties
-                      path: opentelemetry.properties
-                    - key: logging.properties
-                      path: logging.properties
+                          - key: opentelemetry.properties
+                          path: opentelemetry.properties
+                          - key: logging.properties
+                            path: logging.properties
       { { - with .Values.nodeSelector } }
       nodeSelector:
         { { - toYaml . | nindent 8 } }
