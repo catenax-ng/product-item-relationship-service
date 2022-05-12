@@ -6,9 +6,7 @@ metadata:
     environment: development
     app: edcprovider
 spec:
-  { { - if not .Values.autoscaling.enabled } }
   replicas: { { .Values.replicaCount } }
-  { { - end } }
   selector:
     matchLabels:
       { { - include "edcprovider.selectorLabels" . | nindent 6 } }
@@ -91,8 +89,8 @@ spec:
                   path: configuration.properties
                           - key: opentelemetry.properties
                           path: opentelemetry.properties
-                          - key: logging.properties
-                            path: logging.properties
+                            - key: logging.properties
+                              path: logging.properties
       { { - with .Values.nodeSelector } }
       nodeSelector:
         { { - toYaml . | nindent 8 } }
