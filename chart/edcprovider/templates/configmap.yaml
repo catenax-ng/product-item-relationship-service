@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "edc-dataplane.fullname" . }}-configmap
+  name: {{ include "edcprovider.fullname" . }}-configmap
   labels:
-    {{- include "edc-dataplane.labels" . | nindent 4 }}
+    {{- include "edcprovider.labels" . | nindent 4 }}
 data:
   configuration.properties: |-
     web.http.default.port={{ .Values.edc.endpoints.default.port }}
