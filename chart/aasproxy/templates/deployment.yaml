@@ -41,7 +41,15 @@ spec:
               containerPort: 8090
               protocol: TCP
             - containerPort: 5014
-              protocol: TCP             
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: "/actuator/health/liveness"
+              port: http
+          readinessProbe:
+            httpGet:
+              path: "/actuator/health/readiness"
+              port: http    
           env:
             {{- range .Values.env }}
             name: {{ .name }}
@@ -51,5 +59,13 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}      

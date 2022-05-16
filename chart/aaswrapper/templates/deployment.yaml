@@ -34,19 +34,22 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: { { .Values.image.pullPolicy } }
           ports:
-            - name: http
-              containerPort: 4245 # API
+            - name: api
+              containerPort: 9191 # API
               protocol: TCP
+            - name: callback
+              containerPort: 9192 # API
+              protocol: TCP  
             - name: jdb
               containerPort: 8090 # JDB
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: "/actuator/health/liveness"
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: "/actuator/health/readiness"
               port: http
           resources:
             { { - toYaml .Values.resources | nindent 12 } }
