@@ -10,14 +10,29 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-imagePullSecrets: [ ]
+imagePullSecrets: []
 nameOverride: "aasproxy"
 fullnameOverride: "aasproxy"
 
-podAnnotations: { }
+podAnnotations: {}
 
-podSecurityContext: { }
+podSecurityContext: {}
 # fsGroup: 2000
+
+serviceAccount:
+  ##
+  ## Specifies whether a service account should be created per release
+  ##
+  create: true
+  ##
+  ## Annotations to add to the service account
+  ##
+  annotations: {}
+  ##
+  ## The name of the service account to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  ##
+  name: ""
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
 # @url: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
@@ -43,7 +58,7 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -60,9 +75,9 @@ autoscaling:
   enabled: false
   minReplicas: 1
 
-nodeSelector: { }
+nodeSelector: {}
 
-tolerations: [ ]
+tolerations: []
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
 # @url: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
