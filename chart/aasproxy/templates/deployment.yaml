@@ -42,14 +42,6 @@ spec:
               protocol: TCP
             - containerPort: 5014
               protocol: TCP             
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           env:
             {{- range .Values.env }}
             name: {{ .name }}
