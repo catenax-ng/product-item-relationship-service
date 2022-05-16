@@ -57,7 +57,7 @@ securityContext:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
+# runAsNonRoot: true
 # runAsUser: 1000
 
 ##
@@ -90,7 +90,7 @@ edc:
       ingress: false
     # Public endpoint for data transfer
     public:
-      port: "8185"
+      port: "8181"
       path: /api/public
       ingress: true
     # Control API
@@ -161,7 +161,7 @@ resources:
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 
 autoscaling:
   enabled: false
