@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: cxtsiacr.azurecr.io/edc/consumer-aas-proxy:catenax-at-home-latest
+  repository: ghcr.io/catenax-ng/catenax-at-home/consumer-aas-proxy-service
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
