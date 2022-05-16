@@ -53,10 +53,10 @@ podSecurityContext: {}
 
 securityContext:
   {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
 
@@ -156,11 +156,11 @@ resources:
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
 #   memory: 128Mi
 
 autoscaling:
@@ -321,10 +321,10 @@ configuration:
     # edc.transfer.state-machine.batch-size=
     # edc.vault=
     # edc.vault.certificate=
-    # edc.vault.clientid=
-    # edc.vault.clientsecret=
-    # edc.vault.name=
-    # edc.vault.tenantid=
+    edc.vault.clientid=00000000-1111-2222-3333-444444444444
+    edc.vault.clientsecret=34-chars-secret
+    edc.vault.name=my-vault-name
+    edc.vault.tenantid=55555555-6666-7777-8888-999999999999
     # edc.webdid.doh.url=
     # edc.web.rest.cors.enabled=
     # edc.web.rest.cors.headers=
