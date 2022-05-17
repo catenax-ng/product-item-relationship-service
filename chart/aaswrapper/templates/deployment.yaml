@@ -1,10 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aaswrapper-config
-data:
-  configuration.properties: "web.http.port=9191\r\nweb.http.path=/api\r\n\r\nweb.http.callback.port=9192\r\nweb.http.callback.path=/callback\r\n\r\nwrapper.auth.basic.someuser=somepassword\r\n\r\nwrapper.consumer.edc.url=http://consumer-control-plane:9191/api\r\nwrapper.consumer.edc.apikey.name=X-Api-Key\r\nwrapper.consumer.edc.apikey.value=123456\r\n"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
