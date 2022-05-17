@@ -67,7 +67,7 @@ ingress:
               name: aasproxy
               port:
                 number: 4245
-  tls: []    
+  tls: [ ]    
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
