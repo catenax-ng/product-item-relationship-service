@@ -52,8 +52,8 @@ spec:
               port: http    
           env:
             {{- range .Values.env }}
-            name: {{ .name }}
-            value: {{ .value }}
+            - name: {{ .name }}
+              value: {{ .value }}
             {{- end }}             
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
