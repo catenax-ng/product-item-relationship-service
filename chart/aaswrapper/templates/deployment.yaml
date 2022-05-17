@@ -56,7 +56,10 @@ spec:
       volumes:
         - name: aaswrapper-config
           configMap:
-            name: aaswrapper-config      
+            name: {{ include "aaswrapper.fullname" . }}-config
+            items:
+              - key: configuration.properties
+                path: configuration.properties
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
