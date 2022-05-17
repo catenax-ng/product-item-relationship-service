@@ -46,6 +46,7 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
@@ -125,5 +126,6 @@ configuration:
     web.http.callback.path=/callback
     wrapper.auth.basic.someuser=somepassword
     wrapper.consumer.edc.datamanagement.url=http://consumer-control-plane:9191/api
+    wrapper.consumer.edc.control.url=http://consumer-control-plane:9191/api
     wrapper.consumer.edc.apikey.name=X-Api-Key
     wrapper.consumer.edc.apikey.value=123456  
