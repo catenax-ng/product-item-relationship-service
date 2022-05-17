@@ -41,27 +41,7 @@ spec:
               containerPort: 8090
               protocol: TCP
             - containerPort: 5014
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: "/actuator/health/liveness"
-              port: actuator
-              scheme: HTTP
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}  
-          readinessProbe:
-            httpGet:
-              path: "/actuator/health/readiness"
-              port: actuator
-              scheme: HTTP  
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            successThreshold: {{ .Values.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}  
+              protocol: TCP          
           env:
             {{- range .Values.env }}
             - name: {{ .name }}
