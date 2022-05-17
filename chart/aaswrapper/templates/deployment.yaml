@@ -1,3 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aaswrapper-config
+data:
+  configuration.properties: "web.http.port=9191\r\nweb.http.path=/api\r\n\r\nweb.http.callback.port=9192\r\nweb.http.callback.path=/callback\r\n\r\nwrapper.auth.basic.someuser=somepassword\r\n\r\nwrapper.consumer.edc.url=http://consumer-control-plane:9191/api\r\nwrapper.consumer.edc.apikey.name=X-Api-Key\r\nwrapper.consumer.edc.apikey.value=123456\r\n"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,17 +49,21 @@ spec:
               protocol: TCP  
             - name: jdb
               containerPort: 8090 # JDB
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: "/actuator/health/liveness"
-              port: http
-          readinessProbe:
-            httpGet:
-              path: "/actuator/health/readiness"
-              port: http
+              protocol: TCP  
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
+          volumeMounts:
+            - name: aaswrapper-config
+              mountPath: /connector-config            
           resources:
             { { - toYaml .Values.resources | nindent 12 } }
+      volumes:
+        - name: aaswrapper-config
+          configMap:
+            name: aaswrapper-config      
       { { - with .Values.nodeSelector } }
       nodeSelector:
         { { - toYaml . | nindent 8 } }
