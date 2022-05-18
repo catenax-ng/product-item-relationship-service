@@ -56,11 +56,11 @@ ingress:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/consumer"
+    nginx.ingress.kubernetes.io/x-forwarded-prefix: "/consumer"    
   hosts:
-    - host: "irs.dev.demo.catena-x.net"
+    - host: "localhost"
       paths:
-        - path: /consumer(/|$)(.*)
+        - path: /consumer
           pathType: Prefix
           backend:
             service:
