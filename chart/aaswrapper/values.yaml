@@ -46,16 +46,10 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"    
-  # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: "irs.ass-wrapper-dev.demo.catena-x.net"
+    - host: "irs-aas-wrapper.dev.demo.catena-x.net"
       paths:
-        - path: /
-          pathType: Prefix
+        - pathType: ImplementationSpecific
           backend:
             service:
               name: aaswrapper

@@ -1,0 +1,26 @@
+# INT values for aas wrapper.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ingress:
+  hosts:
+    - host: "irs-aas-wrapper.int.demo.catena-x.net"
+      paths:
+        - pathType: ImplementationSpecific
+          backend:
+            service:
+              name: aaswrapper
+              port:
+                number: 9191
+
+configuration:
+  properties: |-
+    web.http.port=9191
+    web.http.path=/api
+    web.http.callback.port=9192
+    web.http.callback.path=/callback
+    wrapper.auth.basic.someuser=somepassword
+    wrapper.consumer.edc.datamanagement.url=http://consumer-control-plane:9191/api
+    wrapper.consumer.edc.control.url=http://consumer-control-plane:9191/api
+    wrapper.consumer.edc.apikey.name=X-Api-Key
+    wrapper.consumer.edc.apikey.value=123456  
