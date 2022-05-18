@@ -53,12 +53,13 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/x-forwarded-prefix: "/consumer"    
   hosts:
-    - host: "localhost"
+    - host: "irs.dev.demo.catena-x.net"
       paths:
         - path: /consumer
           pathType: Prefix

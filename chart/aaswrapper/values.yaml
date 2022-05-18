@@ -10,7 +10,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-imagePullSecrets: [ ]
+imagePullSecrets: []
 nameOverride: "aaswrapper"
 fullnameOverride: "aaswrapper"
 
@@ -18,14 +18,14 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: { }
+  annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: { }
+podAnnotations: {}
 
-podSecurityContext: { }
+podSecurityContext: {}
 # fsGroup: 2000
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
@@ -55,14 +55,14 @@ ingress:
   hosts:
     - host: "irs.dev.demo.catena-x.net"
       paths:
-        - path: /wrapper(/|$)(.*)
+        - path: /wrapper
           pathType: Prefix
           backend:
             service:
               name: aaswrapper
               port:
                 number: 9191
-  tls: [ ]
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -82,9 +82,9 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: { }
+nodeSelector: {}
 
-tolerations: [ ]
+tolerations: []
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
 # @url: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
@@ -115,11 +115,11 @@ readinessProbe:
   timeoutSeconds: 1
 
 env:
- - name: EDC_FS_CONFIG
-   value: /connector-config/configuration.properties
-   
+  - name: EDC_FS_CONFIG
+    value: /connector-config/configuration.properties
+
 configuration:
-  properties: |- 
+  properties: |-
     web.http.port=9191
     web.http.path=/api
     web.http.callback.port=9192
