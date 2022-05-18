@@ -6,8 +6,7 @@ ingress:
   hosts:
     - host: "irs-aas-proxy.int.demo.catena-x.net"
       paths:
-        - path: /consumer
-          pathType: Prefix
+        - pathType: ImplementationSpecific
           backend:
             service:
               name: aasproxy
