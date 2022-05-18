@@ -1,39 +1,42 @@
-@startuml 
+@startuml
 skinparam monochrome true
 skinparam shadowing false
 
-component [**IRS**] <<System>> as IRS {
+ component [**IRS-Application**] <<System>> as IRS {
     component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler
     component [**IrsController**] <<Component>> as IrsController
     component [**IrsItemGraphQueryService**] <<Component>> as IrsItemGraphQueryService
     component [**JobOrchestrator**] <<Component>> as JobOrchestrator
-    component [**TransferProcessManager**] <<Component>> as TransferProcessManager
+    component [**TransferProcessManager**] <<Subsystem>> as TransferProcessManager
+    'component [**AASClient**] <<Subsystem>> as AASClient
+    'component [**AASFacade**] <<Subsystem>> as AASFacade
+    'component [**SubmodelClient**] <<Subsystem>> as SubmodelClient
+    'component [**SubmodelFacade**] <<Subsystem>> as SubmodelFacade ' --> Level2 View
 
-    interface BlobStoreInterface
-    interface JobStoreInterface
-    interface API
 
-    IrsController - IrsItemGraphQueryService
+    interface "BlobStore\nInterface" as StoreInterface
+	port " " as API
+
+    IrsController -left- IrsItemGraphQueryService
 
     IrsItemGraphQueryService -- JobOrchestrator
-    IrsItemGraphQueryService - JobStoreInterface
-    IrsItemGraphQueryService - BlobStoreInterface
-    JobOrchestrator - JobStoreInterface
+    IrsItemGraphQueryService - StoreInterface
+    IrsItemGraphQueryService -up- StoreInterface
+    JobOrchestrator -right- StoreInterface
     JobOrchestrator -- TransferProcessManager
-    JobOrchestrator --- RecursiveJobHandler
-    TransferProcessManager - BlobStoreInterface
+    JobOrchestrator -left- RecursiveJobHandler
+    TransferProcessManager - StoreInterface
 
+    IrsController - API
 }
-component [**AASProxy**] <<System>> as AASProxy
-TransferProcessManager -- AASProxy
-
-database BlobStore
-database JobStore
-BlobStoreInterface )- BlobStore
-JobStoreInterface )- JobStore
-
 actor IrsApiConsumer
 
-API - IrsController
-IrsApiConsumer --( API
+IrsApiConsumer -(0- API
+
+component [**AASProxy**] <<System>> as AASProxy
+TransferProcessManager .. AASProxy
+
+database "BlobStore" as BlobStore
+StoreInterface )-right- BlobStore
+
 @enduml

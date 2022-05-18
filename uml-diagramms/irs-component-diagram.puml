@@ -2,29 +2,21 @@
 skinparam monochrome true
 skinparam shadowing false
 
-component [**IRS**] <<System>> as IRS {
-interface ServiceExtension as ServiceExtension
-component [**ApiEndpointExtension**] as ApiEndpointExtension
-component [**RequestMiddleware**]
-component [**IRS API**] <<Component>> as API
-interface "WebService (Servlet)"  as WebService
-component [**JerseyRestService**] as JerseyRestService
-component [**ConsumerAPIControllerService**] <<Component>> as ConsumerAPIControllerService
-component [**ConsumerService**] <<Component>> as ConsumerService
-component [**JobOrchestrator**] <<Component>> as JobOrchestrator
-interface JobStore
-component [**InMemoryJobStore**] <<Component>> as InMemoryJobStore
-component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler
-component [**IRSAASClient**] <<Component>> as IRSAASClient
-component [**PartsTreeRecursiveLogic**] <<Component>> as PartsTreeRecursiveLogic
-interface BlobStoreApi as DataStoreApi
-component [**BlobStoreClient**] <<Component>> as DataStoreClient
-component [**PartsTreesAssembler**] as PartsTreesAssembler
-
-JobStore -  [InMemoryJobStore]
-DataStoreApi - [DataStoreClient]
-WebService - [JerseyRestService]
-ServiceExtension - [ApiEndpointExtension]
-
+interface "Catena-X \nNetwork" as X
+component [**INT-Env**] <<Environment>> {
+	component [**IRS**] <<System>> as IRS
+	component [**AAS Wrapper**] <<System>> as AAS_W
+	component [**AAS Proxy**] <<System>> as AAS_P
+	component [**EDC Consumer**] <<System>> as EDC
 }
+
+
+actor IrsApiConsumer
+
+IrsApiConsumer -right(0- IRS
+IRS - AAS_P
+AAS_P - AAS_W
+AAS_W - EDC
+EDC - X
+
 @enduml
