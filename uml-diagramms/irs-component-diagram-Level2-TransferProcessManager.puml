@@ -4,8 +4,13 @@ skinparam shadowing false
 
 interface BlobStoreInterface
 component [**TransferProcessManager**] <<Subsystem>> as TransferProcessManager {
-    component [**DigitalTwinRegistryFacade**] <<Component>> as DTRFacade
-    component [**SubmodelFacade**] <<Component>> as SubmodelFacade
+    component [**DigitalTwinRegistryFacade**] <<Component>> as DTRFacade {
+        component [**DigitalTwinRegistryClient**] <<Component>> as DTRClient
+    }
+
+    component [**SubmodelFacade**] <<Component>> as SubmodelFacade {
+        component [**SubmodelClient**] <<Component>> as SubmodelClient
+    }
     component [**ExecutorService**] <<Component>> as ExecutorService
 }
 
@@ -14,8 +19,8 @@ interface AASRegistryInterface
 interface SubmodelInterface
 AASRegistryInterface -- AASProxy
 SubmodelInterface -- AASProxy
-DTRFacade --( AASRegistryInterface
-SubmodelFacade --( SubmodelInterface
+DTRClient --( AASRegistryInterface
+SubmodelClient --( SubmodelInterface
 
 database BlobStore
 TransferProcessManager -- BlobStoreInterface
