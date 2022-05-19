@@ -132,7 +132,7 @@ ingresses:
     ##
     ## The hostname to be used to precisely map incoming traffic onto the underlying network service
     ##
-    hostname: "edc-controlplane.local"
+    hostname: "irs-edc-controlplane.dev.demo.catena-x.net"
     ##
     ## Additional ingress annotations to add
     ##
