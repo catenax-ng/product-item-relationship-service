@@ -12,6 +12,12 @@ ingress:
               name: aasproxy
               port:
                 number: 4245
+  tls:
+    - hosts:
+        - "irs-aas-proxy.int.demo.catena-x.net"
+      # Default secret for certificate creation already provided to your namespace
+      secretName: tls-secret
+
 env:
   - name: AASPROXY_WRAPPERURL
     value: http://irs-aas-wrapper.int.demo.catena-x.net/api/service
