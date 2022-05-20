@@ -15,8 +15,6 @@ ingress:
 
 configuration:
   properties: |-
-    edc.api.control.auth.apikey.key=X-Api-Key
-    edc.api.control.auth.apikey.value=123456
     web.http.port=9191
     web.http.path=/api
     web.http.callback.port=9192

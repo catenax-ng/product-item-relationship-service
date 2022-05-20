@@ -27,8 +27,8 @@ ingresses:
 
 configuration:
   properties: |-
-    # edc.api.control.auth.apikey.key=X-Api-Key
-    # edc.api.control.auth.apikey.value=123456
+    edc.api.auth.key=X-Api-Key
+    edc.api.auth.value=123456
     # edc.assetindex.cosmos.account-name=
     # edc.assetindex.cosmos.container-name=
     # edc.assetindex.cosmos.database-name=
