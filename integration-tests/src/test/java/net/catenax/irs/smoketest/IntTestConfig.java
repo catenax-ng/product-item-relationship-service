@@ -1,4 +1,4 @@
-package net.catenax.irs;
+package net.catenax.irs.smoketest;
 
 import net.catenax.irs.persistence.BlobPersistence;
 import org.springframework.boot.test.context.TestConfiguration;

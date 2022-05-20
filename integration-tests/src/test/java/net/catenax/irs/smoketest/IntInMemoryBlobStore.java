@@ -1,4 +1,4 @@
-package net.catenax.irs;
+package net.catenax.irs.smoketest;
 
 import java.util.Collection;
 import java.util.Map;
