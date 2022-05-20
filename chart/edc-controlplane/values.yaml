@@ -372,10 +372,10 @@ configuration:
     # edc.transfer.state-machine.batch-size=
     # edc.vault=
     # edc.vault.certificate=
-    # edc.vault.clientid=
-    # edc.vault.clientsecret=
-    # edc.vault.name=
-    # edc.vault.tenantid=
+    edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
+    edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
+    edc.vault.clientsecret=kg6LF1~jQnh45XERMJnkJ.75KlFeImt~i_
+    edc.vault.name=cxtsi-dev001-vault
     # edc.webdid.doh.url=
     # edc.web.rest.cors.enabled=
     # edc.web.rest.cors.headers=
