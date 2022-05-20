@@ -25,10 +25,10 @@ imagePullSecret:
 imagePullSecrets: []
 
 # -- Overrides the charts name
-nameOverride: ""
+nameOverride: "edc-consumer-dataplane"
 
 # -- Overrides the releases full name
-fullnameOverride: ""
+fullnameOverride: "edc-consumer-dataplane"
 
 serviceAccount:
   # -- Specifies whether a [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) should be created per release
