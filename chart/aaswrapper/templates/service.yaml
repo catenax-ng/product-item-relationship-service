@@ -11,7 +11,7 @@ spec:
       targetPort: api
       protocol: TCP
       name: http
-    - port: {{ .Values.service-callback.port }}
+    - port: {{ .Values.serviceCallback.port }}
       targetPort: callback
       protocol: TCP
       name: http-callback
