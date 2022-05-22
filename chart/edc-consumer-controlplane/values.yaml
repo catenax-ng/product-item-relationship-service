@@ -32,8 +32,8 @@ imagePullSecret:
 ##
 imagePullSecrets: []
 
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: "edc-consumer-controlplane"
+fullnameOverride: "edc-consumer-controlplane"
 
 serviceAccount:
   ##

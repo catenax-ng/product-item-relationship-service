@@ -11,5 +11,9 @@ spec:
       targetPort: api
       protocol: TCP
       name: http
+    - port: {{ .Values.serviceCallback.port }}
+      targetPort: callback
+      protocol: TCP
+      name: http-callback
   selector:
     {{- include "aaswrapper.selectorLabels" . | nindent 4 }}
