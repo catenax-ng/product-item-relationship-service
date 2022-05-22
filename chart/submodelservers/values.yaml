@@ -105,3 +105,16 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
+backend:
+  endpoint:
+    default: 
+      port: 8000
+      path: /api
+      ingress: false
+    public: 
+      port: 8194
+      path: /api/data
+      ingres: true
+        
+
+
