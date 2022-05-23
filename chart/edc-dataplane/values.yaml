@@ -214,8 +214,8 @@ opentelemetry:
 ##
 configuration:
   properties: |-
-    # edc.api.control.auth.apikey.key=
-    # edc.api.control.auth.apikey.value=
+    edc.api.auth.key=X-API-Key
+    edc.api.auth.value=123456
     # edc.assetindex.cosmos.account-name=
     # edc.assetindex.cosmos.container-name=
     # edc.assetindex.cosmos.database-name=
@@ -238,7 +238,7 @@ configuration:
     # edc.contractnegotiationstore.cosmos.container-name=
     # edc.contractnegotiationstore.cosmos.database-name=
     # edc.contractnegotiationstore.cosmos.preferred-region=
-    # edc.controlplane.validation-endpoint=
+    # edc.controlplane.validation-endpoint=https://edc-controlplane:8182/validation
     # edc.core.retry.backoff.max=
     # edc.core.retry.backoff.min=
     # edc.core.retry.retries.max=
@@ -297,13 +297,13 @@ configuration:
     # edc.node.directory.cosmos.container.name=
     # edc.node.directory.cosmos.database.name=
     # edc.node.directory.cosmos.preferred.region=
-    # edc.oauth.client.id=
+    edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
     # edc.oauth.private.key.alias=
-    # edc.oauth.provider.audience=
+    # edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
     # edc.oauth.provider.jwks.refresh=
-    # edc.oauth.provider.jwks.url=
-    # edc.oauth.public.key.alias=
-    # edc.oauth.token.url=
+    # edc.oauth.provider.jwks.url=https://irs.dev.demo.catena-x.net/.well-known/jwks.json
+    # edc.oauth.public.key.alias=dev-data-plane-cert
+    # edc.oauth.token.url=https://irs.dev.demo.catena-x.net/token
     # edc.oauth.validation.nbf.leeway=
     # edc.receiver.http.auth-code=
     # edc.receiver.http.auth-key=
@@ -329,5 +329,4 @@ configuration:
     # edc.web.rest.cors.enabled=
     # edc.web.rest.cors.headers=
     # edc.web.rest.cors.methods=
-    # edc.web.rest.cors.origins=
-  az login --tenant
+    # edc.web.rest.cors.origins=  
