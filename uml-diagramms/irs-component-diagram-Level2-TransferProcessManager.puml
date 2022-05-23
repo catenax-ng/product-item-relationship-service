@@ -7,7 +7,7 @@ component [**TransferProcessManager**] <<Subsystem>> as TransferProcessManager {
     component [**DigitalTwinRegistryFacade**] <<Component>> as DTRFacade {
         component [**DigitalTwinRegistryClient**] <<Component>> as DTRClient
     }
-
+    component [**BlobPersistence**] <<Component>> as BlobPersistence
     component [**SubmodelFacade**] <<Component>> as SubmodelFacade {
         component [**SubmodelClient**] <<Component>> as SubmodelClient
     }

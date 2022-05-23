@@ -1,0 +1,28 @@
+@startuml
+
+skinparam monochrome true
+skinparam shadowing false
+
+frame IRS-DEV {
+
+node "Java Runtime Environment" <<jdk-17>>{
+
+node "Java Spring Boot" {
+artifact "irs-XXX.jar" <<artifact.executable>> as IRS
+}
+database MinIOBlobStore
+
+artifact "AAS Wrapper" <<artifact.executable>> as AAS_W
+artifact "AAS Proxy" <<artifact.executable>> as AAS_P
+artifact "AAS Registry" <<artifact.executable>>
+artifact "EDC Consumer" <<artifact.executable>>
+artifact "EDC Provider 1" <<artifact.executable>>
+artifact "EDC Provider 2" <<artifact.executable>>
+artifact "EDC Provider 3" <<artifact.executable>>
+artifact "EDC Provider 4" <<artifact.executable>>
+}
+
+}
+
+
+@enduml
