@@ -358,8 +358,8 @@ configuration:
     # edc.oauth.validation.nbf.leeway=
     # edc.receiver.http.auth-code=
     # edc.receiver.http.auth-key=
-    # edc.receiver.http.endpoint=http://aaswrapper:9192/callback
-    edc.transfer.proxy.endpoint=http://irs-edc-provider.dev.demo.catena-x.net/api/public
+    edc.receiver.http.endpoint=http://aaswrapper:9192/callback
+    edc.transfer.proxy.endpoint=http://irs-edc-provider.dev.demo.catena-x.net:8181/api/public
     # edc.transfer.dataplane.sync.token.validity=
     edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
     # edc.transfer.functions.check.endpoint=
