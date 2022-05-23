@@ -38,7 +38,7 @@ securityContext:
 
 service:
   type: ClusterIP
-  port: 8194
+  port: 8080
 
 ingress:
   enabled: true
@@ -54,7 +54,7 @@ ingress:
             service:
               name: aaswrapper
               port:
-                number: 8194
+                number: 8080
   tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
@@ -112,13 +112,12 @@ readinessProbe:
 backend:
   endpoint:
     default: 
-      port: 8000
+      port: 8080
       path: /api
       ingress: false
     public: 
       port: 8194
       path: /api/data
-      ingres: true
-        
+      ingres: true        
 
 

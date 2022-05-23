@@ -321,10 +321,10 @@ configuration:
     # edc.transfer.state-machine.batch-size=
     # edc.vault=
     # edc.vault.certificate=
-    edc.vault.clientid=00000000-1111-2222-3333-444444444444
-    edc.vault.clientsecret=34-chars-secret
-    edc.vault.name=my-vault-name
-    edc.vault.tenantid=55555555-6666-7777-8888-999999999999
+    edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
+    edc.vault.clientsecret=<path:product-traceability-irs/data/dev/controlplane#devVaultClientSecret>
+    edc.vault.name=cxtsi-dev001-vault
+    edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
     # edc.webdid.doh.url=
     # edc.web.rest.cors.enabled=
     # edc.web.rest.cors.headers=
