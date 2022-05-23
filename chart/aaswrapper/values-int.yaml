@@ -2,17 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-ingress:
-  hosts:
-    - host: "irs-aas-wrapper.int.demo.catena-x.net"
-      paths:
-        - pathType: ImplementationSpecific
-          backend:
-            service:
-              name: aaswrapper
-              port:
-                number: 9191
-
 configuration:
   properties: |-
     web.http.port=9191
