@@ -2,12 +2,12 @@
 skinparam monochrome true
 skinparam shadowing false
 
- component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler {
-    component [**AASRecursiveJobHandler**] <<Component>> as AASRecursiveJobHandler
-    component [**TreeRecursiveLogic**] <<Component>> as TreeRecursiveLogic
-    component [**ItemTreesAssembler**] <<Component>> as ItemTreesAssembler
+    component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler {
+        component [**AASRecursiveJobHandler**] <<Component>> as AASRecursiveJobHandler
+        component [**TreeRecursiveLogic**] <<Component>> as TreeRecursiveLogic
+        component [**ItemTreesAssembler**] <<Component>> as ItemTreesAssembler
+    }
 
- }
 
 () "BlobPersistence" as BlobPersistence
 AASRecursiveJobHandler .> TreeRecursiveLogic

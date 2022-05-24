@@ -2,9 +2,9 @@
 skinparam monochrome true
 skinparam shadowing false
 
- component [**IRS-Application**] <<System>> as IRS {
+ component [**IRSApplication**] <<System>> as IRS {
     component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler
-    component [**IrsController**] <<Component>> as IrsController
+    component [**Controller**] <<Component>> as Controller
     component [**JobOrchestrator**] <<Component>> as JobOrchestrator
     component [**TransferProcessManagment**] <<Component>> as TransferProcessManagment
 
@@ -20,7 +20,7 @@ skinparam shadowing false
     () "BlobStore\nInterface" as StoreInterface
 
 
-    IrsController <..> JobOrchestrator
+    Controller <..> JobOrchestrator
     JobOrchestrator <..> TransferProcessManagment
     JobOrchestrator <..> RecursiveJobHandler
     TransferProcessManagment --( StoreInterface
@@ -29,7 +29,7 @@ skinparam shadowing false
 }
 component [**AASProxy**] <<System>> as AASProxy
 actor IrsApiConsumer
-IrsController -up- API_PORT
+Controller -up- API_PORT
 IrsApiConsumer -(0- API_PORT
 
 

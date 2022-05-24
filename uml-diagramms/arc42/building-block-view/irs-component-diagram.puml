@@ -4,7 +4,7 @@ skinparam shadowing false
 
 component [**IAM**] <<System>> as IAM
 
-component [**IRS-Application**] <<IRS-Application>> {
+component [**IRSApplication**] <<System>> {
 	component [**IRS**] <<System>> as IRS
 
 	component [**AAS Wrapper**] <<System>> as AAS_W

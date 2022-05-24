@@ -56,7 +56,7 @@ import net.catenax.irs.util.JsonUtil;
 import org.springframework.stereotype.Service;
 
 /**
- * Service for retrieving parts tree.
+ * Service for retrieving item graph.
  */
 @Slf4j
 @Service
