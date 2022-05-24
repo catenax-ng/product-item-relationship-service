@@ -95,6 +95,7 @@ edc:
 ##
 service:
   type: ClusterIP
+  port: 9193
 
 ingress:
   enabled: true
@@ -108,11 +109,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-          backend:
-            service:
-              name: edc-provider-controlplane
-              port:
-                number: 9193
+
   tls:
     - hosts:
         - "edc-provider-controlplane.dev.demo.catena-x.net"
