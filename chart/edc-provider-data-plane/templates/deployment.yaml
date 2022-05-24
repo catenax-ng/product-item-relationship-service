@@ -34,19 +34,58 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: default
+              containerPort: {{ .Values.edc.endpoints.default.port }}
+              protocol: TCP
+            - name: defaultContainer
+              containerPort: {{ .Values.edc.endpoints.defaultContainer.port }}
+              protocol: TCP  
+            - name: public
+              containerPort: {{ .Values.edc.endpoints.public.port }}
+              protocol: TCP
+            - name: publicContainer
+              containerPort: {{ .Values.edc.endpoints.publicContainer.port }}
+              protocol: TCP  
+            - name: metrics
+              containerPort: {{ .Values.edc.endpoints.metrics.port }}
+              protocol: TCP
+            - name: metricsContainer
+              containerPort: {{ .Values.edc.endpoints.metricsContainer.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: {{ .Values.edc.endpoints.default.path }}/check/liveness
+              port: default
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: {{ .Values.edc.endpoints.default.path }}/check/readiness
+              port: default
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: configuration
+              mountPath: /config/configuration.properties
+              subPath: configuration.properties
+            - name: configuration
+              mountPath: /config/opentelemetry.properties
+              subPath: opentelemetry.properties
+            - name: configuration
+              mountPath: /config/logging.properties
+              subPath: logging.properties
+      volumes:
+        - name: configuration
+          configMap:
+            name: {{ include "edc-dataplane.fullname" . }}-configmap
+            items:
+              - key: configuration.properties
+                path: configuration.properties
+              - key: opentelemetry.properties
+                path: opentelemetry.properties
+              - key: logging.properties
+                path: logging.properties  
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
