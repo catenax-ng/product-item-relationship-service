@@ -97,7 +97,7 @@ spec:
               mountPath: /app/vault.properties
               subPath: vault.properties
             - name: certs
-              mountPath: /certs/cert.pfx
+              mountPath: /cert.pfx
       volumes:
         - name: configuration
           configMap:
