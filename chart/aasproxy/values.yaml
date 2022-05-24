@@ -120,4 +120,4 @@ env:
   - name: AASPROXY_PROXYURL
     value: http://irs-aas-proxy.dev.demo.catena-x.net
   - name: AASPROXY_REGISTRYURL
-    value: http://irs-dt-registry.dev.demo.catena-x.net
+    value: http://irs-aas-registry.dev.demo.catena-x.net
