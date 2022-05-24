@@ -178,7 +178,7 @@ logging:
 opentelemetry:
   # -- opentelemetry.properties configuring the [opentelemetry agent](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/)
   properties: |-
-    otel.javaagent.enabled=true
+    otel.javaagent.enabled=false
     otel.javaagent.debug=false
 
 configuration:

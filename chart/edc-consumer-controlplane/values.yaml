@@ -253,7 +253,7 @@ logging:
 ##
 opentelemetry:
   properties: |-
-    otel.javaagent.enabled=true
+    otel.javaagent.enabled=false
     otel.javaagent.debug=false
 ##
 ## EDC configuration.properties

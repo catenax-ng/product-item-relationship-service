@@ -44,26 +44,6 @@ serviceCallback:
   type: ClusterIP
   port: 9192
 
-ingress:
-  enabled: true
-  className: "nginx"
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: HTTP
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  hosts:
-    - host: "irs-aas-wrapper.dev.demo.catena-x.net"
-      paths:
-        - pathType: ImplementationSpecific
-          backend:
-            service:
-              name: aaswrapper
-              port:
-                number: 9191
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
 resources:
   limits:
     cpu: 500m
