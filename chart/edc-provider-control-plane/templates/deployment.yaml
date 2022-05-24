@@ -96,8 +96,9 @@ spec:
             - name: configuration
               mountPath: /app/vault.properties
               subPath: vault.properties
-            - name: certs
+            - name: configuration
               mountPath: /cert.pfx
+              subPath: cert.pfx
       volumes:
         - name: configuration
           configMap:
@@ -111,10 +112,8 @@ spec:
                 path: vault.properties
               - key: logging.properties
                 path: logging.properties
-        - name: certs
-          configMap:
-            name: {{ include "edc-provider-control-plane.fullname" . }}-configmap-cert
-
+              - key: cert.pfx
+                path: cert.pfx
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
