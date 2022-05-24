@@ -8,29 +8,14 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.edc.endpoints.default.port }}
-      targetPort: default
+    - name: api
+      containerPort: {{ .Values.edc.endpoints.api.port }}
       protocol: TCP
-      name: default
-    - port: {{ .Values.edc.endpoints.control.port }}
-      targetPort: control
+    - name: validation
+      containerPort: {{ .Values.edc.endpoints.validation.port }}
       protocol: TCP
-      name: control
-    - port: {{ .Values.edc.endpoints.data.port }}
-      targetPort: data
+    - name: jdb
+      containerPort: {{ .Values.edc.endpoints.jdb.port }}
       protocol: TCP
-      name: data
-    - port: {{ .Values.edc.endpoints.validation.port }}
-      targetPort: validation
-      protocol: TCP
-      name: validation
-    - port: {{ .Values.edc.endpoints.ids.port }}
-      targetPort: ids
-      protocol: TCP
-      name: ids
-    - port: {{ .Values.edc.endpoints.metrics.port }}
-      targetPort: metrics
-      protocol: TCP
-      name: metrics
   selector:
     {{- include "edc-controlplane.selectorLabels" . | nindent 4 }}
