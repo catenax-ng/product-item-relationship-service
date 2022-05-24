@@ -37,22 +37,13 @@ spec:
             - name: default
               containerPort: {{ .Values.edc.endpoints.default.port }}
               protocol: TCP
-            - name: defaultContainer
-              containerPort: {{ .Values.edc.endpoints.defaultContainer.port }}
-              protocol: TCP
             - name: public
               containerPort: {{ .Values.edc.endpoints.public.port }}
-              protocol: TCP
-            - name: publicContainer
-              containerPort: {{ .Values.edc.endpoints.publicContainer.port }}
               protocol: TCP
             - name: metrics
               containerPort: {{ .Values.edc.endpoints.metrics.port }}
               protocol: TCP
-            - name: metricsContainer
-              containerPort: {{ .Values.edc.endpoints.metricsContainer.port }}
-              protocol: TCP
-          {{- if .Values.livenessProbe.enabled }}    
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.edc.endpoints.default.path }}/check/liveness
@@ -79,7 +70,7 @@ spec:
       volumes:
         - name: configuration
           configMap:
-            name: {{ include "edc-dataplane.fullname" . }}-configmap
+            name: {{ include "edc-provider-data-plane.fullname" . }}-configmap
             items:
               - key: configuration.properties
                 path: configuration.properties
