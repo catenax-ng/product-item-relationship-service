@@ -41,7 +41,7 @@ spec:
             - name: EDC_KEYSTORE
               value: /cert.pfx
             - name: EDC_KEYSTORE_PASSWORD
-              value: 123456
+              value: "123456"
           ports:
             - name: default
               containerPort: {{ .Values.edc.endpoints.default.port }}
@@ -93,7 +93,11 @@ spec:
             - name: configuration
               mountPath: /app/logging.properties
               subPath: logging.properties
-
+            - name: configuration
+              mountPath: /app/vault.properties
+              subPath: vault.properties
+            - name: certs
+              mountPath: /certs/cert.pfx
       volumes:
         - name: configuration
           configMap:
@@ -107,7 +111,9 @@ spec:
                 path: vault.properties
               - key: logging.properties
                 path: logging.properties
-
+        - name: certs
+          configMap:
+            name: {{ include "edc-provider-control-plane.fullname" . }}-configmap-cert
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
