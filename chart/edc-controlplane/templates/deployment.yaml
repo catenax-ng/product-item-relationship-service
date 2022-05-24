@@ -42,24 +42,27 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: default
-              containerPort: {{ .Values.edc.endpoints.default.port }}
-              protocol: TCP
-            - name: data
-              containerPort: {{ .Values.edc.endpoints.data.port }}
+            - name: api
+              containerPort: {{ .Values.edc.endpoints.api.port }}
               protocol: TCP
             - name: validation
               containerPort: {{ .Values.edc.endpoints.validation.port }}
               protocol: TCP
-            - name: control
-              containerPort: {{ .Values.edc.endpoints.control.port }}
+            - name: jdb
+              containerPort: {{ .Values.edc.endpoints.jdb.port }}
               protocol: TCP
-            - name: ids
-              containerPort: {{ .Values.edc.endpoints.ids.port }}
-              protocol: TCP
-            - name: metrics
-              containerPort: {{ .Values.edc.endpoints.metrics.port }}
-              protocol: TCP
+          env:  
+            - name:  EDC_VAULT
+              value: /connector-config/vault.properties
+            - name:  EDC_KEYSTORE
+              value: /connector-config/cert.pfx
+            - name:  EDC_KEYSTORE_PASSWORD
+              value: "123456"
+            - name:  EDC_FS_CONFIG
+              value: /connector-config/configuration.properties
+          volumeMounts:
+            - name: consumer-control-plane-config
+              mountPath: /connector-config
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
@@ -84,28 +87,11 @@ spec:
             - configMapRef:
                 name: {{ include "edc-controlplane.fullname" . }}-env
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-            - name: configuration
-              mountPath: /app/configuration.properties
-              subPath: configuration.properties
-            - name: configuration
-              mountPath: /app/opentelemetry.properties
-              subPath: opentelemetry.properties
-            - name: configuration
-              mountPath: /app/logging.properties
-              subPath: logging.properties
+            {{- toYaml .Values.resources | nindent 12 }}                  
       volumes:
-        - name: configuration
+        - name: consumer-control-plane-config
           configMap:
-            name: {{ include "edc-controlplane.fullname" . }}-configmap
-            items:
-              - key: configuration.properties
-                path: configuration.properties
-              - key: opentelemetry.properties
-                path: opentelemetry.properties
-              - key: logging.properties
-                path: logging.properties
+            name: consumer-control-plane-config    
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
