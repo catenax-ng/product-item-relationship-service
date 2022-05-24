@@ -96,9 +96,9 @@ spec:
             - name: configuration
               mountPath: /app/vault.properties
               subPath: vault.properties
-            - name: cert
-              mountPath: /app/vault.properties
-              subPath: vault.properties
+            - name: configuration
+              mountPath: /certs/cert.pfx
+              subPath: cert.pfx
       volumes:
         - name: configuration
           configMap:
@@ -114,7 +114,6 @@ spec:
                 path: logging.properties
               - key: cert.pfx
                 path: cert.pfx
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
