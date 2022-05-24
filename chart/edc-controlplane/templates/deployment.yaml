@@ -65,7 +65,7 @@ spec:
             - name: EDC_FS_CONFIG
               value: /connector-config/configuration.properties
           volumeMounts:
-            - name: consumer-control-plane-config
+            - name: edc-consumer-controlplane-configmap
               mountPath: /connector-config
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
