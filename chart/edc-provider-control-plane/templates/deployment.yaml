@@ -93,9 +93,7 @@ spec:
             - name: configuration
               mountPath: /app/logging.properties
               subPath: logging.properties
-            - name: configuration
-              mountPath: /app/vault.properties
-              subPath: vault.properties
+
       volumes:
         - name: configuration
           configMap:
