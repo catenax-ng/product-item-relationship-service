@@ -84,6 +84,17 @@ spec:
             - name: configuration
               mountPath: /app/logging.properties
               subPath: logging.properties
+      volumes:
+        - name: configuration
+          configMap:
+            name: {{ include "edc-provider-control-plane.fullname" . }}-configmap
+            items:
+                - key: configuration.properties
+                  path: configuration.properties
+                - key: opentelemetry.properties
+                  path: opentelemetry.properties
+                - key: logging.properties
+                  path: logging.properties
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
