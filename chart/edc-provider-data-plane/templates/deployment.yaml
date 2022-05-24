@@ -52,6 +52,7 @@ spec:
             - name: metricsContainer
               containerPort: {{ .Values.edc.endpoints.metricsContainer.port }}
               protocol: TCP
+          {{- if .Values.livenessProbe.enabled }}    
           livenessProbe:
             httpGet:
               path: {{ .Values.edc.endpoints.default.path }}/check/liveness
