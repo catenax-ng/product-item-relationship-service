@@ -102,7 +102,7 @@ configuration:
     web.http.callback.port=9192
     web.http.callback.path=/callback
     wrapper.auth.basic.someuser=somepassword
-    wrapper.consumer.edc.datamanagement.url=http://edc-consumer-control-plane:9193/api/v1/data
-    wrapper.consumer.edc.control.url=http://edc-consumer-control-plane:9191/api
+    wrapper.consumer.edc.datamanagement.url=http://edc-consumer-controlplane:9193/api/v1/data
+    wrapper.consumer.edc.control.url=http://edc-consumer-controlplane:9191/api
     wrapper.consumer.edc.apikey.name=X-Api-Key
     wrapper.consumer.edc.apikey.value=123456
