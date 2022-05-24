@@ -5,14 +5,14 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/catenax-ng/catenax-at-home/provider-control-plane
+  repository: ghcr.io/catenax-ng/catenax-at-home/consumer-control-plane
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: [ ]
-nameOverride: "edc-provider-controlplane"
-fullnameOverride: "edc-provider-controlplane"
+nameOverride: "edc-consumer-controlplane"
+fullnameOverride: "edc-consumer-controlplane"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -80,7 +80,7 @@ edc:
 ##
 service:
   type: ClusterIP
-  port: 9193
+  port: 9191
 
 ingress:
   enabled: true
@@ -90,14 +90,14 @@ ingress:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
   hosts:
-    - host: "edc-provider-controlplane.dev.demo.catena-x.net"
+    - host: "edc-consumer-controlplane.dev.demo.catena-x.net"
       paths:
         - path: /
           pathType: Prefix
 
   tls:
     - hosts:
-        - "edc-provider-controlplane.dev.demo.catena-x.net"
+        - "edc-consumer-controlplane.dev.demo.catena-x.net"
       # Default secret for certificate creation already provided to your namespace
       secretName: tls-secret
 
