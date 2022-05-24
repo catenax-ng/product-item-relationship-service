@@ -1,6 +1,8 @@
 # INT values for aas wrapper.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+image:
+  tag: "0.0.3"
 
 configuration:
   properties: |-
