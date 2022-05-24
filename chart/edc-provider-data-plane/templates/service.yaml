@@ -11,10 +11,6 @@ spec:
       targetPort: default
       protocol: TCP
       name: default
-    - port: {{ .Values.edc.endpoints.control.port }}
-      targetPort: control
-      protocol: TCP
-      name: control
     - port: {{ .Values.edc.endpoints.public.port }}
       targetPort: public
       protocol: TCP

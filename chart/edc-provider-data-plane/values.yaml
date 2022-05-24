@@ -42,25 +42,19 @@ edc:
     ## Default api exposing health checks etc
     default:
       # -- The network port, which the "default" api is going to be exposed by the container, pod and service
-      port: "8080"
+      port: "9191"
       # -- The path mapping the "default" api is going to be exposed by
       path: /api
     ## Public endpoint for data transfer
     public:
       # -- The network port, which the "public" api is going to be exposed by the container, pod and service
-      port: "8185"
+      port: "9192"
       # -- The path mapping the "public" api is going to be exposed by
       path: /api/public
-    ## Control API
-    control:
-      # -- The network port, which the "control" api is going to be exposed by the container, pod and service
-      port: "9999"
-      # -- The path mapping the "control" api is going to be exposed by
-      path: /api/dataplane/control
     ## Prometheus endpoint
     metrics:
       # -- The network port, which the prometheus metrics are going to be exposed by the container, pod and service
-      port: "9090"
+      port: "8090"
       # -- The path mapping the prometheus metrics are going to be exposed at
       path: /metrics
 
@@ -165,38 +159,17 @@ logging:
 
 configuration:
   properties: |-
-    edc.api.control.auth.apikey.key=X-Api-Key
-    edc.api.control.auth.apikey.value=123456
-    # edc.datasource.asset.name="default"
-    # edc.datasource.contractdefinition.name="default"
-    # edc.datasource.contractnegotiation.name="default"
-    # edc.datasource.policy.name="default"
-    # edc.datasource.transferprocess.name="default"
-    edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
-    edc.oauth.private.key.alias=dev-data-plane-private-key
-    edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
-    # edc.oauth.provider.jwks.refresh=
-    edc.oauth.provider.jwks.url=https://daps.int.demo.catena-x.net/.well-known/jwks.json
-    edc.oauth.public.key.alias=dev-data-plane-cert
-    edc.oauth.token.url=https://daps.int.demo.catena-x.net/token
-    edc.receiver.http.endpoint=http://aaswrapper:9192/callback
-    edc.transfer.proxy.endpoint=http://irs-edc-provider.dev.demo.catena-x.net:8181/api/public
-    # edc.transfer.dataplane.sync.token.validity=
-    edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
-    edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
-    edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    edc.vault.clientsecret=<path:product-traceability-irs/data/dev/controlplane#devVaultClientSecret>
-    edc.vault.name=cxtsi-dev001-vault
+    web.http.port=9191
+    web.http.path=/api
+    
+    web.http.public.port=9192
+    web.http.public.path=/public
+    
+    web.http.control.port=9193
+    web.http.control.path=/control
+    
+    edc.controlplane.validation-endpoint=http://edc-provider-controlplane:9192/validation/validation
 
-env:
-  - name: EDC_VAULT
-    value: "/config/vault.properties"
-  - name: EDC_KEYSTORE
-    value: "/cert.pfx"
-  - name: EDC_KEYSTORE_PASSWORD
-    value: "123456" 
-  - name: EDC_FS_CONFIG
-    value: "/config/configuration.properties"
 
      
     
