@@ -36,6 +36,12 @@ spec:
           env:
             - name: EDC_FS_CONFIG
               value: /app/configuration.properties
+            - name: EDC_VAULT
+              value: /config/vault.properties
+            - name: EDC_KEYSTORE
+              value: /cert.pfx
+            - name: EDC_KEYSTORE_PASSWORD
+              value: 123456
           ports:
             - name: default
               containerPort: {{ .Values.edc.endpoints.default.port }}
@@ -87,17 +93,28 @@ spec:
             - name: configuration
               mountPath: /app/logging.properties
               subPath: logging.properties
+            - name: configuration
+              mountPath: /app/vault.properties
+              subPath: vault.properties
+            - name: cert
+              mountPath: /app/vault.properties
+              subPath: vault.properties
       volumes:
         - name: configuration
           configMap:
             name: {{ include "edc-provider-control-plane.fullname" . }}-configmap
             items:
-                - key: configuration.properties
-                  path: configuration.properties
-                - key: opentelemetry.properties
-                  path: opentelemetry.properties
-                - key: logging.properties
-                  path: logging.properties
+              - key: configuration.properties
+                path: configuration.properties
+              - key: opentelemetry.properties
+                path: opentelemetry.properties
+              - key: vault.properties
+                path: vault.properties
+              - key: logging.properties
+                path: logging.properties
+              - key: cert.pfx
+                path: cert.pfx
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
