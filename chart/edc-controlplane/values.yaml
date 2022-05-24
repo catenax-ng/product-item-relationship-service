@@ -60,21 +60,35 @@ startupProbe:
 edc:
   endpoints:
     # Default api exposing health checks etc
-    api:
+    default:
       port: "9191"
       path: /api
+      ingress: false
+    # Data management API
+    data:
+      port: "9193"
+      path: /data
       ingress: true
     # Validation API
     validation:
       port: "9192"
       path: /validation
       ingress: false
-    # JDB
-    jdb:
-      port: "8090"
+    # Control API
+    control:
+      port: "9999"
       path: /api/controlplane/control
+      ingress: true
+    # IDS endpoints
+    ids:
+      port: "8282"
+      path: /api/v1/ids
+      ingress: true
+    # Prometheus endpoint
+    metrics:
+      port: "8090"
+      path: /metrics
       ingress: false
-
 ##
 ## Service to expose the running application on a set of Pods as a network service.
 ##

@@ -37,14 +37,23 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: api
-              containerPort: {{ .Values.edc.endpoints.api.port }}
+            - name: default
+              containerPort: {{ .Values.edc.endpoints.default.port }}
+              protocol: TCP
+            - name: data
+              containerPort: {{ .Values.edc.endpoints.data.port }}
               protocol: TCP
             - name: validation
               containerPort: {{ .Values.edc.endpoints.validation.port }}
               protocol: TCP
-            - name: jdb
-              containerPort: {{ .Values.edc.endpoints.jdb.port }}
+            - name: control
+              containerPort: {{ .Values.edc.endpoints.control.port }}
+              protocol: TCP
+            - name: ids
+              containerPort: {{ .Values.edc.endpoints.ids.port }}
+              protocol: TCP
+            - name: metrics
+              containerPort: {{ .Values.edc.endpoints.metrics.port }}
               protocol: TCP
           env:
             - name: EDC_VAULT
