@@ -88,7 +88,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: aasproxy
+              name: api
               port:
                 number: 8182
   tls:
