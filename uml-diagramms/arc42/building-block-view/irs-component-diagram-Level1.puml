@@ -5,9 +5,8 @@ skinparam shadowing false
  component [**IRS-Application**] <<System>> as IRS {
     component [**RecursiveJobHandler**] <<Component>> as RecursiveJobHandler
     component [**IrsController**] <<Component>> as IrsController
-    component [**IrsItemGraphQueryService**] <<Component>> as IrsItemGraphQueryService
     component [**JobOrchestrator**] <<Component>> as JobOrchestrator
-    component [**TransferProcessManager**] <<Subsystem>> as TransferProcessManager
+    component [**TransferProcessManagment**] <<Component>> as TransferProcessManagment
 
 
     'component [**AASClient**] <<Subsystem>> as AASClient
@@ -15,28 +14,29 @@ skinparam shadowing false
     'component [**SubmodelClient**] <<Subsystem>> as SubmodelClient
     'component [**SubmodelFacade**] <<Subsystem>> as SubmodelFacade ' --> Level2 View
 
+    port "IRS API" as API_PORT
+    port "AAS Proxy" as AAS_PORT
+
     () "BlobStore\nInterface" as StoreInterface
-	port "IRS API" as API
 
-    IrsController -left- IrsItemGraphQueryService
 
-    IrsItemGraphQueryService -- JobOrchestrator
-    IrsItemGraphQueryService - StoreInterface
-    JobOrchestrator -right- StoreInterface
-    JobOrchestrator -- TransferProcessManager
-    JobOrchestrator -left- RecursiveJobHandler
-    TransferProcessManager - StoreInterface
+    IrsController <..> JobOrchestrator
+    JobOrchestrator <..> TransferProcessManagment
+    JobOrchestrator <..> RecursiveJobHandler
+    TransferProcessManagment --( StoreInterface
 
-    IrsController - API
+
 }
-actor IrsApiConsumer
-
-IrsApiConsumer -(0- API
-
 component [**AASProxy**] <<System>> as AASProxy
-TransferProcessManager .. AASProxy
+actor IrsApiConsumer
+IrsController -up- API_PORT
+IrsApiConsumer -(0- API_PORT
+
+
+TransferProcessManagment --- AAS_PORT
+AAS_PORT -(0 AASProxy
 
 database "BlobStore" as BlobStore
-StoreInterface )-right- BlobStore
+StoreInterface -down- BlobStore
 
 @enduml

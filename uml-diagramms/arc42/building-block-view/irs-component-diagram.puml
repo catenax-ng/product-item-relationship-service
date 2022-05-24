@@ -1,0 +1,42 @@
+@startuml 
+skinparam monochrome true
+skinparam shadowing false
+
+component [**IAM**] <<System>> as IAM
+
+component [**IRS-Application**] <<IRS-Application>> {
+	component [**IRS**] <<System>> as IRS
+
+	component [**AAS Wrapper**] <<System>> as AAS_W
+	component [**AAS Proxy**] <<System>> as AAS_P
+	component [**EDC Consumer**] <<System>> as EDC
+
+}
+
+component [**CatenaX-Network**] <<CX-Environment>> {
+    component [**AAS-Registry**] <<System>> as DT_REG
+    component [**EDC_Provider_OEM**] <<System>> as EDCProviderOEM
+    component [**EDC_Provider_Tier1**] <<System>> as EDCProviderTier1
+    component [**EDC_Provider_Tier1.1**] <<System>> as EDCProviderTier11
+    component [**SubmodelServer_OEM**] <<System>> as SubmodelServerOEM
+    component [**SubmodelServer_Tier1**] <<System>> as SubmodelServerTier1
+    component [**SubmodelServer_Tier1.1**] <<System>> as SubmodelServerTier11
+}
+
+
+actor IrsApiConsumer
+
+IrsApiConsumer -right(0- IRS
+IRS <..>AAS_P
+IRS <.> IAM
+AAS_P <.> AAS_W
+AAS_W <.> EDC
+AAS_P <.> DT_REG
+EDC <..> EDCProviderOEM
+EDC <...> EDCProviderTier1
+EDC <....> EDCProviderTier11
+EDCProviderOEM <..> SubmodelServerOEM
+EDCProviderTier1 <..> SubmodelServerTier1
+EDCProviderTier11 <..> SubmodelServerTier11
+
+@enduml

@@ -20,12 +20,12 @@ import net.catenax.irs.persistence.BlobPersistenceException;
 import net.catenax.irs.util.JsonUtil;
 
 /**
- * Retrieves parts trees from potentially multiple calls to IRS API behind
+ * Retrieves Retrieves item graphs from potentially multiple calls to IRS API behind
  * multiple EDC Providers, and assembles their outputs into
  * one overall parts tree.
  * <p>
  * In this increment, the implementation only retrieves the first level
- * parts tree, as a non-recursive implementation would do. In a next
+ * parts tree, as a non-recursive implementation, would do. In a next
  * increment, this class will be extended to perform recursive queries
  * by querying multiple IRS API instances.
  */

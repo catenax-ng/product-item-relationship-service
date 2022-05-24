@@ -2,12 +2,12 @@
 skinparam monochrome true
 skinparam shadowing false
 
-interface BlobStoreInterface
-component [**TransferProcessManager**] <<Subsystem>> as TransferProcessManager {
+
+component [**TransferProcessManagement**] <<Component>> as TransferProcessManagement {
+    component [**AASTransferProcessManager**] <<Component>> as TransferProcessManager
     component [**DigitalTwinRegistryFacade**] <<Component>> as DTRFacade {
         component [**DigitalTwinRegistryClient**] <<Component>> as DTRClient
     }
-    component [**BlobPersistence**] <<Component>> as BlobPersistence
     component [**SubmodelFacade**] <<Component>> as SubmodelFacade {
         component [**SubmodelClient**] <<Component>> as SubmodelClient
     }
@@ -15,15 +15,17 @@ component [**TransferProcessManager**] <<Subsystem>> as TransferProcessManager {
 }
 
 component [**AASProxy**] <<System>> as AASProxy
-interface AASRegistryInterface
-interface SubmodelInterface
-AASRegistryInterface -- AASProxy
-SubmodelInterface -- AASProxy
-DTRClient --( AASRegistryInterface
-SubmodelClient --( SubmodelInterface
+
+DTRFacade --0)- TransferProcessManager
+SubmodelFacade --0)- TransferProcessManager
+ExecutorService <...> TransferProcessManager
+
+API -- AASProxy
+DTRClient -( API
+SubmodelClient ---( API
 
 database BlobStore
-TransferProcessManager -- BlobStoreInterface
+TransferProcessManager -left-( BlobStoreInterface
 'BlobStoreInterface - TransferProcessManager
-BlobStoreInterface )- BlobStore
+BlobStoreInterface <..> BlobStore
 @enduml

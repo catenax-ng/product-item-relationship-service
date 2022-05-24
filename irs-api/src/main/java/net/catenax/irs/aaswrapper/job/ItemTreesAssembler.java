@@ -20,14 +20,14 @@ import net.catenax.irs.component.Tombstone;
 import net.catenax.irs.dto.AssemblyPartRelationshipDTO;
 
 /**
- * Assembles multiple partial parts trees into one overall parts tree.
+ * Assembles multiple partial item graphs into one overall item graph.
  */
 @Slf4j
 @RequiredArgsConstructor
 public class ItemTreesAssembler {
 
     /**
-     * Assembles multiple partial parts trees into one overall parts tree.
+     * Assembles multiple partial item graphs into one overall item graph.
      *
      * @param partialTrees partial parts trees.
      * @return A parts tree containing all the items from {@code partialTrees}, with deduplication.
