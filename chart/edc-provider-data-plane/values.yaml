@@ -36,42 +36,37 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-##
-## EDC endpoints exposed by the conrol-plane
-##
+## EDC endpoints exposed by the data-plane
 edc:
   endpoints:
-    # Default api exposing health checks etc
+    ## Default api exposing health checks etc
     default:
-      port: "8182"
+      # -- The network port, which the "default" api is going to be exposed by the container, pod and service
+      port: "8080"
+      # -- The path mapping the "default" api is going to be exposed by
       path: /api
-      ingress: false
-    defaultContainer:
-      port: "9191"
-      path: /data
-      ingress: true    
-    # Data management API  
+    ## Public endpoint for data transfer
     public:
-      port: "8183"
-      path: /validation
-      ingress: false
-    publicContainer:
-      port: "9192"
-      path: /api/controlplane/control
-      ingress: true
-    # Control
+      # -- The network port, which the "public" api is going to be exposed by the container, pod and service
+      port: "8185"
+      # -- The path mapping the "public" api is going to be exposed by
+      path: /api/public
+    ## Control API
+    control:
+      # -- The network port, which the "control" api is going to be exposed by the container, pod and service
+      port: "9999"
+      # -- The path mapping the "control" api is going to be exposed by
+      path: /api/dataplane/control
+    ## Prometheus endpoint
     metrics:
-      port: "5009"
+      # -- The network port, which the prometheus metrics are going to be exposed by the container, pod and service
+      port: "9090"
+      # -- The path mapping the prometheus metrics are going to be exposed at
       path: /metrics
-      ingress: false            
-    metricsContainer:
-      port: "8090"
-      path: /metrics
-      ingress: false  
 
 service:
   type: ClusterIP
-  port: 8182
+  port: 8185
 
 ingress:
   enabled: false
@@ -90,7 +85,7 @@ ingress:
             service:
               name: api
               port:
-                number: 8182
+                number: 8185
   tls:
     - hosts:
         - "irs-edc-provider-dataplane.dev.demo.catena-x.net"
