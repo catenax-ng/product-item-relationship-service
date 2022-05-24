@@ -111,8 +111,6 @@ spec:
                 path: vault.properties
               - key: logging.properties
                 path: logging.properties
-              - key: cert.pfx
-                path: cert.pfx
         - name: certs
           configMap:
             name: {{ include "edc-provider-control-plane.fullname" . }}-configmap-cert
