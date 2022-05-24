@@ -17,7 +17,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.irs.aaswrapper.registry.domain.DigitalTwinRegistryFacade;
 import net.catenax.irs.aaswrapper.submodel.domain.SubmodelFacade;
@@ -28,6 +27,7 @@ import net.catenax.irs.connector.job.TransferInitiateResponse;
 import net.catenax.irs.connector.job.TransferProcessManager;
 import net.catenax.irs.dto.AssemblyPartRelationshipDTO;
 import net.catenax.irs.dto.ChildDataDTO;
+import net.catenax.irs.dto.JobParameter;
 import net.catenax.irs.dto.SubmodelEndpoint;
 import net.catenax.irs.persistence.BlobPersistence;
 import net.catenax.irs.persistence.BlobPersistenceException;
@@ -60,21 +60,22 @@ public class AASTransferProcessManager implements TransferProcessManager<ItemDat
 
     @Override
     public TransferInitiateResponse initiateRequest(final ItemDataRequest dataRequest,
-                                                    final Consumer<String> transferProcessStarted,
-                                                    final Consumer<AASTransferProcess> completionCallback,
-                                                    final String lifecyleContext) {
+            final Consumer<String> preExecutionHandler, final Consumer<AASTransferProcess> completionCallback,
+            final JobParameter jobData) {
 
         final String processId = UUID.randomUUID().toString();
+        preExecutionHandler.accept(processId);
 
-        executor.submit(getRunnable(dataRequest, transferProcessStarted, completionCallback, processId, lifecyleContext));
+        executor.execute(getRunnable(dataRequest, completionCallback, processId, jobData));
 
         return new TransferInitiateResponse(processId, ResponseStatus.OK);
     }
 
-    private Runnable getRunnable(final ItemDataRequest dataRequest, final Consumer<String> transferProcessStarted,
-            final Consumer<AASTransferProcess> transferProcessCompleted, final String processId, final String lifecycleContext) {
+    private Runnable getRunnable(final ItemDataRequest dataRequest,
+            final Consumer<AASTransferProcess> transferProcessCompleted, final String processId,
+            final JobParameter jobData) {
+
         return () -> {
-            transferProcessStarted.accept(processId);
             final AASTransferProcess aasTransferProcess = new AASTransferProcess(processId, dataRequest.getDepth());
 
             final String itemId = dataRequest.getItemId();
@@ -83,14 +84,14 @@ public class AASTransferProcessManager implements TransferProcessManager<ItemDat
 
             log.info("Calling Digital Twin Registry with itemId {}", itemId);
             try {
-                final List<SubmodelEndpoint> aasSubmodelEndpoints;
-                aasSubmodelEndpoints = registryFacade.getAASSubmodelEndpoints(itemId);
+                final List<SubmodelEndpoint> aasSubmodelEndpoints = registryFacade.getAASSubmodelEndpoints(itemId,
+                        jobData);
 
                 log.info("Retrieved {} SubmodelEndpoints for itemId {}", aasSubmodelEndpoints.size(), itemId);
 
                 aasSubmodelEndpoints.stream().map(SubmodelEndpoint::getAddress).forEach(address -> {
                     try {
-                        final AssemblyPartRelationshipDTO submodel = submodelFacade.getSubmodel(address, lifecycleContext);
+                        final AssemblyPartRelationshipDTO submodel = submodelFacade.getSubmodel(address, jobData);
                         processEndpoint(aasTransferProcess, itemContainerBuilder, submodel);
                     } catch (RestClientException e) {
                         log.info("Submodel Endpoint could not be retrieved for Endpoint: {}. Creating Tombstone.",
@@ -98,7 +99,7 @@ public class AASTransferProcessManager implements TransferProcessManager<ItemDat
                         itemContainerBuilder.tombstone(createTombstone(itemId, address, e));
                     }
                 });
-            } catch (FeignException e) {
+            } catch (RestClientException e) {
                 log.info("Shell Endpoint could not be retrieved for Item: {}. Creating Tombstone.", itemId);
                 itemContainerBuilder.tombstone(createTombstone(itemId, null, e));
             }

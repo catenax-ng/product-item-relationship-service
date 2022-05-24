@@ -1,8 +1,8 @@
 package net.catenax.irs.controllers;
 
-import static net.catenax.irs.util.TestMother.registerJobWithDepth;
+import static net.catenax.irs.util.TestMother.registerJobWithDepthAndAspect;
 import static net.catenax.irs.util.TestMother.registerJobWithGlobalAssetIdAndDepth;
-import static net.catenax.irs.util.TestMother.registerJobWithoutDepth;
+import static net.catenax.irs.util.TestMother.registerJobWithoutDepthAndAspect;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,12 +27,12 @@ import net.catenax.irs.exceptions.EntityNotFoundException;
 import net.catenax.irs.services.IrsItemGraphQueryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(IrsController.class)
@@ -46,33 +46,36 @@ class IrsControllerTest {
     @MockBean
     private IrsItemGraphQueryService service;
 
+    private static Stream<RegisterJob> corruptedJobs() {
+        return Stream.of(registerJobWithDepthAndAspect(110, null),
+                registerJobWithGlobalAssetIdAndDepth("invalidGlobalAssetId", 0, null),
+                registerJobWithGlobalAssetIdAndDepth("urn:uuid:8a61c8db-561e-4db0-84ec-a693fc5\n\rdf6", 0, null));
+    }
+
     @Test
+    @WithMockUser
     void initiateJobForGlobalAssetId() throws Exception {
         final UUID returnedJob = UUID.randomUUID();
         when(service.registerItemJob(any())).thenReturn(JobHandle.builder().jobId(returnedJob).build());
 
-        this.mockMvc.perform(post("/irs/jobs")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(new ObjectMapper().writeValueAsString(registerJobWithoutDepth())))
+        this.mockMvc.perform(post("/irs/jobs").contentType(MediaType.APPLICATION_JSON)
+                                              .content(new ObjectMapper().writeValueAsString(
+                                                      registerJobWithoutDepthAndAspect())))
                     .andExpect(status().isCreated())
                     .andExpect(content().string(containsString(returnedJob.toString())));
     }
 
     @ParameterizedTest
     @MethodSource("corruptedJobs")
+    @WithMockUser
     void shouldReturnBadRequestWhenRegisterJobBodyNotValid(final RegisterJob registerJob) throws Exception {
-        this.mockMvc.perform(post("/irs/jobs")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(new ObjectMapper().writeValueAsString(registerJob)))
+        this.mockMvc.perform(post("/irs/jobs").contentType(MediaType.APPLICATION_JSON)
+                                              .content(new ObjectMapper().writeValueAsString(registerJob)))
                     .andExpect(status().isBadRequest());
     }
 
     @Test
-    void getJobById() {
-        assertTrue(true);
-    }
-
-    @Test
+    @WithMockUser
     void getJobsByJobState() throws Exception {
         final UUID returnedJob = UUID.randomUUID();
         when(service.getJobsByJobState(any())).thenReturn(List.of(returnedJob));
@@ -83,6 +86,7 @@ class IrsControllerTest {
     }
 
     @Test
+    @WithMockUser
     void cancelJobById() throws Exception {
         final Job canceledJob = Job.builder().jobId(jobId).jobState(JobState.CANCELED).build();
 
@@ -92,6 +96,7 @@ class IrsControllerTest {
     }
 
     @Test
+    @WithMockUser
     void cancelJobById_throwEntityNotFoundException() throws Exception {
         given(this.service.cancelJobById(jobId)).willThrow(
                 new EntityNotFoundException("No job exists with id " + jobId));
@@ -99,14 +104,6 @@ class IrsControllerTest {
         this.mockMvc.perform(put("/irs/jobs/" + jobId))
                     .andExpect(status().isNotFound())
                     .andExpect(result -> assertTrue(result.getResolvedException() instanceof EntityNotFoundException));
-    }
-
-    private static Stream<RegisterJob> corruptedJobs() {
-        return Stream.of(
-                registerJobWithDepth(110),
-                registerJobWithGlobalAssetIdAndDepth("invalidGlobalAssetId", 0),
-                registerJobWithGlobalAssetIdAndDepth("urn:uuid:8a61c8db-561e-4db0-84ec-a693fc5\n\rdf6", 0)
-        );
     }
 
 }

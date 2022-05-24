@@ -9,13 +9,9 @@
 //
 package net.catenax.irs.connector.job;
 
-import static net.catenax.irs.dtos.IrsCommonConstants.LIFE_CYCLE_CONTEXT;
-import static net.catenax.irs.dtos.IrsCommonConstants.ROOT_ITEM_ID_KEY;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.catenax.irs.component.GlobalAssetIdentification;
 import net.catenax.irs.component.Job;
 import net.catenax.irs.component.enums.JobState;
+import net.catenax.irs.dto.JobParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -77,12 +74,12 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
     /**
      * Start a job.
      *
-     * @param jobData additional data for the job to managed by the {@link JobStore}.
+     * @param jobData additional data for the job to be managed by the {@link JobStore}.
      * @return response.
      */
-    public JobInitiateResponse startJob(final Map<String, String> jobData) {
-        final Job job = createJob(jobData.get(ROOT_ITEM_ID_KEY));
-        final var multiJob = MultiTransferJob.builder().job(job).jobData(jobData).build();
+    public JobInitiateResponse startJob(final JobParameter jobData) {
+        final Job job = createJob(jobData.getRootItemId());
+        final var multiJob = MultiTransferJob.builder().job(job).jobParameter(jobData).build();
         jobStore.create(multiJob);
 
         final Stream<T> requests;
@@ -91,7 +88,7 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
         } catch (RuntimeException e) {
             markJobInError(multiJob, e, "Handler method failed");
             return JobInitiateResponse.builder()
-                                      .jobId(multiJob.getJob().getJobId().toString())
+                                      .jobId(multiJob.getJobIdString())
                                       .status(ResponseStatus.FATAL_ERROR)
                                       .build();
         }
@@ -101,20 +98,17 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
             transferCount = startTransfers(multiJob, requests);
         } catch (JobException e) {
             return JobInitiateResponse.builder()
-                                      .jobId(multiJob.getJob().getJobId().toString())
+                                      .jobId(multiJob.getJobIdString())
                                       .status(convertMessage(e.getJobErrorDetails().getException()))
                                       .build();
         }
 
         // If no transfers are requested, job is already complete
         if (transferCount == 0) {
-            completeJob(multiJob);
+            callCompleteHandlerIfFinished(multiJob.getJobIdString());
         }
 
-        return JobInitiateResponse.builder()
-                                  .jobId(multiJob.getJob().getJobId().toString())
-                                  .status(ResponseStatus.OK)
-                                  .build();
+        return JobInitiateResponse.builder().jobId(multiJob.getJobIdString()).status(ResponseStatus.OK).build();
     }
 
     /**
@@ -145,15 +139,16 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
         }
 
         try {
-            startTransfers(job, requests);
+            final long transfersStarted = startTransfers(job, requests);
+            log.info("Started {} new transfers", transfersStarted);
         } catch (JobException e) {
             markJobInError(job, e, "Failed to start a transfer");
             return;
         }
 
-        jobStore.completeTransferProcess(job.getJob().getJobId().toString(), process);
+        jobStore.completeTransferProcess(job.getJobIdString(), process);
 
-        callCompleteHandlerIfFinished(job.getJob().getJobId().toString());
+        callCompleteHandlerIfFinished(job.getJobIdString());
     }
 
     @Scheduled(cron = "${irs.job.cleanup.scheduler.completed}")
@@ -179,18 +174,13 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
 
     private List<MultiTransferJob> deleteJobs(final List<MultiTransferJob> jobs) {
         return jobs.stream()
-                   .map(job -> jobStore.deleteJob(job.getJob().getJobId().toString()))
+                   .map(job -> jobStore.deleteJob(job.getJobIdString()))
                    .flatMap(Optional::stream)
                    .collect(Collectors.toList());
     }
 
     private void callCompleteHandlerIfFinished(final String jobId) {
-        jobStore.find(jobId).ifPresent(job -> {
-            if (job.getJob().getJobState() != JobState.TRANSFERS_FINISHED) {
-                return;
-            }
-            completeJob(job);
-        });
+        jobStore.completeJob(jobId, this::completeJob);
     }
 
     private void completeJob(final MultiTransferJob job) {
@@ -198,15 +188,13 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
             handler.complete(job);
         } catch (RuntimeException e) {
             markJobInError(job, e, "Handler method failed");
-            return;
         }
-        jobStore.completeJob(job.getJob().getJobId().toString());
     }
 
     private void markJobInError(final MultiTransferJob job, final Throwable exception, final String message) {
 
         log.error(message, exception);
-        jobStore.markJobInError(job.getJob().getJobId().toString(), message);
+        jobStore.markJobInError(job.getJobIdString(), message);
     }
 
     private long startTransfers(final MultiTransferJob job, final Stream<T> dataRequests) /* throws JobErrorDetails */ {
@@ -215,18 +203,16 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
 
     private TransferInitiateResponse startTransfer(final MultiTransferJob job,
             final T dataRequest)  /* throws JobErrorDetails */ {
-
-        final String lifecyleContext = job.getJobData().get(LIFE_CYCLE_CONTEXT);
+        final JobParameter jobData = job.getJobParameter();
 
         final var response = processManager.initiateRequest(dataRequest,
-                transferId -> jobStore.addTransferProcess(job.getJob().getJobId().toString(), transferId),
-                this::transferProcessCompleted, lifecyleContext);
+                transferId -> jobStore.addTransferProcess(job.getJobIdString(), transferId),
+                this::transferProcessCompleted, jobData);
 
         if (response.getStatus() != ResponseStatus.OK) {
             throw new JobException(response.getStatus().toString());
         }
 
-        jobStore.addTransferProcess(job.getJob().getJobId().toString(), response.getTransferId());
         return response;
     }
 
