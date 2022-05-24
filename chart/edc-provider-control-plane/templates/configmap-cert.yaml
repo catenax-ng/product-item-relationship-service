@@ -6,4 +6,4 @@ metadata:
   labels:
     {{- include "edc-provider-control-plane.labels" . | nindent 4 }}
 binaryData:
-  cert.pfx: {{ .Files.Get "certs/cert.pfx" | b64enc }}
+  cert.pfx: {{ .Files.Get "certs/cert.pfx" | b64enc | quote}}
