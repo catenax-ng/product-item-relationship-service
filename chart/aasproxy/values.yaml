@@ -116,8 +116,8 @@ readinessProbe:
 
 env:
   - name: AASPROXY_WRAPPERURL
-    value: http://irs-aas-wrapper.dev.demo.catena-x.net/api/service
+    value: https://irs-aas-wrapper.dev.demo.catena-x.net/api/service
   - name: AASPROXY_PROXYURL
-    value: http://irs-aas-proxy.dev.demo.catena-x.net
+    value: https://irs-aas-proxy.dev.demo.catena-x.net
   - name: AASPROXY_REGISTRYURL
-    value: http://irs-aas-registry.dev.demo.catena-x.net
+    value: https://irs-aas-registry.dev.demo.catena-x.net
