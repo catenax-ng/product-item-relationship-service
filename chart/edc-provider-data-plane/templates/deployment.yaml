@@ -39,13 +39,13 @@ spec:
               protocol: TCP
             - name: defaultContainer
               containerPort: {{ .Values.edc.endpoints.defaultContainer.port }}
-              protocol: TCP  
+              protocol: TCP
             - name: public
               containerPort: {{ .Values.edc.endpoints.public.port }}
               protocol: TCP
             - name: publicContainer
               containerPort: {{ .Values.edc.endpoints.publicContainer.port }}
-              protocol: TCP  
+              protocol: TCP
             - name: metrics
               containerPort: {{ .Values.edc.endpoints.metrics.port }}
               protocol: TCP
@@ -86,7 +86,7 @@ spec:
               - key: opentelemetry.properties
                 path: opentelemetry.properties
               - key: logging.properties
-                path: logging.properties  
+                path: logging.properties
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
