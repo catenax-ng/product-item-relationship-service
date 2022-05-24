@@ -37,12 +37,6 @@ spec:
             - name: default
               containerPort: {{ .Values.backend.endpoint.default.port }}
               protocol: TCP
-            - name: public
-              containerPort: {{ .Values.backend.endpoint.public.port }}
-              protocol: TCP  
-            - name: control
-              containerPort: 5010
-              protocol: TCP
             - name: metrics
               containerPort: 8090
               protocol: TCP                

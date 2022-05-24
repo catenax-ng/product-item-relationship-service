@@ -44,21 +44,19 @@ ingress:
   enabled: true
   className: "nginx"
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: HTTP
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
   hosts:
     - host: "irs-submodel-server.dev.demo.catena-x.net"
       paths:
-        - pathType: ImplementationSpecific
-          backend:
-            service:
-              name: aaswrapper
-              port:
-                number: 8080
-  tls: [ ]
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - "irs-submodel-server.dev.demo.catena-x.net"
+      # Default secret for certificate creation already provided to your namespace
+      secretName: tls-secret
 
 # Following Catena-X Helm Best Practices @url: https://catenax-ng.github.io/docs/kubernetes-basics/helm
 # @url: https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-resource-requests-and-limits
@@ -113,11 +111,7 @@ backend:
   endpoint:
     default: 
       port: 8080
-      path: /api
-      ingress: false
-    public: 
-      port: 8194
-      path: /api/data
-      ingres: true        
+      path: /
+      ingress: true
 
 
