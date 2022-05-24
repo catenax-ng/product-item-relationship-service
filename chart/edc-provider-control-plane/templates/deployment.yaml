@@ -37,7 +37,7 @@ spec:
             - name: EDC_FS_CONFIG
               value: /app/configuration.properties
             - name: EDC_VAULT
-              value: /config/vault.properties
+              value: /app/vault.properties
             - name: EDC_KEYSTORE
               value: /cert.pfx
             - name: EDC_KEYSTORE_PASSWORD
