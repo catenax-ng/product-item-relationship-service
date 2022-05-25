@@ -48,9 +48,6 @@ spec:
             - name: public
               containerPort: {{ .Values.edc.endpoints.public.port }}
               protocol: TCP
-            - name: control
-              containerPort: {{ .Values.edc.endpoints.control.port }}
-              protocol: TCP
             - name: metrics
               containerPort: {{ .Values.edc.endpoints.metrics.port }}
               protocol: TCP

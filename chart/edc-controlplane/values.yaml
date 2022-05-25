@@ -60,21 +60,35 @@ startupProbe:
 edc:
   endpoints:
     # Default api exposing health checks etc
-    api:
+    default:
       port: "9191"
       path: /api
+      ingress: false
+    # Data management API
+    data:
+      port: "9193"
+      path: /data
       ingress: true
     # Validation API
     validation:
       port: "9192"
       path: /validation
       ingress: false
-    # JDB
-    jdb:
-      port: "8090"
+    # Control API
+    control:
+      port: "9999"
       path: /api/controlplane/control
+      ingress: true
+    # IDS endpoints
+    ids:
+      port: "8282"
+      path: /api/v1/ids
+      ingress: true
+    # Prometheus endpoint
+    metrics:
+      port: "8090"
+      path: /metrics
       ingress: false
-
 ##
 ## Service to expose the running application on a set of Pods as a network service.
 ##
@@ -153,8 +167,8 @@ opentelemetry:
 ##
 configuration:
   properties: |-
-    edc.ids.id=urn:connector:provider-control-plane
-    ids.webhook.address=http://edc-provider-control-plane:8282
+    edc.ids.id=urn:connector:consumer-control-plane
+    ids.webhook.address=http://edc-consumer-controlplane:8282
     
     web.http.port=9191
     web.http.path=/api
@@ -168,10 +182,12 @@ configuration:
     web.http.ids.port=8282
     web.http.ids.path=/api/v1/ids
     
-    edc.receiver.http.endpoint=http://edc-provider-control-plane:9191/api/service/pull
+    edc.api.control.auth.apikey.value=123456
+    
+    edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
     
     edc.security.private-key.alias=1
     edc.public.key.alias=public-key
     
     edc.transfer.dataplane.token.signer.privatekey.alias=1
-    edc.transfer.dataplane.sync.endpoint=http://edc-provider-data-plane:9192/public
+    edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane:9192/public
