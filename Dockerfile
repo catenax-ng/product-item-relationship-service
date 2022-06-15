@@ -34,3 +34,6 @@ COPY --chown=${UID}:${GID} --from=maven /build/irs-api/target/irs-api-*-exec.jar
 USER ${UID}:${GID}
 
 ENTRYPOINT ["java", "-Djava.util.logging.config.file=./logging.properties", "-jar", "app.jar"]
+
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -f http://localhost:4004/actuator/health || exit 1
