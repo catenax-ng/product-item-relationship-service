@@ -37,9 +37,8 @@ jobs:
           output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
           download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
           log_level: DEBUG # optional: set log level. Default WARNING
-          skip-path: chart/aasregistry, chart/edc-controlplane, chart/edc-dataplane, chart/edc-provider-data-plane, chart/edc-provider-control-plane, chart/submodelservers, chart/submodelserver2, chart/submodelserver3, chart/submodelserver4
-          skip-check: CKV_K8S_21
-          # config_file: path/this_file
+          skip_check: CKV_K8S_21
+          config_file: ci/.checkov.yaml
           # baseline: cloudformation/.checkov.baseline # optional: Path to a generated baseline file. Will only report results not in the baseline.
 
       - name: Upload Checkov scan results to GitHub Security tab

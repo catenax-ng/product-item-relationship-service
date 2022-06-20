@@ -1,0 +1,10 @@
+skip-path:
+  - chart/aasregistry
+  - chart/edc-controlplane
+  - chart/edc-dataplane
+  - chart/edc-provider-data-plane
+  - chart/edc-provider-control-plane
+  - chart/submodelservers
+  - chart/submodelserver2
+  - chart/submodelserver3
+  - chart/submodelserver4
