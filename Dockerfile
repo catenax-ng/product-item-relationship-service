@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn -B clean package -pl :$BUILD_TARGET 
 # Copy the jar and build image
 FROM eclipse-temurin:18-jre AS irs-api
 
-ARG UID=1000
+ARG UID=10000
 ARG GID=1000
 
 WORKDIR /app
