@@ -7,6 +7,8 @@
 # Note: If horizontal pod autoscaling is enabled this setting has no effect
 replicaCount: 1
 
+namespace: product-traceability-irs
+
 image:
   # -- Which edc-dataplane container image to use
   repository: ghcr.io/catenax-ng/product-edc/edc-dataplane

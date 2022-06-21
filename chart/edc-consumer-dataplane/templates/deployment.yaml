@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "edc-dataplane.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "edc-dataplane.labels" . | nindent 4 }}
 spec:
