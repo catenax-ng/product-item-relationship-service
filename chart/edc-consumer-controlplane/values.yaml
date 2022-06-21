@@ -27,9 +27,10 @@ image:
 imagePullSecret:
   dockerconfigjson: ""
 
-##
-## Existing image pull secret to use to obtain the container image
-##
+ingress:
+  enabled: false
+
+# -- Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
 imagePullSecrets: []
 
 nameOverride: "edc-consumer-controlplane"

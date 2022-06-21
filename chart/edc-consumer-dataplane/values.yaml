@@ -103,27 +103,8 @@ service:
   type: ClusterIP
   port: 8185
 
-## Ingress declaration to expose the network service.
-ingresses:
-  ## Public / Internet facing Ingress
-  - enabled: true
-    # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "irs-consumer-dataplane.int.demo.catena-x.net"
-    # -- Additional ingress annotations to add
-    annotations: {}
-    # -- EDC endpoints exposed by this ingress resource
-    endpoints:
-      - public
-    # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
-    className: ""
-    # -- Enables TLS on the ingress resource
-    tls: false
-    ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
-    certManager:
-      # -- If preset enables certificate generation via cert-manager namespace scoped issuer
-      issuer: ""
-      # -- If preset enables certificate generation via cert-manager cluster-wide issuer
-      clusterIssuer: ""
+ingress:
+  enabled: false
 
 # -- [Resource management](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) applied to the deployed pod
 resources:
