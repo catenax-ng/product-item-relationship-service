@@ -83,9 +83,9 @@ public class AASTransferProcessManager implements TransferProcessManager<ItemDat
 
             final ItemContainer.ItemContainerBuilder itemContainerBuilder = ItemContainer.builder();
 
-            log.info("Calling Digital Twin Registry with itemId {}", itemId);
+            log.info("Starting processing Digital Twin Registry with itemId {}", itemId);
             try {
-                final AssetAdministrationShellDescriptor aasShell = registryFacade.getAASShellDescriptor(itemId,
+                final AssetAdministrationShellDescriptor aasShell = registryFacade.getAAShellDescriptor(itemId,
                         jobData);
                 final List<SubmodelDescriptor> aasSubmodelDescriptors = aasShell.getSubmodelDescriptors();
 
@@ -95,7 +95,7 @@ public class AASTransferProcessManager implements TransferProcessManager<ItemDat
                     try {
                         final AssemblyPartRelationshipDTO submodel = submodelFacade.getSubmodel(address, jobData);
                         processEndpoint(aasTransferProcess, itemContainerBuilder, submodel);
-                    } catch (RestClientException e) {
+                    } catch (RestClientException | IllegalArgumentException e) {
                         log.info("Submodel Endpoint could not be retrieved for Endpoint: {}. Creating Tombstone.",
                                 address);
                         itemContainerBuilder.tombstone(createTombstone(itemId, address, e));

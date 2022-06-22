@@ -25,8 +25,6 @@ import net.catenax.irs.aaswrapper.job.AASTransferProcess;
 import net.catenax.irs.aaswrapper.job.ItemContainer;
 import net.catenax.irs.aaswrapper.job.ItemDataRequest;
 import net.catenax.irs.annotations.ExcludeFromCodeCoverageGeneratedReport;
-import net.catenax.irs.component.ChildItem;
-import net.catenax.irs.component.GlobalAssetIdentification;
 import net.catenax.irs.component.Job;
 import net.catenax.irs.component.JobHandle;
 import net.catenax.irs.component.Jobs;
@@ -45,7 +43,7 @@ import net.catenax.irs.connector.job.ResponseStatus;
 import net.catenax.irs.connector.job.TransferProcess;
 import net.catenax.irs.dto.AssemblyPartRelationshipDTO;
 import net.catenax.irs.dto.JobParameter;
-import net.catenax.irs.dto.JobStatusResult;
+import net.catenax.irs.component.JobStatusResult;
 import net.catenax.irs.exceptions.EntityNotFoundException;
 import net.catenax.irs.persistence.BlobPersistence;
 import net.catenax.irs.persistence.BlobPersistenceException;
@@ -96,7 +94,6 @@ public class IrsItemGraphQueryService implements IIrsItemGraphQueryService {
         final String lifecycle = bomLifecycleFormRequest.map(BomLifecycle::getLifecycleContextCharacteristicValue)
                                                         .orElse(null);
 
-        log.info("Default Aspect: {}", defaultAspect);
         final Optional<List<AspectType>> aspectTypes = Optional.ofNullable(request.getAspects());
         final List<String> aspectTypeValues = aspectTypes.map(types -> types.stream()
                                                                       .map(AspectType::toString)
@@ -240,19 +237,7 @@ public class IrsItemGraphQueryService implements IIrsItemGraphQueryService {
     private Stream<Relationship> convert(final AssemblyPartRelationshipDTO dto) {
         return dto.getChildParts()
                   .stream()
-                  .map(child -> Relationship.builder()
-                                            .catenaXId(GlobalAssetIdentification.builder()
-                                                                                .globalAssetId(dto.getCatenaXId())
-                                                                                .build())
-                                            .childItem(ChildItem.builder()
-                                                                .childCatenaXId(GlobalAssetIdentification.builder()
-                                                                                                         .globalAssetId(
-                                                                                                                 child.getChildCatenaXId())
-                                                                                                         .build())
-                                                                .lifecycleContext(
-                                                                        BomLifecycle.fromLifecycleContextCharacteristic(
-                                                                                child.getLifecycleContext()))
-                                                                .build())
-                                            .build());
+                  .map(child -> child.toRelationship(dto.getCatenaXId()));
     }
+
 }
