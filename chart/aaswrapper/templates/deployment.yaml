@@ -56,7 +56,9 @@ spec:
             {{- end }}
           volumeMounts:
             - name: aaswrapper-config
-              mountPath: /connector-config            
+              mountPath: /connector-config
+            - name: tmp
+              mountPath: /tmp
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -66,6 +68,8 @@ spec:
             items:
               - key: configuration.properties
                 path: configuration.properties
+        - name: tmp
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

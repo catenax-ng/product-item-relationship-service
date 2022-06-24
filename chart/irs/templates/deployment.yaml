@@ -39,7 +39,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: tmp
-              mountPath: {{ .Values.mountPath }}
+              mountPath: /tmp
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.springprofile }}
