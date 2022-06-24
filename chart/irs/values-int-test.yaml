@@ -3,6 +3,8 @@ springprofile: int
 image:
   tag: $ARGOCD_APP_REVISION
 
+mountPath: "/temp"
+
 ingress:
   hosts:
     - host: "irs-test.int.demo.catena-x.net"

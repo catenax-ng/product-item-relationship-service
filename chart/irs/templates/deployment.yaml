@@ -37,6 +37,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: temp
+              mountPath: { { .Values.mountPath } }
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.springprofile }}
@@ -96,6 +99,9 @@ spec:
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: temp
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
