@@ -25,7 +25,7 @@ imagePullSecret:
   dockerconfigjson: ""
 
 ingress:
-  enabled: false
+  enabled: true
 
 # -- Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
 imagePullSecrets: []
@@ -61,15 +61,15 @@ securityContext:
 
 livenessProbe:
   # -- Whether to enable kubernetes [liveness-probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
-  enabled: true
+  enabled: false
 
 readinessProbe:
   # -- Whether to enable kubernetes readiness-probes
-  enabled: true
+  enabled: false
 
 startupProbe:
   # -- Whether to enable kubernetes startup-probes
-  enabled: true
+  enabled: false
 
 ## EDC endpoints exposed by the control-plane
 edc:
