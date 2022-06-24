@@ -80,6 +80,7 @@ edc:
       port: "8080"
       # -- The path mapping the "default" api is going to be exposed at
       path: /api
+      ingress: false
     ## Data management API
     data:
       # -- The network port, which the "data" management api is going to be exposed by the container, pod and service
