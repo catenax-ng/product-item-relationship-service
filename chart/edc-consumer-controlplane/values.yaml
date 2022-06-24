@@ -24,9 +24,6 @@ imagePullSecret:
   # Furthermore, if 'imagePullSecret.dockerconfigjson' is defined, it takes precedence over 'imagePullSecrets'.
   dockerconfigjson: ""
 
-ingress:
-  enabled: true
-
 # -- Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
 imagePullSecrets: []
 
