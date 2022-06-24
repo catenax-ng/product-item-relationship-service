@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     {{- include "k8s-helm-example.labels" . | nindent 4 }}
+  annotations:
+    checkov.io/skip1: CKV_K8S_35=Secrets are handled by vault and need to be passed as environment variables
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
