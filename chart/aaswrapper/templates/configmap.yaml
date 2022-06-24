@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aaswrapper-config
+  name: {{ include "aaswrapper.fullname" . }}-config
   namespace: {{ .Values.namespace }}
 data:
   configuration.properties: |-

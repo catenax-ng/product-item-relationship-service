@@ -5,6 +5,9 @@ image:
   repository: ghcr.io/catenax-ng/catenax-at-home/consumer-api-wrapper
   tag: "0.0.4"
 
+nameOverride: "aaswrapper-test"
+fullnameOverride: "aaswrapper-test"
+
 ingress:
   enabled: true
   className: "nginx"
