@@ -61,15 +61,15 @@ securityContext:
 
 livenessProbe:
   # -- Whether to enable kubernetes [liveness-probe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
-  enabled: false
+  enabled: true
 
 readinessProbe:
   # -- Whether to enable kubernetes readiness-probes
-  enabled: false
+  enabled: true
 
 startupProbe:
   # -- Whether to enable kubernetes startup-probes
-  enabled: false
+  enabled: true
 
 ## EDC endpoints exposed by the control-plane
 edc:
