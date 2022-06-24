@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.catenax.irs.IrsApplication;
-import net.catenax.irs.annotations.ExcludeFromCodeCoverageGeneratedReport;
 import net.catenax.irs.component.Job;
 import net.catenax.irs.component.JobHandle;
 import net.catenax.irs.component.Jobs;
@@ -59,7 +58,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(IrsApplication.API_PREFIX)
 @RequiredArgsConstructor
-@ExcludeFromCodeCoverageGeneratedReport
 @SuppressWarnings({ "PMD.AvoidDuplicateLiterals",
                     "PMD.ExcessiveImports"
 })

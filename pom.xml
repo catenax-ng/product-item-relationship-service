@@ -156,6 +156,9 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*Application.class</exclude>
+                        <exclude>**/*EntityNotFoundException.class</exclude>
+                        <exclude>**/*IrsApiConstants.class</exclude>
+                        <exclude>**/*ApiErrorsConstants.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -280,6 +283,7 @@
                         <version>${owasp-plugin.version}</version>
                         <configuration>
                             <skip>false</skip>
+                            <suppressionFile>ci/owasp-suppressions.xml</suppressionFile>
                         </configuration>
                     </plugin>
                 </plugins>
