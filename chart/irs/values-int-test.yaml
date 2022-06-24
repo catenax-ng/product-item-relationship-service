@@ -3,7 +3,7 @@ springprofile: int
 image:
   tag: $ARGOCD_APP_REVISION
 
-mountPath: "/temp"
+mountPath: "/tmp"
 
 ingress:
   hosts:
