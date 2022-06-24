@@ -13,8 +13,6 @@ image:
   tag: "0.0.1"
 
 imagePullSecrets: []
-nameOverride: "aaswrapper"
-fullnameOverride: "aaswrapper"
 
 ingress:
   enabled: false

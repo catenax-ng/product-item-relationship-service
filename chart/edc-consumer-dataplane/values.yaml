@@ -26,12 +26,6 @@ imagePullSecret:
 # -- Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
 imagePullSecrets: []
 
-# -- Overrides the charts name
-nameOverride: "edc-consumer-dataplane"
-
-# -- Overrides the releases full name
-fullnameOverride: "edc-consumer-dataplane"
-
 serviceAccount:
   # -- Specifies whether a [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) should be created per release
   create: true

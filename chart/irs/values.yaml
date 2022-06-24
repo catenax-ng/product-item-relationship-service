@@ -13,8 +13,6 @@ image:
   tag: "main"
 
 imagePullSecrets: [ ]
-nameOverride: "irs"
-fullnameOverride: "irs"
 
 podAnnotations: { }
 
