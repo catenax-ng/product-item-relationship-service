@@ -12,5 +12,7 @@ Detailed pattern can be found here: [commit-msg](dev/commit-msg)
 ### How can I contribute
 
 ### Style guides
+Generally, the IRS application follows the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+
 
 ### Found a bug what shall I do?
