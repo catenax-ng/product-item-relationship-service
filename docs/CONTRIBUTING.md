@@ -6,3 +6,11 @@ Example:
 chore(api):[TRI-123] some text
 
 Detailed pattern can be found here: [commit-msg](dev/commit-msg)
+
+### Code of Conduct
+
+### How can I contribute
+
+### Style guides
+
+### Found a bug what shall I do?
