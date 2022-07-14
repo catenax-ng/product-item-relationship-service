@@ -45,7 +45,7 @@ configuration:
     edc.oauth.public.key.alias=irs-int-daps-cert
     edc.oauth.token.url=https://daps.int.demo.catena-x.net/token
     
-    edc.receiver.http.endpoint=http://edc-provider-controlplane:9191/api/service/pull
+    edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
     
     edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.dev.demo.catena-x.net/api/public
     edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
@@ -55,3 +55,5 @@ configuration:
     edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#vaultClientSecret>
     edc.vault.name=cxtsi-dev001-vault
     edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
+    
+    edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane:9192/public
