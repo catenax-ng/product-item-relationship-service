@@ -31,8 +31,8 @@ configuration:
     web.http.path=/api
     web.http.callback.port=9192
     web.http.callback.path=/callback
-    wrapper.consumer.edc.datamanagement.url=http://edc-consumer-controlplane-new:9193/data
-    wrapper.consumer.edc.control.url=http://edc-consumer-controlplane-new:9191/api
+    wrapper.consumer.edc.datamanagement.url=http://edc-consumer-controlplane-new:8181/data
+    wrapper.consumer.edc.control.url=http://edc-consumer-controlplane-new:9999/api/controlplane/control
     wrapper.consumer.edc.apikey.name=X-Api-Key
     wrapper.consumer.edc.apikey.value=123456
     wrapper.callback.timeout=60
