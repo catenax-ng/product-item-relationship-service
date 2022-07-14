@@ -32,7 +32,7 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    edc.controlplane.validation-endpoint=http://edc-consumer-controlplane:8182/validation/token
+    edc.controlplane.validation-endpoint=http://edc-consumer-controlplane-new:8182/validation/token
     
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback
     
@@ -44,6 +44,6 @@ configuration:
     edc.oauth.token.url=https://daps.int.demo.catena-x.net/token
     
     edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#vaultClientSecret>
+    edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
     edc.vault.name=cxtsi-dev001-vault
     edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6

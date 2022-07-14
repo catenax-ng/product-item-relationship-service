@@ -56,4 +56,4 @@ configuration:
     edc.vault.name=cxtsi-dev001-vault
     edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
     
-    edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane:9192/public
+    edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane-new:9192/public
