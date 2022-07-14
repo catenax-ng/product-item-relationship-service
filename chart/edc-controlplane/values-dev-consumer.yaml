@@ -52,7 +52,7 @@ configuration:
     edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
     
     edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#vaultClientSecret>
+    edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
     edc.vault.name=cxtsi-dev001-vault
     edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
     
