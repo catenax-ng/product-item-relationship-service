@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "edc-controlplane.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "edc-controlplane.labels" . | nindent 4 }}
 spec:
@@ -23,11 +24,18 @@ spec:
       labels:
         {{- include "edc-controlplane.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.imagePullSecret.dockerconfigjson }}
+      imagePullSecrets:
+        - name: {{ include "edc-controlplane.fullname" . }}-imagepullsecret
+      {{- else }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- end }}
       serviceAccountName: {{ include "edc-controlplane.serviceAccountName" . }}
+      # @url: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server
+      automountServiceAccountToken: false
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -56,17 +64,14 @@ spec:
               containerPort: {{ .Values.edc.endpoints.metrics.port }}
               protocol: TCP
           env:
+            - name: EDC_FS_CONFIG
+              value: /app/configuration.properties
             - name: EDC_VAULT
-              value: /connector-config/vault.properties
+              value: /app/vault.properties
             - name: EDC_KEYSTORE
-              value: /connector-config/cert.pfx
+              value: /cert.pfx
             - name: EDC_KEYSTORE_PASSWORD
               value: "123456"
-            - name: EDC_FS_CONFIG
-              value: /connector-config/configuration.properties
-          volumeMounts:
-            - name: consumer-control-plane-config
-              mountPath: /connector-config
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
@@ -92,10 +97,41 @@ spec:
                 name: {{ include "edc-controlplane.fullname" . }}-env
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: configuration
+              mountPath: /app/configuration.properties
+              subPath: configuration.properties
+            - name: configuration
+              mountPath: /app/opentelemetry.properties
+              subPath: opentelemetry.properties
+            - name: configuration
+              mountPath: /app/logging.properties
+              subPath: logging.properties
+            - name: tmp
+              mountPath: /tmp
+            - name: configuration
+              mountPath: /app/vault.properties
+              subPath: vault.properties
+            - name: configuration
+              mountPath: /cert.pfx
+              subPath: cert.pfx
       volumes:
-        - name: consumer-control-plane-config
+        - name: configuration
           configMap:
-            name: edc-consumer-controlplane-configmap
+            name: {{ include "edc-controlplane.fullname" . }}-configmap
+            items:
+              - key: configuration.properties
+                path: configuration.properties
+              - key: opentelemetry.properties
+                path: opentelemetry.properties
+              - key: logging.properties
+                path: logging.properties
+              - key: vault.properties
+                path: vault.properties
+              - key: cert.pfx
+                path: cert.pfx
+        - name: tmp
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
