@@ -28,6 +28,7 @@ import net.catenax.irs.component.enums.BomLifecycle;
 import net.catenax.irs.component.enums.Direction;
 import net.catenax.irs.component.enums.JobState;
 import net.catenax.irs.dto.JobParameter;
+import net.catenax.irs.services.MeterRegistryService;
 import net.catenax.irs.services.SecurityHelperService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -68,6 +69,8 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
      */
     private final SecurityHelperService securityHelperService;
 
+    private final MeterRegistryService meterRegistryService;
+
     /**
      * Create a new instance of {@link JobOrchestrator}.
      *
@@ -76,12 +79,13 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
      * @param handler        Recursive job handler.
      */
     public JobOrchestrator(final TransferProcessManager<T, P> processManager, final JobStore jobStore,
-            final RecursiveJobHandler<T, P> handler) {
+            final RecursiveJobHandler<T, P> handler, MeterRegistryService meterRegistryService) {
 
         this.processManager = processManager;
         this.jobStore = jobStore;
         this.handler = handler;
         this.securityHelperService = new SecurityHelperService();
+        this.meterRegistryService = meterRegistryService;
     }
 
     /**
@@ -92,7 +96,11 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
      */
     public JobInitiateResponse startJob(final JobParameter jobData) {
         final Job job = createJob(jobData.getRootItemId(), jobData);
-        final var multiJob = MultiTransferJob.builder().job(job).jobParameter(jobData).build();
+        final var multiJob = MultiTransferJob.builder()
+                                             .job(job)
+                                             .jobParameter(jobData)
+                                             .meterRegistryService(meterRegistryService)
+                                             .build();
         jobStore.create(multiJob);
 
         final Stream<T> requests;
@@ -180,11 +188,13 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
     @Scheduled(cron = "${irs.job.cleanup.scheduler.failed}")
     public void findAndCleanupFailedJobs() {
         log.info("Running cleanup of failed jobs");
+
         final ZonedDateTime currentDateMinusSeconds = ZonedDateTime.now(ZoneOffset.UTC)
                                                                    .minus(TTL_CLEANUP_FAILED_JOBS_HOURS,
                                                                            ChronoUnit.HOURS);
         final List<MultiTransferJob> failedJobs = jobStore.findByStateAndCompletionDateOlderThan(JobState.ERROR,
                 currentDateMinusSeconds);
+
         final List<MultiTransferJob> multiTransferJobs = deleteJobs(failedJobs);
         log.info("Deleted {} failed jobs", multiTransferJobs.size());
     }
