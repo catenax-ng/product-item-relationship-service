@@ -102,6 +102,8 @@ spec:
                 name: {{ $fullName }}
                 key: {{ $key }}
           {{- end}}
+          - name: OMEJDN_PLUGINS
+            value: /opt/plugins.yml
           ports:
             - name: http
               containerPort: 4567
@@ -140,7 +142,15 @@ spec:
           - mountPath: /opt/keys
             name: config
             subPath: keys
-            readOnly: false  
+            readOnly: false
+          - mountPath: /opt/plugins.yml
+            name: plugins-config
+            subPath: plugins.yml
+            readOnly: false
+          - mountPath: /opt/scope_mapping.yml
+            name: scope-mapping-config
+            subPath: scope_mapping.yml
+            readOnly: false
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -178,3 +188,15 @@ spec:
           items:
           - key: clients.yml
             path: clients.yml
+      - name: plugins-config
+        configMap:
+          name: {{ include "omejdn-server.fullname" . }}
+          items:
+          - key: plugins.yml
+            path: plugins.yml
+      - name: scope-mapping-config
+        configMap:
+          name: {{ include "omejdn-server.fullname" . }}
+          items:
+            - key: scope_mapping.yml
+              path: scope_mapping.yml
