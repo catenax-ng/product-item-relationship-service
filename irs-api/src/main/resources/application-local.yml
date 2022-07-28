@@ -12,19 +12,8 @@ irs:
         failed: 0 * * * * *
 
 spring:
-  application:
-    name: item-relationship-service
   security:
     oauth2:
-      client:
-        registration:
-          keycloak:
-            authorization-grant-type: client_credentials
-            client-id: sa-cl6-cx-9
-            client-secret: yeuF9syHZdgc247I517ydjYQw5fD8PJh
-        provider:
-          keycloak:
-            token-uri: https://centralidp.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/token
       resourceserver:
         jwt:
           jwk-set-uri: https://centralidp.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
