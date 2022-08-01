@@ -71,7 +71,7 @@ data:
         - key: omejdn
           value: admin
       client_secret: secret
-      token_endpoint_auth_method: client_secret_post
+      token_endpoint_auth_method: none
       scope:
         - omejdn:admin
       grant_types:
