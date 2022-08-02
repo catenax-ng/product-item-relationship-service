@@ -11,7 +11,7 @@ image:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image tag. Overrides the image tag whose default is the chart appVersion.
-  tag: "1.4.2"
+  tag: "1.7.1"
 
 # -- Secret which contains dockerconfig.json from private container registry with daps image
 imagePullSecrets: []
