@@ -65,13 +65,13 @@ data:
   {{- if .Values.omejdn.createDefaultAdmin }}
   clients.yml: |-
     ---
-    - client_id: example
+    - client_id: admin
       name: omejdn admin client
       attributes:
         - key: omejdn
           value: admin
-      client_secret: secret
-      token_endpoint_auth_method: none
+      client_secret: admin
+      token_endpoint_auth_method: client_secret_post
       scope:
         - omejdn:admin
       grant_types:
@@ -79,18 +79,18 @@ data:
   {{- end }}
 
 
-  plugins.yml: |-
-    ---
-    - plugins:
-        admin_api:
-        token_user_attributes:
-          skip_access_token: false
-          skip_id_token: false
-
-  scope_mapping.yml: |-
-    ---
-    idsc:IDS_CONNECTOR_ATTRIBUTES_ALL:
-    - "@type"
-    - "@context"
-    - "securityProfile"
-    - "referringConnector"
+#  plugins.yml: |-
+#    ---
+#    - plugins:
+#        admin_api:
+#        token_user_attributes:
+#          skip_access_token: false
+#          skip_id_token: false
+#
+#  scope_mapping.yml: |-
+#    ---
+#    idsc:IDS_CONNECTOR_ATTRIBUTES_ALL:
+#    - "@type"
+#    - "@context"
+#    - "securityProfile"
+#    - "referringConnector"
