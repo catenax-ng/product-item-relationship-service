@@ -24,6 +24,8 @@ registry:
   image: ghcr.io/catenax-ng/registry:0.0.1-M1
   replicaCount: 1
   imagePullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: dockerpullsecret
   containerPort: 4242
   host: aas-irs.dev.demo.catena-x.net
   ## If 'authentication' is set to false, no OAuth authentication is enforced
@@ -67,6 +69,6 @@ postgresql:
     ports:
       postgresql: 5432
   auth:
-    username: catenax
-    password: TFLIykCd4rUvSjbs
+    username: <path:traceability-irs/data/dev/aasregistry#username>
+    password: <path:traceability-irs/data/dev/aasregistry#password>
     database: registry
