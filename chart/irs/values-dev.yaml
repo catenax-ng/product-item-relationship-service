@@ -21,4 +21,4 @@ rootUser: <path:traceability-irs/data/dev/minio#minioUser>
 rootPassword: <path:traceability-irs/data/dev/minio#minioPassword>
 
 digitalTwinRegistry:
-  url: https://irs-aas-registry.dev.demo.catena-x.net
+  url: https://aas-irs.dev.demo.catena-x.net/semantics/registry
