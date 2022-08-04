@@ -26,7 +26,7 @@ registry:
   imagePullPolicy: IfNotPresent
   imagePullSecrets:
     - name: dockerpullsecret
-  containerPort: 4242
+  containerPort: 4243
   host: aas-irs.dev.demo.catena-x.net
   ## If 'authentication' is set to false, no OAuth authentication is enforced
   authentication: true
@@ -44,14 +44,11 @@ registry:
     password: password
   ingress:
     enabled: true
-    tls:
-      - hosts:
-          - "aas-irs.dev.demo.catena-x.net"
-        # Default secret for certificate creation already provided to your namespace
-        secretName: tls-secret
+    tls: true
     urlPrefix: /semantics/registry
     className: nginx
     annotations:
+      cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
       nginx.ingress.kubernetes.io/rewrite-target: /$2
       nginx.ingress.kubernetes.io/use-regex: "true"
       nginx.ingress.kubernetes.io/enable-cors: "true"
