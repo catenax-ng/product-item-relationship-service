@@ -101,7 +101,7 @@ public class PersistentJobStore extends BaseJobStore {
         return JOB_PREFIX + jobId;
     }
 
-    private Boolean isLastStateSameAsCurrentState(final String jobId, final JobState state) {
+    private boolean isLastStateSameAsCurrentState(final String jobId, final JobState state) {
         final Optional<MultiTransferJob> optJob = get(jobId);
         return optJob.isPresent() && optJob.get().getJob().getJobState() == state;
     }
