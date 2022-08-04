@@ -21,6 +21,7 @@
 
 {{- $deployment_name := printf "cx-%s-registry" .Release.Name }}
 {{- $svc_name := printf "%s-svc" $deployment_name }}
+{{- $svcPort := .Values.registry.service.port -}}
 {{- $ingr_name := printf "%s-ingr" $deployment_name }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -43,14 +44,20 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.registry.host }}
+    {{- range .Values.registry.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          - path: {{printf "%s(/|$)(.*)" .Values.registry.ingress.urlPrefix }}
-            pathType: Prefix
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
             backend:
               service:
                 name: {{ $svc_name }}
                 port:
-                  number: {{ .Values.registry.service.port }}
+                  number: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
 {{- end}}
