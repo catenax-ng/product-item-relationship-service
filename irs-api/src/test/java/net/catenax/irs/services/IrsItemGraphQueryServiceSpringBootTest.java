@@ -6,8 +6,9 @@ import static net.catenax.irs.util.TestMother.registerJobWithoutDepth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,11 +25,14 @@ import net.catenax.irs.component.enums.JobState;
 import net.catenax.irs.connector.job.JobStore;
 import net.catenax.irs.connector.job.MultiTransferJob;
 import net.catenax.irs.exceptions.EntityNotFoundException;
-import net.catenax.irs.testing.containers.MinioContainer;
+import net.catenax.irs.services.validation.InvalidSchemaException;
+import net.catenax.irs.services.validation.JsonValidatorService;
+import net.catenax.irs.services.validation.ValidationResult;
 import net.catenax.irs.util.JobMetrics;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -40,10 +44,6 @@ import org.springframework.test.context.ActiveProfiles;
 class IrsItemGraphQueryServiceSpringBootTest {
 
     private final UUID jobId = UUID.randomUUID();
-    private static final String ACCESS_KEY = "accessKey";
-    private static final String SECRET_KEY = "secretKey";
-    private static final MinioContainer minioContainer = new MinioContainer(
-            new MinioContainer.CredentialsProvider(ACCESS_KEY, SECRET_KEY)).withReuse(true);
 
     @Autowired
     private JobStore jobStore;
@@ -54,8 +54,11 @@ class IrsItemGraphQueryServiceSpringBootTest {
     @Autowired
     private MeterRegistryService meterRegistryService;
 
+    @MockBean
+    private JsonValidatorService jsonValidatorService;
+
     @Test
-    void registerItemJobWithoutDepthShouldBuildFullTree() {
+    void registerJobWithoutDepthShouldBuildFullTree() {
         // given
         final RegisterJob registerJob = registerJobWithoutDepth();
         final int expectedRelationshipsSizeFullTree = 6; // stub
@@ -71,8 +74,9 @@ class IrsItemGraphQueryServiceSpringBootTest {
     }
 
     @Test
-    void registerItemJobWithCollectAspectsShouldIncludeSubmodels() {
+    void registerJobWithCollectAspectsShouldIncludeSubmodels() throws InvalidSchemaException {
         // given
+        when(jsonValidatorService.validate(any(), any())).thenReturn(ValidationResult.builder().valid(true).build());
         final RegisterJob registerJob = registerJobWithDepthAndAspectAndCollectAspects(3,
                 List.of(AspectType.ASSEMBLY_PART_RELATIONSHIP));
         final int expectedRelationshipsSizeFullTree = 5; // stub
@@ -88,7 +92,25 @@ class IrsItemGraphQueryServiceSpringBootTest {
     }
 
     @Test
-    void registerItemJobWithDepthShouldBuildTreeUntilGivenDepth() {
+    void registerJobShouldCreateTombstonesWhenNotPassingJsonSchemaValidation() throws InvalidSchemaException {
+        // given
+        when(jsonValidatorService.validate(any(), any())).thenReturn(ValidationResult.builder().valid(false).build());
+        final RegisterJob registerJob = registerJobWithDepthAndAspectAndCollectAspects(3,
+                List.of(AspectType.ASSEMBLY_PART_RELATIONSHIP));
+        final int expectedTombstonesSizeFullTree = 9; // stub
+
+        // when
+        final JobHandle registeredJob = service.registerItemJob(registerJob);
+
+        // then
+        given().ignoreException(EntityNotFoundException.class)
+               .await()
+               .atMost(10, TimeUnit.SECONDS)
+               .until(() -> getTombstonesSize(registeredJob.getJobId()), equalTo(expectedTombstonesSizeFullTree));
+    }
+
+    @Test
+    void registerJobWithDepthShouldBuildTreeUntilGivenDepth() {
         // given
         final RegisterJob registerJob = registerJobWithDepthAndAspect(0, null);
         final int expectedRelationshipsSizeFirstDepth = 3; // stub
@@ -131,7 +153,7 @@ class IrsItemGraphQueryServiceSpringBootTest {
         assertThat(state).isEqualTo(JobState.CANCELED);
 
         final ZonedDateTime lastModifiedOn = fetchedJob.get().getJob().getLastModifiedOn();
-        assertThat(lastModifiedOn).isNotNull().isBefore(ZonedDateTime.now(ZoneOffset.UTC));
+        assertThat(lastModifiedOn).isNotNull().isBefore(ZonedDateTime.now());
     }
 
     @Test
@@ -166,9 +188,9 @@ class IrsItemGraphQueryServiceSpringBootTest {
         meterRegistryService.incrementJobSuccessful();
         meterRegistryService.incrementJobCancelled();
         meterRegistryService.incrementJobsProcessed();
-        meterRegistryService.incrementNumberOfJobsInJobStore();
-        meterRegistryService.incrementNumberOfJobsInJobStore();
-        meterRegistryService.incrementNumberOfJobsInJobStore();
+        meterRegistryService.setNumberOfJobsInJobStore(7L);
+        meterRegistryService.setNumberOfJobsInJobStore(12L);
+        meterRegistryService.setNumberOfJobsInJobStore(5L);
 
         JobMetrics metrics = meterRegistryService.getJobMetric();
 
@@ -177,11 +199,12 @@ class IrsItemGraphQueryServiceSpringBootTest {
         assertThat(metrics.getJobSuccessful().count()).isEqualTo(1.0);
         assertThat(metrics.getJobCancelled().count()).isEqualTo(1.0);
         assertThat(metrics.getJobProcessed().count()).isEqualTo(1.0);
-        assertThat(metrics.getJobInJobStore().value()).isEqualTo(3.0);
+        assertThat(metrics.getJobInJobStore().value()).isEqualTo(5.0);
 
-        meterRegistryService.decrementNumberOfJobsInJobStore();
-        assertThat(metrics.getJobInJobStore().value()).isEqualTo(2.0);
+    }
 
+    private int getTombstonesSize(final UUID jobId) {
+        return service.getJobForJobId(jobId, false).getTombstones().size();
     }
 
 }
