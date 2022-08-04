@@ -102,7 +102,6 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
         final Job job = createJob(jobData.getRootItemId(), jobData);
         final var multiJob = MultiTransferJob.builder().job(job).jobParameter(jobData).build();
         jobStore.create(multiJob);
-        meterService.incrementNumberOfJobsInJobStore();
 
         final Stream<T> requests;
         try {
@@ -174,6 +173,7 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
         callCompleteHandlerIfFinished(job.getJobIdString());
     }
 
+    @IrsTimer("cleancompletedjobs")
     @Scheduled(cron = "${irs.job.cleanup.scheduler.completed}")
     public void findAndCleanupCompletedJobs() {
         log.info("Running cleanup of completed jobs");
@@ -187,6 +187,7 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
         log.info("Deleted {} completed jobs", multiTransferJobs.size());
     }
 
+    @IrsTimer("cleanfailedjobs")
     @Scheduled(cron = "${irs.job.cleanup.scheduler.failed}")
     public void findAndCleanupFailedJobs() {
         log.info("Running cleanup of failed jobs");
@@ -211,7 +212,7 @@ public class JobOrchestrator<T extends DataRequest, P extends TransferProcess> {
     private Optional<MultiTransferJob> deleteJobsAndDecreaseJobsInJobStoreMetrics(final String jobId) {
         final Optional<MultiTransferJob> optJob = jobStore.deleteJob(jobId);
         if (optJob.isPresent()) {
-            meterService.decrementNumberOfJobsInJobStore();
+            meterService.setNumberOfJobsInJobStore(Long.valueOf(jobStore.findAll().size()));
         }
         return optJob;
     }
