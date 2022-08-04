@@ -29,7 +29,7 @@ registry:
   containerPort: 4243
   host: aas-irs.dev.demo.catena-x.net
   ## If 'authentication' is set to false, no OAuth authentication is enforced
-  authentication: true
+  authentication: false
   idpIssuerUri: https://centralidp.demo.catena-x.net/auth/realms/CX-Central
   service:
     port: 8080
