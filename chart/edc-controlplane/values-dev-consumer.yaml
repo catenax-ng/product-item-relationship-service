@@ -38,12 +38,12 @@ configuration:
     edc.ids.catalog.id=urn:catalog:default
     edc.ids.endpoint=https://irs-consumer-controlplane.dev.demo.catena-x.net/api/v1/ids
     
-    edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
-    edc.oauth.private.key.alias=irs-int-daps-key
+    edc.oauth.client.id=BC:46:85:7E:E1:1E:15:06:1F:89:7A:C6:53:88:C6:60:1C:6A:7C:8F:keyid:BC:46:85:7E:E1:1E:15:06:1F:89:7A:C6:53:88:C6:60:1C:6A:7C:8F
+    edc.oauth.private.key.alias=traceability-irs/data/dev/edc/irs-dev-daps-key-consumer
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
-    edc.oauth.provider.jwks.url=https://daps.int.demo.catena-x.net/.well-known/jwks.json
-    edc.oauth.public.key.alias=irs-int-daps-cert
-    edc.oauth.token.url=https://daps.int.demo.catena-x.net/token
+    edc.oauth.provider.jwks.url=https://daps-irs.dev.demo.catena-x.net/.well-known/jwks.json
+    edc.oauth.public.key.alias=traceability-irs/data/dev/edc/irs-dev-daps-cert-provider
+    edc.oauth.token.url=https://daps-irs.dev.demo.catena-x.net/token
     
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
     
@@ -51,9 +51,9 @@ configuration:
     edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
     edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
     
-    edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
-    edc.vault.name=cxtsi-dev001-vault
-    edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
+    # edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
+    # edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
+    # edc.vault.name=cxtsi-dev001-vault
+    # edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
     
     edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane-new:9192/public
