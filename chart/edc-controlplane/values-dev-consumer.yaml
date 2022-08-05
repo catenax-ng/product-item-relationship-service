@@ -45,6 +45,12 @@ configuration:
     edc.oauth.public.key.alias=traceability-irs/data/dev/edc/irs-dev-daps-cert-provider
     edc.oauth.token.url=https://daps-irs.dev.demo.catena-x.net/token
     
+    edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
+    edc.vault.hashicorp.token=<path:traceability-irs/data/dev/controlplane#vaultToken>
+    edc.vault.hashicorp.timeout.seconds=30
+    edc.vault.hashicorp.health.check.standby.ok=true
+    # edc.vault.hashicorp.api.secret.path=
+    
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
     
     edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.dev.demo.catena-x.net/api/public
@@ -57,3 +63,25 @@ configuration:
     # edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
     
     edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane-new:9192/public
+    
+    # Postgresql related configuration
+    edc.datasource.asset.name=asset
+    edc.datasource.asset.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_asset
+    edc.datasource.asset.user=user
+    edc.datasource.asset.password=pass
+    edc.datasource.contractdefinition.name=contractdefinition
+    edc.datasource.contractdefinition.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_contractdefinition
+    edc.datasource.contractdefinition.user=user
+    edc.datasource.contractdefinition.password=pass
+    edc.datasource.contractnegotiation.name=contractnegotiation
+    edc.datasource.contractnegotiation.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_contractnegotiation
+    edc.datasource.contractnegotiation.user=user
+    edc.datasource.contractnegotiation.password=pass
+    edc.datasource.policy.name=policy
+    edc.datasource.policy.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_policy
+    edc.datasource.policy.user=user
+    edc.datasource.policy.password=pass
+    edc.datasource.transferprocess.name=transferprocess
+    edc.datasource.transferprocess.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_transferprocess
+    edc.datasource.transferprocess.user=user
+    edc.datasource.transferprocess.password=pass
