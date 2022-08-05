@@ -64,7 +64,7 @@ metadata:
   labels:
     {{- include "omejdn-server.labels" . | nindent 4 }}
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /.well-known/jwks.json
+    nginx.ingress.kubernetes.io/rewrite-target: /jwks.json
     {{- if .Values.ingress.tls.certMgr.enabled }}
     cert-manager.io/issuer: {{ .Values.ingress.tls.certMgr.issuer }}
     {{- end }}

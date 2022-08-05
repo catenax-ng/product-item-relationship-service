@@ -101,11 +101,11 @@ env:
 # -- Pod resources requests and limits configuration
 resources:
   limits:
-    cpu: 400m
+    cpu: 600m
     memory: 600Mi
   requests:
-    cpu: 400m
-    memory: 600Mi
+    cpu: 200m
+    memory: 300Mi
 
 # -- DAPS autoscaling configuration
 autoscaling:
