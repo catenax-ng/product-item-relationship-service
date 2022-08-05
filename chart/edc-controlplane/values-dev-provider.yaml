@@ -39,14 +39,42 @@ configuration:
     edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
     edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
     
-    edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
-    edc.oauth.private.key.alias=irs-int-daps-key
+    edc.oauth.client.id=AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2:keyid:AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2
+    edc.oauth.private.key.alias=irs-dev-daps-key-provider
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
-    edc.oauth.provider.jwks.url=https://daps.int.demo.catena-x.net/.well-known/jwks.json
-    edc.oauth.public.key.alias=irs-int-daps-cert
-    edc.oauth.token.url=https://daps.int.demo.catena-x.net/token
+    edc.oauth.provider.jwks.url=https://daps-irs.dev.demo.catena-x.net/.well-known/jwks.json
+    edc.oauth.public.key.alias=irs-dev-daps-cert-provider
+    edc.oauth.token.url=https://daps-irs.dev.demo.catena-x.net/token
     
-    edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
-    edc.vault.name=cxtsi-dev001-vault
-    edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
+    edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
+    edc.vault.hashicorp.token=<path:traceability-irs/data/dev/controlplane#vaultToken>
+    edc.vault.hashicorp.timeout.seconds=30
+    edc.vault.hashicorp.health.check.standby.ok=true
+    edc.vault.hashicorp.api.secret.path=/v1/traceability-irs/dev/edc
+    
+    # edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
+    # edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
+    # edc.vault.name=cxtsi-dev001-vault
+    # edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
+
+    # Postgresql related configuration
+    edc.datasource.asset.name=asset
+    edc.datasource.asset.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_asset
+    edc.datasource.asset.user=user
+    edc.datasource.asset.password=pass
+    edc.datasource.contractdefinition.name=contractdefinition
+    edc.datasource.contractdefinition.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_contractdefinition
+    edc.datasource.contractdefinition.user=user
+    edc.datasource.contractdefinition.password=pass
+    edc.datasource.contractnegotiation.name=contractnegotiation
+    edc.datasource.contractnegotiation.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_contractnegotiation
+    edc.datasource.contractnegotiation.user=user
+    edc.datasource.contractnegotiation.password=pass
+    edc.datasource.policy.name=policy
+    edc.datasource.policy.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_policy
+    edc.datasource.policy.user=user
+    edc.datasource.policy.password=pass
+    edc.datasource.transferprocess.name=transferprocess
+    edc.datasource.transferprocess.url=jdbc:postgresql://postgres.svc.cluster.local:5432/edc_transferprocess
+    edc.datasource.transferprocess.user=user
+    edc.datasource.transferprocess.password=pass

@@ -49,7 +49,7 @@ configuration:
     edc.vault.hashicorp.token=<path:traceability-irs/data/dev/controlplane#vaultToken>
     edc.vault.hashicorp.timeout.seconds=30
     edc.vault.hashicorp.health.check.standby.ok=true
-    # edc.vault.hashicorp.api.secret.path=
+    edc.vault.hashicorp.api.secret.path=/v1/traceability-irs/dev/edc
     
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
     
