@@ -9,15 +9,21 @@
 //
 package net.catenax.irs.exceptions;
 
+
 /**
  * General entity not found exception.
  */
 public class EntityNotFoundException extends RuntimeException {
     /**
      * Generate a new instance of a {@link EntityNotFoundException}
+     *
      * @param message Exception message.
      */
     public EntityNotFoundException(final String message) {
         super(message);
+    }
+
+    public EntityNotFoundException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 }

@@ -1,95 +1,140 @@
-# Item Relationship Service
+# ![Item Relationship Service (IRS)](logo.png)
 
-## How to run
+[![Apache 2 License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/catenax-ng/product-item-relationship-service/blob/main/LICENSE)  
+[![Build](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/CI-main.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/CI-main.yml)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=catenax-ng_product-item-relationship-service&metric=coverage)](https://sonarcloud.io/summary/new_code?id=catenax-ng_product-item-relationship-service)
+[![CodeQL](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/codeql.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/codeql.yml)  
+[![Checkov](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/checkov.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/checkov.yml)
+[![Kics](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/kics.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/kics.yml)
+[![Trivy](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/trivy.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/trivy.yml)
+[![VeraCode](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/VeraCode.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/VeraCode.yml)
+[![OWASP Dependency Check](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/owasp.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/owasp.yml)
+[![Spotbugs](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/spotbugs.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/spotbugs.yml)
+   
+
+## What is the IRS?
+
+Within the [Catena-X network](https://catena-x.net/), the so-called Item Relationship Service (IRS) forms an essential 
+foundation for various services and products. Within the Catena-X use cases, the IRS serves to increase business value.
+For example, the IRS provides functionalities to serve requirements, such as occasion-based Traceability, 
+from the Supply Chain Act. In doing so, IDSA and Gaia-X principles, such as data interoperability and sovereignty, are 
+maintained on the Catena-X network and access to dispersed data is enabled. Data chains are established as a common asset.
+
+With the help of the IRS, data chains are to be provided ad-hoc across n-tiers within the Catena-X network. 
+To realize these data chains, the IRS relies on data models of the Traceability use case and provides the federated 
+data chains to customers or applications. Furthermore, the target picture of the IRS includes the enablement of new 
+business areas by means of data chains along the value chain in the automotive industry.
+
+## Usage
+
+### Local deployment
 
 The two following subsections provide instructions for running either only the infrastructure on docker-compose and the application in the IDE, or for running the full stack (including the application) in docker-compose.
 
-### Docker-compose + IDE
+#### Docker-compose + IDE
 
 * Start the necessary infrastructure by running `docker-compose up`
 
-* Start the application from your favorite IDE
+* Start the application from your favorite IDE. For IntelliJ, a run configuration is available in the .run folder.
 
-### Docker-compose full stack
-
-* (Optional) Copy the file `.env.example` to `.env` and provide your Application Insights connection string.
+#### Docker-compose full stack
 
 * Run `docker-compose --profile irs up`
 
-### Docker-compose debug profile
-
-* (Optional) Copy the file `.env.example` to `.env` and provide your Application Insights connection string.
-* Run `docker-compose --profile debug up`
-* This will start additional containers:
-  * [`kafkacat`](https://docs.confluent.io/platform/current/app-development/kafkacat-usage.html), a generic kafka command-line client, used here to output messages to the Docker-compose output stream as they are sent to the broker
-  * [`kafka-ui`](https://github.com/provectus/kafka-ui), a UI interface to manage local kafka cluster, which can be used for similar purposes through a Web UI. `kafka-ui` is available at http://localhost:9090/.
-  * [Prometheus](https://prometheus.io/docs/introduction/overview/), a server to collect and query metrics. Prometheus is available at http://localhost:9091/.
-
-## Work with sample data
-
-* Retrieve one sample preloaded BOM:
-
-```bash
-curl -X GET "http://localhost:8080/api/v0.1/vins/BMWOVCDI21L5DYEUU/partsTree?view=AS_BUILT"
-```
-
-## Inspect data
-
-### Get persisted data
-
-```bash
-docker exec -it db bash -c 'psql -U $POSTGRES_USER postgres'
-```
-
-```sql
-select * from part_relationship;
-```
-
-## Swagger UI
-
-### IRS API
+#### Local IRS API
 
 - Swagger UI: http://localhost:8080/api/swagger-ui
 - API docs: http://localhost:8080/api/api-docs
 - API docs in yaml:  http://localhost:8080/api/api-docs.yaml
 
-### Broker Proxy API
+### Accessing the secured API
 
-- Swagger UI: http://localhost:8081/broker-proxy/swagger-ui
-- API docs: http://localhost:8081/broker-proxy/api-docs
-- API docs in yaml:  http://localhost:8081/broker-proxy/api-docs.yaml
+A valid access token is required to access every IRS endpoint and must be included in the Authorization header - otherwise **HTTP 401 Unauthorized** status is returned to the client.
 
-## Terraform
+The IRS uses the configured Keycloak server to validate access tokens. By default, this is the Catena-X INT Keycloak instance. Get in contact with them to receive your client credentials.
 
-See [Terraform deployment](terraform).
+To obtain an access token, you can use the prepared [Postman collection](https://github.com/catenax-ng/product-item-relationship-service/blob/main/testing/IRS%20DEMO%20Collection.postman_collection.json). 
 
-## Deploy to DEV
+### Sample calls
 
-The new version of the application is deployed to DEV on merge to main through the `IRS Deploy` workflow.
-The workflow builds a new image, pushes it to ACR and deploys it to Kubernetes. If you make changes to Terraform, these changes will be applied as the workflow runs `terraform apply`.
-If you want to make sure the IRS deployment will work well with your changes, you can run the `IRS Deploy` workflow manually on your branch. Note that other PRs merged to main will cause Terraform to potentially roll back those changes.
+Start a job for a globalAssetId:
 
-## Deploy to INT
+```bash
+curl -X 'POST' \
+  'http://localhost:8080/irs/jobs' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <token_value>' \
+  -d '{
+  "aspects": [
+    "SerialPartTypization"
+  ],
+  "bomLifecycle": "asBuilt",
+  "depth": 1,
+  "direction": "downward",
+  "globalAssetId": "urn:uuid:8a61c8db-561e-4db0-84ec-a693fc5ffdf6"
+}'
+```
 
-A deployment to the INT environment can be triggered manually with the `IRS Deploy` workflow as well by overriding the default target environment parameter to "int". INT environment deployments should be coordinated with the consumers of the IRS systems.
+Retrieve the job results by using the jobId returned by the previous call:
+```bash
+curl -X 'GET' 'http://localhost:8080/irs/jobs/<jobID>' -H 'accept: application/json' -H 'Authorization: Bearer <token_value>'
+```
 
-## Load Test Data
+## Environments
+### DEV environment
 
-Test data can be loaded using `IRS Load Test Data` workflow. This workflow is triggered manually. It checks out the json files stored in
-[test-data folder](./coreservices/partsrelationshipservice/cd/test-data), converts the data into sql queries and inserts the data into IRS database.
-Before inserting all records with oneIds from json files are deleted from the database.
+The latest version on main is automatically picked up by ArgoCD and deployed to the DEV environment.
+See https://catenax-ng.github.io/.
 
-## Smoke tests
+http://irs.dev.demo.catena-x.net/api/swagger-ui/index.html?configUrl=/api/api-docs/swagger-config
 
-[Smoke tests](integration-tests/src/test/java/net/catenax/irs/smoketest) are running against the application and the consumer connectors in the IRS Smoke tests pipeline.
-To run the tests against locally running application provide `baseURI` (IRS API base URI, by default http://localhost:8080) `brokerProxyBaseURI` (Broker Proxy API base URI, by default: http://localhost:8081). If only `baseURI` is provided, `brokerProxyBaseURI` has the same value as `baseURI`.
-If you want to run it against connector you need to add the following VM options:
-`-DbaseURI=<consumer-artifact-uri> -DbrokerProxyBaseURI=<broker-proxy-uri> -Dusername=<username-to-access-consumer> -Dpassword=<password>`
+Additionally, we supply our own EDC setup to be able to do end-to-end tests in an isolated environment.
+This contains of:
+ - AAS Wrapper
+ - Digital Twin Registry
+ - EDC Consumer (Control and Data Plane)
+ - EDC Provider (Control and Data Plane)
+ - Multiple submodel servers to provide test data
 
-## System tests
+The setup is based on [Catena-X@Home](https://github.com/catenax-ng/catenax-at-home/) and uses those docker images.
 
-[System tests](integration-tests/src/test/java/net/catenax/irs/systemtest) are running against multiple IRS deployments and reconstructing a parts tree from multiple partial trees.
-To run the tests, download the file artifact `dataspace-deployments.json` from the latest IRS Deploy GitHub Actions run into the `dev/local` folder.
+Check the Helm charts at ./chart for the configuration.
+
+The testdata on DEV is volatile and gets lost on pod restarts. New testdata can be provisioned using the GitHub action trigger.
+
+### INT environment
+
+The latest version on main is automatically picked up by ArgoCD and deployed to the INT environment.
+See https://catenax-ng.github.io/.
+
+http://irs.int.demo.catena-x.net/api/swagger-ui/index.html?configUrl=/api/api-docs/swagger-config
+
+Additionally, we supply our own EDC consumer to connect to the Catena-X integration system.
+This contains of:
+- AAS Wrapper
+- EDC Consumer (Control and Data Plane)
+
+This setup uses the docker images provided by [the EDC team](https://github.com/catenax-ng/product-edc/).
+
+Check the Helm charts at ./chart for the configuration. 
+
+## Contribution
+### Commit messages
+The commit messages have to match a pattern in the form of:  
+< type >(optional scope):[<Ticket_ID>] < description >
+
+Example:  
+chore(api):[TRI-123] some text
+
+Detailed pattern can be found here: [commit-msg](dev/commit-msg)
+
+#### Installation
+```shell
+cp dev/commit-msg .git/hooks/commit-msg && chmod 500 .git/hooks/commit-msg
+```
+
+For further information please see https://github.com/hazcod/semantic-commit-hook
 
 ## Licenses
-Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0) - see [LICENSE](./LICENSE)

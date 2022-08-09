@@ -1,0 +1,63 @@
+@startuml
+skinparam shadowing false
+
+actor APIConsumer
+activate APIConsumer
+
+box "Consumer" #LightGrey
+participant WebService
+activate WebService
+participant ConsumerApiController
+activate ConsumerApiController
+participant ConsumerService
+activate ConsumerService
+participant JobOrchestrator
+activate JobOrchestrator
+
+APIConsumer -> WebService : /irs/items/{globalAssetId}
+WebService -> ConsumerApiController :  retrieveItemGraph
+ConsumerApiController -> ConsumerService :  retrieveItemGraph
+ConsumerService -> JobOrchestrator: startJob
+JobOrchestrator -> InMemoryJobStore: create(Job)
+
+JobOrchestrator --> ItemGraphRecursiveJobHandler: initiate(Job)
+activate ItemGraphRecursiveJobHandler
+
+ConsumerService <-- JobOrchestrator : success jobID (UUID)
+ConsumerApiController <-- ConsumerService : success jobID (UUID)
+WebService <-- ConsumerApiController : success jobID (UUID)
+APIConsumer <-- ConsumerApiController : success jobID (UUID)
+
+loop poll until response is  "200"
+     APIConsumer -> WebService : /irs/jobs/{jobId}
+
+     ref over WebService,  JobOrchestrator
+        lookupJobId in JobStore
+     end ref
+     opt job.hasCompleted()
+            APIConsumer <-- WebService : "200" + payload(job details + document)
+     else job.isRunning()
+           alt ?returnUncompletedJob=true
+             APIConsumer <-- WebService : "206" + payload(job details + document)
+           else
+             APIConsumer <-- WebService : "200" + payload(job details)
+            end alt
+     else job.hasCancled()
+             APIConsumer <-- WebService : "404" + payload(job details)
+     else job.hasFailed()
+        alt ?returnUncompletedJob=true
+            APIConsumer <-- WebService : "417" + payload(job details + document)
+        else
+            APIConsumer <-- WebService : "417"  + payload(job details)
+        end alt
+      else  unexpected exception
+        alt ?returnUncompletedJob=true
+            APIConsumer <-- WebService : "500" + payload(job details + document)
+        else
+           APIConsumer <-- WebService : "500" + payload(job details)
+           end alt
+     end opt
+
+end loop
+
+@enduml

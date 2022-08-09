@@ -11,18 +11,26 @@ package net.catenax.irs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Application entry point.
  */
 @SpringBootApplication
+@EnableScheduling
+@EnableCaching
 public class IrsApplication {
 
-    /** The IRS API version. */
-    public static final String API_VERSION = "v0.1";
+    /**
+     * The IRS API version.
+     */
+    public static final String API_VERSION = "1.0";
 
-    /** The URL prefix for IRS API URLs. */
-    public static final String API_PREFIX = "api/" + API_VERSION;
+    /**
+     * The URL prefix for IRS API URLs.
+     */
+    public static final String API_PREFIX = "irs";
 
     /**
      * Entry point.

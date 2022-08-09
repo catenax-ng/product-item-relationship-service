@@ -1,0 +1,19 @@
+blobstore:
+  endpoint: http://localhost:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+
+irs:
+  apiUrl: http://localhost:8080
+  job:
+    cleanup:
+      scheduler:
+        completed: 0 * * * * *
+        failed: 0 * * * * *
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://centralidp.demo.catena-x.net/auth/realms/CX-Central/protocol/openid-connect/certs
