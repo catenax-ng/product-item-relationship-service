@@ -36,8 +36,8 @@ configuration:
     edc.receiver.http.endpoint=http://edc-provider-controlplane-new:8080/api/service/pull
     
     edc.transfer.proxy.endpoint=https://irs-provider-dataplane.dev.demo.catena-x.net/api/public
-    edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
-    edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
+    edc.transfer.proxy.token.signer.privatekey.alias=irs-dev-daps-cert-provider-key
+    edc.transfer.proxy.token.verifier.publickey.alias=irs-dev-daps-cert-provider
     
     edc.oauth.client.id=AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2:keyid:AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2
     edc.oauth.private.key.alias=irs-dev-daps-cert-provider-key
