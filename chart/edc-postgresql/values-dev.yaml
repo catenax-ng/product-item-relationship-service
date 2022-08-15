@@ -1,0 +1,12 @@
+auth:
+  postgresPassword: postgrespassword
+  username: "edc"
+  password: databasepassword
+  database: "edc"
+#primary:
+#  initdb:
+#    scripts:
+#      init.sql: |
+#        CREATE ROLE irs WITH LOGIN PASSWORD 'irspass';
+#        CREATE DATABASE edc;
+#        GRANT ALL PRIVILEGES ON DATABASE edc TO irs;
