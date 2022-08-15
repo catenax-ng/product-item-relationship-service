@@ -51,7 +51,9 @@ configuration:
     edc.vault.hashicorp.health.check.standby.ok=true
     edc.vault.hashicorp.api.secret.path=/v1/traceability-irs
     
-    edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.dev.demo.catena-x.net/api/public    
+    edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.dev.demo.catena-x.net/api/public
+    edc.transfer.proxy.token.signer.privatekey.alias=irs-dev-daps-cert-provider-key
+    edc.transfer.proxy.token.verifier.publickey.alias=irs-dev-daps-cert-provider
     edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane-new:9192/public
     
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
