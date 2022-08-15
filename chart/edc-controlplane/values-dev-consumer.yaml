@@ -39,30 +39,22 @@ configuration:
     edc.ids.endpoint=https://irs-consumer-controlplane.dev.demo.catena-x.net/api/v1/ids
     
     edc.oauth.client.id=BC:46:85:7E:E1:1E:15:06:1F:89:7A:C6:53:88:C6:60:1C:6A:7C:8F:keyid:BC:46:85:7E:E1:1E:15:06:1F:89:7A:C6:53:88:C6:60:1C:6A:7C:8F
-    edc.oauth.private.key.alias=traceability-irs/data/dev/edc/irs-dev-daps-key-consumer
+    edc.oauth.private.key.alias=irs-dev-daps-cert-provider-key
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
     edc.oauth.provider.jwks.url=https://daps-irs.dev.demo.catena-x.net/.well-known/jwks.json
-    edc.oauth.public.key.alias=traceability-irs/data/dev/edc/irs-dev-daps-cert-provider
+    edc.oauth.public.key.alias=irs-dev-daps-cert-provider
     edc.oauth.token.url=https://daps-irs.dev.demo.catena-x.net/token
     
-    edc.vault.hashicorp.url=https://vault.demo.catena-x.net/
+    edc.vault.hashicorp.url=https://vault.demo.catena-x.net
     edc.vault.hashicorp.token=<path:traceability-irs/data/dev/controlplane#vaultToken>
     edc.vault.hashicorp.timeout.seconds=30
     edc.vault.hashicorp.health.check.standby.ok=true
-    edc.vault.hashicorp.api.secret.path=/v1/traceability-irs/dev/edc
+    edc.vault.hashicorp.api.secret.path=/v1/traceability-irs
+    
+    edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.dev.demo.catena-x.net/api/public    
+    edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane-new:9192/public
     
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
-    
-    edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.dev.demo.catena-x.net/api/public
-    edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
-    edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
-    
-    # edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    # edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
-    # edc.vault.name=cxtsi-dev001-vault
-    # edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
-    
-    edc.transfer.dataplane.sync.endpoint=http://edc-consumer-dataplane-new:9192/public
     
     # Postgresql related configuration
     edc.datasource.asset.name=asset
