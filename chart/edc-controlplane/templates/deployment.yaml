@@ -101,7 +101,11 @@ spec:
             - name: configuration
               mountPath: /app/logging.properties
               subPath: logging.properties
+            - name: tmp
+              mountPath: /tmp
       volumes:
+        - name: tmp
+          emptyDir: {}
         - name: configuration
           configMap:
             name: {{ include "edc-controlplane.fullname" . }}-configmap
