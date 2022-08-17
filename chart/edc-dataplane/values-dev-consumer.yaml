@@ -51,6 +51,9 @@ configuration:
     edc.vault.hashicorp.url=https://vault.demo.catena-x.net
     edc.vault.hashicorp.token=<path:traceability-irs/data/dev/controlplane#vaultToken>
     edc.vault.hashicorp.timeout.seconds=30
+    edc.vault.hashicorp.health.check.enabled=true
+    edc.vault.hashicorp.health.check.standby.ok=true
+    edc.vault.hashicorp.api.secret.path=/v1/traceability-irs
     
     # edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
     # edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
