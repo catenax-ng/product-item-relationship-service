@@ -45,7 +45,7 @@ configuration:
     edc.controlplane.validation-endpoint=http://irs-provider-controlplane:8182/validation/token
     
     edc.oauth.client.id=AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2:keyid:AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2
-    edc.oauth.private.key.alias=irs-dev-daps-key-provider
+    edc.oauth.private.key.alias=irs-dev-daps-cert-provider-key
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
     edc.oauth.provider.jwks.url=https://daps-irs.dev.demo.catena-x.net/.well-known/jwks.json
     edc.oauth.public.key.alias=irs-dev-daps-cert-provider
