@@ -10,7 +10,10 @@ ingresses:
     # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
     hostname: "irs-provider-controlplane.dev.demo.catena-x.net"
     # -- Additional ingress annotations to add
-    annotations: {}
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: HTTP
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/ssl-passthrough: "false"
     # -- EDC endpoints exposed by this ingress resource
     endpoints:
       - ids
