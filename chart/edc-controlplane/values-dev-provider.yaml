@@ -18,6 +18,7 @@ ingresses:
     endpoints:
       - ids
       - default
+      - data
     # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
     className: "nginx"
     # -- Enables TLS on the ingress resource
