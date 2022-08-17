@@ -17,7 +17,6 @@ ingresses:
     # -- EDC endpoints exposed by this ingress resource
     endpoints:
       - ids
-      - default
       - data
     # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
     className: "nginx"
@@ -45,7 +44,7 @@ configuration:
     edc.ids.catalog.id=urn:catalog:default
     edc.ids.endpoint=https://irs-provider-controlplane.dev.demo.catena-x.net/api/v1/ids
     
-    edc.receiver.http.endpoint=http://edc-provider-controlplane-new:8080/api/service/pull
+    edc.receiver.http.endpoint=http://irs-provider-controlplane:8080/api/service/pull
     
     edc.transfer.proxy.endpoint=https://irs-provider-dataplane.dev.demo.catena-x.net/api/public
     edc.transfer.proxy.token.signer.privatekey.alias=irs-dev-daps-cert-provider-key

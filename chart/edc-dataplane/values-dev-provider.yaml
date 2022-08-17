@@ -32,7 +32,7 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    edc.controlplane.validation-endpoint=http://edc-provider-controlplane-new:8182/validation/token
+    edc.controlplane.validation-endpoint=http://irs-provider-controlplane:8182/validation/token
     
     edc.oauth.client.id=AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2:keyid:AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2
     edc.oauth.private.key.alias=irs-dev-daps-key-provider
