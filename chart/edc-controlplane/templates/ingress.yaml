@@ -44,9 +44,13 @@ spec:
   {{- if .hostname }}
   {{- if .tls }}
   tls:
+    {{- range .tls }}
     - hosts:
-        - {{ .hostname }}
-      secretName: {{ $ingressName }}-tls
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
   {{- end }}
   rules:
       - host: {{ .hostname }}

@@ -18,7 +18,11 @@ ingresses:
     # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
     className: "nginx"
     # -- Enables TLS on the ingress resource
-    tls: false
+    tls:
+      - hosts:
+          - "irs-provider-controlplane.dev.demo.catena-x.net"
+        # Default secret for certificate creation already provided to your namespace
+        secretName: tls-secret
     ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
     certManager:
       # -- If preset enables certificate generation via cert-manager namespace scoped issuer
