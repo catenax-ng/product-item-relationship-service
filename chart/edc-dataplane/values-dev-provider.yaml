@@ -3,6 +3,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- Overrides the charts name
+nameOverride: "irs-provider-dataplane"
+# -- Overrides the releases full name
+fullnameOverride: "irs-provider-dataplane"
+
 ## Ingress declaration to expose the network service.
 ingresses:
   ## Public / Internet facing Ingress
@@ -25,27 +30,6 @@ ingresses:
           - "irs-provider-dataplane.dev.demo.catena-x.net"
         # Default secret for certificate creation already provided to your namespace
         secretName: tls-secret
-    ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
-    certManager:
-      # -- If preset enables certificate generation via cert-manager namespace scoped issuer
-      issuer: ""
-      # -- If preset enables certificate generation via cert-manager cluster-wide issuer
-      clusterIssuer: ""
-  ## Private / Intranet facing Ingress
-  - enabled: false
-    # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "irs-provider-dataplane"
-    # -- Additional ingress annotations to add
-    annotations: { }
-    # -- EDC endpoints exposed by this ingress resource
-    endpoints:
-      - default
-      - control
-      - metrics
-    # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
-    className: ""
-    # -- Enables TLS on the ingress resource
-    tls: false
     ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
     certManager:
       # -- If preset enables certificate generation via cert-manager namespace scoped issuer
