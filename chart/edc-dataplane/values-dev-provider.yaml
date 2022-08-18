@@ -44,7 +44,7 @@ configuration:
     
     edc.controlplane.validation-endpoint=http://irs-provider-controlplane:8182/validation/token
     
-    edc.oauth.client.id=AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2:keyid:AE:CF:95:1A:7F:30:7F:2C:97:EF:6F:1E:4B:C6:A7:09:CA:86:B4:D2
+    edc.oauth.client.id=B9:7B:1A:54:74:DC:C7:45:6E:A2:24:DC:3F:6D:A7:4A:DD:D2:26:6A:keyid:B9:7B:1A:54:74:DC:C7:45:6E:A2:24:DC:3F:6D:A7:4A:DD:D2:26:6A
     edc.oauth.private.key.alias=irs-dev-daps-cert-provider-key
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL
     edc.oauth.provider.jwks.url=https://daps-irs.dev.demo.catena-x.net/.well-known/jwks.json
@@ -57,8 +57,3 @@ configuration:
     edc.vault.hashicorp.health.check.enabled=true
     edc.vault.hashicorp.health.check.standby.ok=true
     edc.vault.hashicorp.api.secret.path=/v1/traceability-irs
-    
-    # edc.vault.clientid=c1778e7d-db16-4404-9080-26d2280d2f63
-    # edc.vault.clientsecret=<path:traceability-irs/data/dev/controlplane#devVaultClientSecret>
-    # edc.vault.name=cxtsi-dev001-vault
-    # edc.vault.tenantid=495463c3-0991-4659-9cc5-94b4a3f7b1d6
