@@ -19,6 +19,7 @@ ingresses:
     # -- EDC endpoints exposed by this ingress resource
     endpoints:
       - ids
+      - data
     # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
     className: ""
     # -- Enables TLS on the ingress resource
