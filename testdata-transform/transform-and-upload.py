@@ -25,14 +25,12 @@ def create_digital_twin_payload_url(host):
     return host + "/registry/shell-descriptors"
 
 
-def create_edc_asset_payload(submodel_url_, digital_twin_id_, digital_twin_submodel_id_):
+def create_edc_asset_payload(submodel_url_, digital_twin_submodel_id_, edc_policy_id_):
     return json.dumps({
         "asset": {
             "properties": {
-                "asset:prop:id": digital_twin_id_ + "-" + digital_twin_submodel_id_,
-                "asset:prop:name": "product description",
-                "asset:prop:contenttype": "application/json",
-                "asset:prop:policy-id": "use-eu"
+                "asset:prop:id": edc_policy_id_,
+                "asset:prop:description": "product description"
             }
         },
         "dataAddress": {
@@ -47,27 +45,32 @@ def create_edc_asset_payload(submodel_url_, digital_twin_id_, digital_twin_submo
 def create_edc_policy_payload(edc_policy_id_, digital_twin_id_, digital_twin_submodel_id_):
     return json.dumps({
         "uid": edc_policy_id_,
+        "prohibitions": [],
+        "obligations": [],
         "permissions": [
             {
-                "target": digital_twin_id_ + "-" + digital_twin_submodel_id_,
+                "edctype": "dataspaceconnector:permission",
                 "action": {
                     "type": "USE"
                 },
-                "edctype": "dataspaceconnector:permission"
+                "target": digital_twin_id_ + "-" + digital_twin_submodel_id_
             }
-        ],
-        "@type": {
-            "@policytype": "set"
-        }
+        ]
     })
 
 
 def create_edc_contract_definition_payload(contract_id_, edc_policy_id_):
     return json.dumps({
         "id": contract_id_,
+        "criteria": [
+            {
+                "operandLeft": "asset:prop:id",
+                "operator": "=",
+                "operandRight": edc_policy_id_
+            }
+        ],
         "accessPolicyId": edc_policy_id_,
-        "contractPolicyId": edc_policy_id_,
-        "criteria": []
+        "contractPolicyId": edc_policy_id_
     })
 
 
@@ -106,9 +109,9 @@ if __name__ == "__main__":
     submodel_server_1_folder = "BPNL00000003B0Q0"
     submodel_server_2_folder = "BPNL00000003AXS3"
 
-    edc_asset_url = "%s/api/v1/data/assets" % edc_url
-    edc_policy_url = "%s/api/v1/data/policies" % edc_url
-    edc_contract_definition_url = "%s/api/v1/data/contractdefinitions" % edc_url
+    edc_asset_url = "%s/data/assets" % edc_url
+    edc_policy_url = "%s/data/policies" % edc_url
+    edc_contract_definition_url = "%s/data/contractdefinitions" % edc_url
 
     headers = {
         'Content-Type': 'application/json'
@@ -238,21 +241,21 @@ if __name__ == "__main__":
                                                     url=create_submodel_url(submodel_url, digital_twin_submodel_id),
                                                     headers=headers, data=create_submodel_payload(serial_part))
                         print_response(response)
+                    edc_policy_id = str(uuid.uuid4())
                     # 3. Create edc asset
                     response = requests.request(method="POST", url=edc_asset_url, headers=headers_with_api_key,
-                                                data=create_edc_asset_payload(submodel_url, digital_twin_id,
-                                                                              digital_twin_submodel_id))
+                                                data=create_edc_asset_payload(submodel_url, digital_twin_submodel_id,
+                                                                              contract_id))
                     print_response(response)
                     # 4. Create edc policy
-                    edc_policy_id = str(uuid.uuid4())
                     response = requests.request(method="POST", url=edc_policy_url, headers=headers_with_api_key,
-                                                data=create_edc_policy_payload(edc_policy_id, digital_twin_id,
+                                                data=create_edc_policy_payload(contract_id, digital_twin_id,
                                                                                digital_twin_submodel_id))
                     print_response(response)
                     # 5. Create edc contract definition
                     response = requests.request(method="POST", url=edc_contract_definition_url,
                                                 headers=headers_with_api_key,
-                                                data=create_edc_contract_definition_payload(contract_id, edc_policy_id))
+                                                data=create_edc_contract_definition_payload(contract_id, contract_id))
                     print_response(response)
                     contract_id = contract_id + 1
             response = requests.request(method="POST", url=create_digital_twin_payload_url(aas_url),
