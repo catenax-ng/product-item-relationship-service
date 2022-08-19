@@ -40,7 +40,7 @@ edc:
       # -- The network port, which the "ids" multipart api is going to be exposed by the container, pod and service
       port: "8282"
       # -- The path mapping the "ids" multipart api is going to be exposed at
-      path: /BPNL00000003AYRE/api/v1/ids
+      path: /api/v1/ids
     ## Prometheus endpoint
     metrics:
       # -- The network port, which the prometheus metrics are going to be exposed by the container, pod and service
@@ -83,7 +83,7 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    ids.webhook.address=https://irs-provider-controlplane.dev.demo.catena-x.net
+    ids.webhook.address=http://irs-provider-controlplane:8282
     
     edc.ids.id=urn:connector:edc-provider-controlplane
     edc.ids.catalog.id=urn:catalog:default

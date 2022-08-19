@@ -40,7 +40,7 @@ edc:
       # -- The network port, which the "ids" multipart api is going to be exposed by the container, pod and service
       port: "8282"
       # -- The path mapping the "ids" multipart api is going to be exposed at
-      path: /BPNL00000003AWSS/api/v1/ids
+      path: /api/v1/ids
     ## Prometheus endpoint
     metrics:
       # -- The network port, which the prometheus metrics are going to be exposed by the container, pod and service
