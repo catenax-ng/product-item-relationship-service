@@ -12,13 +12,17 @@ package net.catenax.irs.connector.job;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.catenax.irs.component.enums.JobState;
 import net.catenax.irs.persistence.BlobPersistence;
 import net.catenax.irs.persistence.BlobPersistenceException;
+import net.catenax.irs.services.MeterRegistryService;
 import net.catenax.irs.util.JsonUtil;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +42,8 @@ public class PersistentJobStore extends BaseJobStore {
     private final BlobPersistence blobStore;
 
     private final JsonUtil json = new JsonUtil();
+
+    private final MeterRegistryService meterService;
 
     @Override
     protected Optional<MultiTransferJob> get(final String jobId) {
@@ -64,6 +70,9 @@ public class PersistentJobStore extends BaseJobStore {
     protected void put(final String jobId, final MultiTransferJob job) {
         final byte[] blob = toBlob(job);
         try {
+            if (!isLastStateSameAsCurrentState(jobId, job.getJob().getJobState())) {
+                meterService.recordJobStateMetric(job.getJob().getJobState());
+            }
             blobStore.putBlob(toBlobId(jobId), blob);
         } catch (BlobPersistenceException e) {
             log.error("Cannot create job in BlobStore", e);
@@ -73,9 +82,17 @@ public class PersistentJobStore extends BaseJobStore {
     @Override
     protected Optional<MultiTransferJob> remove(final String jobId) {
         try {
-            final Optional<byte[]> blob = blobStore.getBlob(toBlobId(jobId));
-            blobStore.delete(toBlobId(jobId));
-            return blob.map(this::toJob);
+            final Optional<MultiTransferJob> job = blobStore.getBlob(toBlobId(jobId)).map(this::toJob);
+
+            if (job.isPresent()) {
+                final List<String> ids = Stream.concat(job.get().getTransferProcessIds().stream(),
+                                                       job.get().getCompletedTransfers().stream().map(TransferProcess::getId))
+                                               .collect(Collectors.toList());
+                ids.add(jobId);
+
+                blobStore.delete(toBlobId(jobId), ids);
+            }
+            return job;
         } catch (BlobPersistenceException e) {
             throw new JobException("Blob persistence error", e);
         }
@@ -92,6 +109,11 @@ public class PersistentJobStore extends BaseJobStore {
 
     private String toBlobId(final String jobId) {
         return JOB_PREFIX + jobId;
+    }
+
+    private Boolean isLastStateSameAsCurrentState(final String jobId, final JobState state) {
+        final Optional<MultiTransferJob> optJob = get(jobId);
+        return optJob.isPresent() && optJob.get().getJob().getJobState() == state;
     }
 
 }

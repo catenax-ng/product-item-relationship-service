@@ -4,7 +4,12 @@ import static net.catenax.irs.util.TestMother.jobParameter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -16,6 +21,7 @@ import net.catenax.irs.component.JobErrorDetails;
 import net.catenax.irs.component.enums.JobState;
 import net.catenax.irs.persistence.BlobPersistenceException;
 import net.catenax.irs.persistence.MinioBlobPersistence;
+import net.catenax.irs.services.MeterRegistryService;
 import net.catenax.irs.testing.containers.MinioContainer;
 import net.catenax.irs.util.JsonUtil;
 import net.catenax.irs.util.TestMother;
@@ -49,6 +55,8 @@ class PersistentJobStoreTest {
     String errorDetail = faker.lorem().sentence();
     MinioBlobPersistence blobStoreSpy;
 
+    MeterRegistryService meterRegistryService = TestMother.simpleMeterRegistryService(); // mock(MeterRegistryService.class);
+
     @BeforeAll
     static void startContainer() {
         minioContainer.start();
@@ -64,7 +72,7 @@ class PersistentJobStoreTest {
         final MinioBlobPersistence blobStore = new MinioBlobPersistence("http://" + minioContainer.getHostAddress(),
                 ACCESS_KEY, SECRET_KEY, "testbucket");
         blobStoreSpy = Mockito.spy(blobStore);
-        sut = new PersistentJobStore(blobStoreSpy);
+        sut = new PersistentJobStore(blobStoreSpy, meterRegistryService);
     }
 
     @Test
@@ -488,4 +496,24 @@ class PersistentJobStoreTest {
         // Assert
         assertThat(job2.getJob().getLastModifiedOn()).isAfter(job1.getJob().getLastModifiedOn());
     }
+
+    @Test
+    void shouldRemoveJobAndExecuteDeleteMethodWithFoundCompletedTransferIds() throws BlobPersistenceException {
+        // Arrange
+        sut.create(job);
+        sut.addTransferProcess(job.getJobIdString(), processId1);
+        sut.completeTransferProcess(job.getJobIdString(), process1);
+        sut.completeJob(job.getJobIdString(), this::doNothing);
+
+        // Act
+        sut.remove(job.getJobIdString());
+
+        // Assert
+        verify(blobStoreSpy).delete(
+            argThat(s -> s.contains(job.getJobIdString())), // jobId
+            argThat(s -> s.size() == 2) // jobId + processId
+        );
+        verify(blobStoreSpy, times(1)).delete(anyString(), anyList());
+    }
+
 }
