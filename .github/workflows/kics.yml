@@ -10,6 +10,7 @@ on:
       - "**/*.md"
       - "**/*.txt"
       - "**/irs-v1.0.yaml"
+      - "api/irs-v1.0.yaml"
   schedule:
     - cron: "0 0 * * *"
 
