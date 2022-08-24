@@ -102,7 +102,7 @@ configuration:
     edc.vault.hashicorp.health.check.enabled=true
     edc.vault.hashicorp.health.check.standby.ok=true
     edc.vault.hashicorp.api.secret.path=/v1/traceability-irs
-    
+    edc.data.encryption.keys.alias=irs-dev-daps-cert-consumer
     # Postgresql related configuration
     edc.datasource.asset.name=asset
     edc.datasource.asset.url=jdbc:postgresql://irs-edc-postgres-consumer-postgresql-hl:5432/edc
