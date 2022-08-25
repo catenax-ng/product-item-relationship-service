@@ -1,40 +1,6 @@
 version: '3.8'
 
 services:
-  irs:
-    build:
-      context: .
-      target: irs-api
-      args:
-        BUILD_TARGET: irs-api
-    profiles:
-      - irs
-    container_name: irs
-    ports:
-      - "127.0.0.1:8080:8080"
-      - "127.0.0.1:4004:4004"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:4004/actuator/health/liveness" ]
-      interval: 30s
-      timeout: 20s
-      retries: 3
-    environment:
-      MINIO_URL: "http://minio:9000"
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: "512M"
-        reservations:
-          cpus: "0.25"
-          memory: "128M"
-    security_opt:
-      - seccomp:unconfined
-    networks:
-      - irsnetwork
-
   minio:
     image: quay.io/minio/minio:RELEASE.2022-04-01T03-41-39Z
     command: server --address 0.0.0.0:9000 --console-address ":9001" /data
