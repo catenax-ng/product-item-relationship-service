@@ -42,7 +42,7 @@ if __name__ == "__main__":
     values = response.json()
     for value in values:
         uid_ = value["properties"]["asset:prop:id"]
-        delete_response = requests.request(method="DELETE", url=controlplane_data_assets+"/"+uid_, headers=headers)
+        delete_response = requests.request(method="DELETE", url=controlplane_data_assets+"/"+str(uid_), headers=headers)
         print(uid_)
         print(delete_response)
 
