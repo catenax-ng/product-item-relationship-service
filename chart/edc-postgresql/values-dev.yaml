@@ -8,13 +8,5 @@ primary:
     scripts:
       init.sql: |
         CREATE USER irs WITH PASSWORD 'irspass';
-        CREATE DATABASE edc_asset_db;
-        CREATE DATABASE edc_contractdefinition_db;
-        CREATE DATABASE edc_contractnegotiation_db;
-        CREATE DATABASE edc_policy_db;
-        CREATE DATABASE edc_transferprocess;
-        GRANT ALL PRIVILEGES ON DATABASE edc_asset_db TO irs;
-        GRANT ALL PRIVILEGES ON DATABASE edc_contractdefinition_db TO irs;
-        GRANT ALL PRIVILEGES ON DATABASE edc_contractnegotiation_db TO irs;
-        GRANT ALL PRIVILEGES ON DATABASE edc_policy_db TO irs;
-        GRANT ALL PRIVILEGES ON DATABASE edc_transferprocess TO irs;
+        CREATE DATABASE edc;
+        GRANT ALL PRIVILEGES ON DATABASE edc TO irs;
