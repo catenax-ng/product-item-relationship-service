@@ -35,7 +35,7 @@ def create_edc_asset_payload(submodel_url_, digital_twin_submodel_id_, edc_polic
         },
         "dataAddress": {
             "properties": {
-                "endpoint": submodel_url_ + "/data/" + digital_twin_submodel_id_,
+                "baseUrl": submodel_url_ + "/data/" + digital_twin_submodel_id_,
                 "type": "HttpData"
             }
         }
@@ -45,17 +45,19 @@ def create_edc_asset_payload(submodel_url_, digital_twin_submodel_id_, edc_polic
 def create_edc_policy_payload(edc_policy_id_, digital_twin_id_, digital_twin_submodel_id_):
     return json.dumps({
         "uid": edc_policy_id_,
-        "prohibitions": [],
-        "obligations": [],
-        "permissions": [
-            {
-                "edctype": "dataspaceconnector:permission",
-                "action": {
-                    "type": "USE"
-                },
-                "target": digital_twin_id_ + "-" + digital_twin_submodel_id_
-            }
-        ]
+        "policy": {
+            "prohibitions": [],
+            "obligations": [],
+            "permissions": [
+                {
+                    "edctype": "dataspaceconnector:permission",
+                    "action": {
+                        "type": "USE"
+                    },
+                    "target": digital_twin_id_ + "-" + digital_twin_submodel_id_
+                }
+            ]
+        }
     })
 
 
@@ -110,7 +112,7 @@ if __name__ == "__main__":
     submodel_server_2_folder = "BPNL00000003AXS3"
 
     edc_asset_url = "%s/data/assets" % edc_url
-    edc_policy_url = "%s/data/policies" % edc_url
+    edc_policy_url = "%s/data/policydefinitions" % edc_url
     edc_contract_definition_url = "%s/data/contractdefinitions" % edc_url
 
     headers = {
