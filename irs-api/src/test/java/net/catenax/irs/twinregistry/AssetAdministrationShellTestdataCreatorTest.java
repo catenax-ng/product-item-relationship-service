@@ -8,7 +8,7 @@
  * additional information regarding license terms.
  *
  */
-package net.catenax.irs.aaswrapper.registry.domain;
+package net.catenax.irs.twinregistry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

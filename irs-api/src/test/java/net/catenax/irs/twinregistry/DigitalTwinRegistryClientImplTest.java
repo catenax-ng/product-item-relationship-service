@@ -1,4 +1,4 @@
-package net.catenax.irs.aaswrapper.registry.domain;
+package net.catenax.irs.twinregistry;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

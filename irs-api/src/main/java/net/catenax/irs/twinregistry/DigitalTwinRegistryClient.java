@@ -7,7 +7,7 @@
 // See the LICENSE file(s) distributed with this work for
 // additional information regarding license terms.
 //
-package net.catenax.irs.aaswrapper.registry.domain;
+package net.catenax.irs.twinregistry;
 
 import static net.catenax.irs.configuration.RestTemplateConfig.OAUTH_REST_TEMPLATE;
 

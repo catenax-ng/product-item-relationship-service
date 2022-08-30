@@ -20,7 +20,7 @@ import net.catenax.irs.aaswrapper.job.AASTransferProcessManager;
 import net.catenax.irs.aaswrapper.job.ItemDataRequest;
 import net.catenax.irs.aaswrapper.job.ItemTreesAssembler;
 import net.catenax.irs.aaswrapper.job.TreeRecursiveLogic;
-import net.catenax.irs.aaswrapper.registry.domain.DigitalTwinRegistryFacade;
+import net.catenax.irs.twinregistry.DigitalTwinRegistryFacade;
 import net.catenax.irs.aaswrapper.submodel.domain.SubmodelFacade;
 import net.catenax.irs.bpdm.BpdmFacade;
 import net.catenax.irs.connector.job.JobOrchestrator;

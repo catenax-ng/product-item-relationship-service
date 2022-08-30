@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import io.github.resilience4j.retry.RetryRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.catenax.irs.aaswrapper.registry.domain.DigitalTwinRegistryFacade;
+import net.catenax.irs.twinregistry.DigitalTwinRegistryFacade;
 import net.catenax.irs.aaswrapper.submodel.domain.SubmodelFacade;
 import net.catenax.irs.bpdm.BpdmFacade;
 import net.catenax.irs.component.Bpn;

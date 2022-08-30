@@ -1,13 +1,11 @@
-package net.catenax.irs.aaswrapper.registry.domain;
+package net.catenax.irs.twinregistry;
 
 import static net.catenax.irs.util.TestMother.jobParameter;
 import static net.catenax.irs.util.TestMother.jobParameterEmptyFilter;
 import static net.catenax.irs.util.TestMother.jobParameterFilter;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

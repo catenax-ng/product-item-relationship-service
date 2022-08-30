@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
 import net.catenax.irs.InMemoryBlobStore;
-import net.catenax.irs.aaswrapper.registry.domain.DigitalTwinRegistryFacade;
+import net.catenax.irs.twinregistry.DigitalTwinRegistryFacade;
 import net.catenax.irs.aaswrapper.submodel.domain.SubmodelFacade;
 import net.catenax.irs.bpdm.BpdmFacade;
 import net.catenax.irs.connector.job.ResponseStatus;
