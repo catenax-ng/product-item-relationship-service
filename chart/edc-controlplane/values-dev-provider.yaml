@@ -83,17 +83,22 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    ids.webhook.address=http://irs-provider-controlplane:8282
+    ids.webhook.address=https://irs-provider-controlplane.dev.demo.catena-x.net
     
     edc.ids.id=urn:connector:edc-provider-controlplane
     edc.ids.catalog.id=urn:catalog:default
-    edc.ids.endpoint=https://irs-provider-controlplane.dev.demo.catena-x.net/BPNL00000003AYRE/api/v1/ids
+    edc.ids.endpoint=https://irs-provider-controlplane.dev.demo.catena-x.net/api/v1/ids
     
     edc.receiver.http.endpoint=http://irs-provider-controlplane:8080/api/service/pull
     
     edc.transfer.proxy.endpoint=https://irs-provider-dataplane.dev.demo.catena-x.net/api/public
     edc.transfer.proxy.token.signer.privatekey.alias=irs-dev-daps-cert-provider-key
     edc.transfer.proxy.token.verifier.publickey.alias=irs-dev-daps-cert-provider
+    
+    edc.dataplane.selector..url=http://irs-provider-dataplane:9999/api/dataplane/control
+    edc.dataplane.selector..sourcetypes=HttpData
+    edc.dataplane.selector..destinationtypes=HttpProxy
+    edc.dataplane.selector..properties={ "publicApiUrl": "http://irs-provider-dataplane:8185/api/public/" }
     
     edc.oauth.client.id=B9:7B:1A:54:74:DC:C7:45:6E:A2:24:DC:3F:6D:A7:4A:DD:D2:26:6A:keyid:B9:7B:1A:54:74:DC:C7:45:6E:A2:24:DC:3F:6D:A7:4A:DD:D2:26:6A
     edc.oauth.private.key.alias=irs-dev-daps-cert-provider-key
