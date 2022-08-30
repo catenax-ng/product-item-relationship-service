@@ -52,7 +52,7 @@ logging:
   level:
     root: WARN
     org.springframework: INFO
-    net.catenax.irs: INFO
+    org.eclipse.tractusx: INFO
 
 springdoc:
   api-docs:
