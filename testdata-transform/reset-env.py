@@ -5,7 +5,7 @@ import requests
 if __name__ == "__main__":
     registry_url = "https://irs-aas-registry.dev.demo.catena-x.net/registry/shell-descriptors"
     controlplane_data_contracts = "https://irs-provider-controlplane.dev.demo.catena-x.net/data/contractdefinitions"
-    controlplane_data_policies = "https://irs-provider-controlplane.dev.demo.catena-x.net/data/policies"
+    controlplane_data_policies = "https://irs-provider-controlplane.dev.demo.catena-x.net/data/policydefinitions"
     controlplane_data_assets = "https://irs-provider-controlplane.dev.demo.catena-x.net/data/assets"
     edc_api_key = '123456'
     headers = {
