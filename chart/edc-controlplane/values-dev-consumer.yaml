@@ -63,7 +63,11 @@ ingresses:
     # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
     className: ""
     # -- Enables TLS on the ingress resource
-    tls: false
+    tls:
+      - hosts:
+          - "irs-consumer-controlplane.dev.demo.catena-x.net"
+        # Default secret for certificate creation already provided to your namespace
+        secretName: tls-secret
     ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
     certManager:
       # -- If preset enables certificate generation via cert-manager namespace scoped issuer
@@ -102,8 +106,10 @@ configuration:
     edc.vault.hashicorp.health.check.enabled=true
     edc.vault.hashicorp.health.check.standby.ok=true
     edc.vault.hashicorp.api.secret.path=/v1/traceability-irs
+    
     edc.data.encryption.keys.alias=irs-dev-daps-cert-consumer-key
     edc.data.encryption.algorithm=NONE
+    
     # Postgresql related configuration
     edc.datasource.asset.name=asset
     edc.datasource.asset.url=jdbc:postgresql://irs-edc-postgres-consumer-postgresql-hl:5432/edc
