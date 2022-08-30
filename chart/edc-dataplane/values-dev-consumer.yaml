@@ -42,7 +42,6 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    edc.controlplane.validation-endpoint=http://irs-consumer-controlplane:8182/validation/token
     edc.dataplane.token.validation.endpoint=http://irs-consumer-controlplane:8182/validation/token
     
     edc.receiver.http.endpoint=http://aaswrapper:9192/callback
@@ -53,6 +52,7 @@ configuration:
     edc.oauth.provider.jwks.url=https://daps-irs.dev.demo.catena-x.net/.well-known/jwks.json
     edc.oauth.public.key.alias=irs-dev-daps-cert-consumer
     edc.oauth.token.url=https://daps-irs.dev.demo.catena-x.net/token
+    
     edc.vault.hashicorp.url=https://vault.demo.catena-x.net
     edc.vault.hashicorp.token=<path:traceability-irs/data/dev/controlplane#vaultToken>
     edc.vault.hashicorp.timeout.seconds=30
