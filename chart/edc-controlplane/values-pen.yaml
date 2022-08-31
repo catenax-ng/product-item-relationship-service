@@ -78,22 +78,22 @@ configuration:
 
     # Postgresql related configuration
     edc.datasource.asset.name=asset
-    edc.datasource.asset.url=jdbc:postgresql://irs-edc-postgres-postgresql-hl:5432/edc
+    edc.datasource.asset.url=jdbc:postgresql://irs-edc-postgres-pen-postgresql-hl:5432/edc
     edc.datasource.asset.user=<path:traceability-irs/data/int/controlplane#databaseuser>
     edc.datasource.asset.password=<path:traceability-irs/data/int/controlplane#databasepassword>
     edc.datasource.contractdefinition.name=contractdefinition
-    edc.datasource.contractdefinition.url=jdbc:postgresql://irs-edc-postgres-postgresql-hl:5432/edc
+    edc.datasource.contractdefinition.url=jdbc:postgresql://irs-edc-postgres-pen-postgresql-hl:5432/edc
     edc.datasource.contractdefinition.user=<path:traceability-irs/data/int/controlplane#databaseuser>
     edc.datasource.contractdefinition.password=<path:traceability-irs/data/int/controlplane#databasepassword>
     edc.datasource.contractnegotiation.name=contractnegotiation
-    edc.datasource.contractnegotiation.url=jdbc:postgresql://irs-edc-postgres-postgresql-hl:5432/edc
+    edc.datasource.contractnegotiation.url=jdbc:postgresql://irs-edc-postgres-pen-postgresql-hl:5432/edc
     edc.datasource.contractnegotiation.user=<path:traceability-irs/data/int/controlplane#databaseuser>
     edc.datasource.contractnegotiation.password=<path:traceability-irs/data/int/controlplane#databasepassword>
     edc.datasource.policy.name=policy
-    edc.datasource.policy.url=jdbc:postgresql://irs-edc-postgres-postgresql-hl:5432/edc
+    edc.datasource.policy.url=jdbc:postgresql://irs-edc-postgres-pen-postgresql-hl:5432/edc
     edc.datasource.policy.user=<path:traceability-irs/data/int/controlplane#databaseuser>
     edc.datasource.policy.password=<path:traceability-irs/data/int/controlplane#databasepassword>
     edc.datasource.transferprocess.name=transferprocess
-    edc.datasource.transferprocess.url=jdbc:postgresql://irs-edc-postgres-postgresql-hl:5432/edc
+    edc.datasource.transferprocess.url=jdbc:postgresql://irs-edc-postgres-pen-postgresql-hl:5432/edc
     edc.datasource.transferprocess.user=<path:traceability-irs/data/int/controlplane#databaseuser>
     edc.datasource.transferprocess.password=<path:traceability-irs/data/int/controlplane#databasepassword>
