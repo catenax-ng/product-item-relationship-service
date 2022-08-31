@@ -7,16 +7,16 @@ image:
   tag: "0.1.0"
 
 # -- Overrides the charts name
-nameOverride: "edc-consumer-dataplane"
+nameOverride: "edc-consumer-dataplane-pen"
 # -- Overrides the releases full name
-fullnameOverride: "edc-consumer-dataplane"
+fullnameOverride: "edc-consumer-dataplane-pen"
 
 ## Ingress declaration to expose the network service.
 ingresses:
   ## Public / Internet facing Ingress
   - enabled: true
     # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "irs-consumer-dataplane.int.demo.catena-x.net"
+    hostname: "irs-consumer-dataplane-pen.int.demo.catena-x.net"
     # -- Additional ingress annotations to add
     annotations:
       nginx.ingress.kubernetes.io/ssl-passthrough: "false"
@@ -30,7 +30,7 @@ ingresses:
     # -- Enables TLS on the ingress resource
     tls:
       - hosts:
-          - "irs-consumer-dataplane.int.demo.catena-x.net"
+          - "irs-consumer-dataplane-pen.int.demo.catena-x.net"
         # Default secret for certificate creation already provided to your namespace
         secretName: tls-secret
     ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
@@ -45,10 +45,10 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    edc.dataplane.token.validation.endpoint=http://edc-consumer-controlplane:8182/validation/token
+    edc.dataplane.token.validation.endpoint=http://edc-consumer-controlplane-pen:8182/validation/token
     
-    edc.receiver.http.endpoint=http://aaswrapper:9192/callback
-  
+    edc.receiver.http.endpoint=http://aaswrapper-pen:9192/callback
+    
     edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
     edc.oauth.private.key.alias=irs-int-daps-key
     edc.oauth.provider.audience=idsc:IDS_CONNECTORS_ALL

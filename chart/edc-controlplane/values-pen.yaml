@@ -4,9 +4,9 @@
 # Declare variables to be passed into your templates.
 
 # -- Overrides the charts name
-nameOverride: "edc-consumer-controlplane"
+nameOverride: "edc-consumer-controlplane-pen"
 # -- Overrides the releases full name
-fullnameOverride: "edc-consumer-controlplane"
+fullnameOverride: "edc-consumer-controlplane-pen"
 
 image:
   tag: "0.1.0"
@@ -16,7 +16,7 @@ ingresses:
   ## Public / Internet facing Ingress
   - enabled: true
     # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
-    hostname: "irs-consumer-controlplane.int.demo.catena-x.net"
+    hostname: "irs-consumer-controlplane-pen.int.demo.catena-x.net"
     # -- Additional ingress annotations to add
     annotations: {}
     # -- EDC endpoints exposed by this ingress resource
@@ -27,7 +27,7 @@ ingresses:
     # -- Enables TLS on the ingress resource
     tls:
       - hosts:
-          - "irs-consumer-controlplane.int.demo.catena-x.net"
+          - "irs-consumer-controlplane-pen.int.demo.catena-x.net"
         # Default secret for certificate creation already provided to your namespace
         secretName: tls-secret
     ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
@@ -42,22 +42,22 @@ configuration:
   properties: |-
     edc.api.auth.key=123456
     
-    ids.webhook.address=https://irs-consumer-controlplane.int.demo.catena-x.net
+    ids.webhook.address=https://irs-consumer-controlplane-pen.int.demo.catena-x.net
     
-    edc.ids.id=urn:connector:edc-consumer-controlplane
+    edc.ids.id=urn:connector:edc-consumer-controlplane-pen
     edc.ids.catalog.id=urn:catalog:default
-    edc.ids.endpoint=https://irs-consumer-controlplane.int.demo.catena-x.net/api/v1/ids
+    edc.ids.endpoint=https://irs-consumer-controlplane-pen.int.demo.catena-x.net/api/v1/ids
     
-    edc.receiver.http.endpoint=http://aaswrapper:9192/callback/endpoint-data-reference
+    edc.receiver.http.endpoint=http://aaswrapper-pen:9192/callback/endpoint-data-reference
     
-    edc.transfer.proxy.endpoint=https://irs-consumer-dataplane.int.demo.catena-x.net/api/public
+    edc.transfer.proxy.endpoint=https://irs-consumer-dataplane-pen.int.demo.catena-x.net/api/public
     edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
     edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
     
-    edc.dataplane.selector.consumer.url=http://edc-consumer-dataplane:9999/api/dataplane/control
+    edc.dataplane.selector.consumer.url=http://edc-consumer-dataplane-pen:9999/api/dataplane/control
     edc.dataplane.selector.consumer.sourcetypes=HttpData
     edc.dataplane.selector.consumer.destinationtypes=HttpProxy
-    edc.dataplane.selector.consumer.properties={ "publicApiUrl": "https://irs-consumer-dataplane.int.demo.catena-x.net/api/public" }
+    edc.dataplane.selector.consumer.properties={ "publicApiUrl": "https://irs-consumer-dataplane-pen.int.demo.catena-x.net/api/public" }
     
     edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
     edc.oauth.private.key.alias=irs-int-daps-key
