@@ -8,46 +8,6 @@ nameOverride: "irs-provider-controlplane"
 # -- Overrides the releases full name
 fullnameOverride: "irs-provider-controlplane"
 
-## EDC endpoints exposed by the control-plane
-edc:
-  endpoints:
-    ## Default api exposing health checks etc
-    default:
-      # -- The network port, which the "default" api is going to be exposed by the container, pod and service
-      port: "8080"
-      # -- The path mapping the "default" api is going to be exposed at
-      path: /api
-    ## Data management API
-    data:
-      # -- The network port, which the "data" management api is going to be exposed by the container, pod and service
-      port: "8181"
-      # -- The path mapping the "data" management api is going to be exposed at
-      path: /data
-    ## Validation API
-    validation:
-      # -- The network port, which the "validation" api is going to be exposed by the container, pod and service
-      port: "8182"
-      # -- The path mapping the "validation" api is going to be exposed at
-      path: /validation
-    ## Control API
-    control:
-      # -- The network port, which the "control" api is going to be exposed by the container, pod and service
-      port: "9999"
-      # -- The path mapping the "control" api is going to be exposed at
-      path: /api/controlplane/control
-    ## IDS endpoints
-    ids:
-      # -- The network port, which the "ids" multipart api is going to be exposed by the container, pod and service
-      port: "8282"
-      # -- The path mapping the "ids" multipart api is going to be exposed at
-      path: /api/v1/ids
-    ## Prometheus endpoint
-    metrics:
-      # -- The network port, which the prometheus metrics are going to be exposed by the container, pod and service
-      port: "9090"
-      # -- The path mapping the prometheus metrics are going to be exposed at
-      path: /metrics
-
 ## Ingress declaration to expose the network service.
 ingresses:
   ## Public / Internet facing Ingress
