@@ -54,10 +54,10 @@ configuration:
     edc.transfer.proxy.token.signer.privatekey.alias=azure-vault-token-signer-private-key
     edc.transfer.proxy.token.verifier.publickey.alias=azure-vault-token-signer-private-key-pub
     
-    edc.dataplane.selector.consumer.url=http://edc-consumer-dataplane-pen:9999/api/dataplane/control
-    edc.dataplane.selector.consumer.sourcetypes=HttpData
-    edc.dataplane.selector.consumer.destinationtypes=HttpProxy
-    edc.dataplane.selector.consumer.properties={ "publicApiUrl": "https://irs-consumer-dataplane-pen.int.demo.catena-x.net/api/public" }
+    edc.dataplane.selector.consumerpen.url=http://edc-consumer-dataplane-pen:9999/api/dataplane/control
+    edc.dataplane.selector.consumerpen.sourcetypes=HttpData
+    edc.dataplane.selector.consumerpen.destinationtypes=HttpProxy
+    edc.dataplane.selector.consumerpen.properties={ "publicApiUrl": "https://irs-consumer-dataplane-pen.int.demo.catena-x.net/api/public" }
     
     edc.oauth.client.id=D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09:keyid:D9:3A:80:9E:9C:21:95:12:5C:C2:1D:D8:30:80:7A:B9:DD:5F:C9:09
     edc.oauth.private.key.alias=irs-int-daps-key
