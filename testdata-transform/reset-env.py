@@ -28,7 +28,7 @@ if __name__ == "__main__":
         uid_ = value["id"]
         delete_response = requests.request(method="DELETE", url=controlplane_data_contracts+"/"+uid_, headers=headers)
         print(uid_)
-        # print(delete_response)
+        print(delete_response)
 
     response = requests.request(method="GET", url=controlplane_data_policies, headers=headers)
     values = response.json()
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         uid_ = value["uid"]
         delete_response = requests.request(method="DELETE", url=controlplane_data_policies+"/"+uid_, headers=headers)
         print(uid_)
-        # print(delete_response)
+        print(delete_response)
 
     response = requests.request(method="GET", url=controlplane_data_assets, headers=headers)
     values = response.json()
