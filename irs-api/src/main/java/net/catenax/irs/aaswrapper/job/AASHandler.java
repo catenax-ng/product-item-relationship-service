@@ -33,9 +33,7 @@ import net.catenax.irs.component.assetadministrationshell.SubmodelDescriptor;
 import net.catenax.irs.dto.JobParameter;
 import net.catenax.irs.exceptions.JsonParseException;
 import net.catenax.irs.semanticshub.SemanticsHubFacade;
-import net.catenax.irs.services.validation.InvalidSchemaException;
 import net.catenax.irs.services.validation.JsonValidatorService;
-import net.catenax.irs.services.validation.ValidationResult;
 import net.catenax.irs.util.JsonUtil;
 import org.springframework.web.client.RestClientException;
 
@@ -122,27 +120,29 @@ public class AASHandler {
         final List<Submodel> submodels = new ArrayList<>();
         submodelDescriptor.getEndpoints().forEach(endpoint -> {
             try {
-                final String jsonSchema = semanticsHubFacade.getModelJsonSchema(submodelDescriptor.getAspectType());
+                /*final String jsonSchema =
+                semanticsHubFacade.getModelJsonSchema(submodelDescriptor.getAspectType());*/
                 final String submodelRawPayload = requestSubmodelAsString(endpoint);
 
-                final ValidationResult validationResult = jsonValidatorService.validate(jsonSchema, submodelRawPayload);
+                /*final ValidationResult validationResult =
+                jsonValidatorService.validate(jsonSchema, submodelRawPayload);
 
-                if (validationResult.isValid()) {
-                    final Submodel submodel = Submodel.from(submodelDescriptor.getIdentification(),
-                            submodelDescriptor.getAspectType(), jsonUtil.fromString(submodelRawPayload, Map.class));
-                    submodels.add(submodel);
-                } else {
+                if (validationResult.isValid()) {*/
+                final Submodel submodel = Submodel.from(submodelDescriptor.getIdentification(),
+                        submodelDescriptor.getAspectType(), jsonUtil.fromString(submodelRawPayload, Map.class));
+                submodels.add(submodel);
+                /*} else {
                     final String errors = String.join(", ", validationResult.getValidationErrors());
                     itemContainerBuilder.tombstone(
                             Tombstone.from(itemId, endpoint.getProtocolInformation().getEndpointAddress(),
                                     new IllegalArgumentException("Submodel payload validation failed. " + errors), 0));
-                }
+                }*/
             } catch (JsonParseException e) {
                 itemContainerBuilder.tombstone(
                         Tombstone.from(itemId, endpoint.getProtocolInformation().getEndpointAddress(), e,
                                 RetryRegistry.ofDefaults().getDefaultConfig().getMaxAttempts()));
                 log.info("Submodel payload did not match the expected AspectType. Creating Tombstone.");
-            } catch (InvalidSchemaException | RestClientException e) {
+            } catch (/*InvalidSchemaException |*/ RestClientException e) {
                 itemContainerBuilder.tombstone(
                         Tombstone.from(itemId, endpoint.getProtocolInformation().getEndpointAddress(), e, 0));
                 log.info("Cannot load JSON schema for validation. Creating Tombstone.");
@@ -158,10 +158,10 @@ public class AASHandler {
     private void processEndpoint(final AASTransferProcess aasTransferProcess,
             final ItemContainer.ItemContainerBuilder itemContainer, final List<Relationship> relationships) {
         final List<String> childIds = relationships.stream()
-                                          .map(Relationship::getLinkedItem)
-                                          .map(LinkedItem::getChildCatenaXId)
-                                          .map(GlobalAssetIdentification::getGlobalAssetId)
-                                          .collect(Collectors.toList());
+                                                   .map(Relationship::getLinkedItem)
+                                                   .map(LinkedItem::getChildCatenaXId)
+                                                   .map(GlobalAssetIdentification::getGlobalAssetId)
+                                                   .collect(Collectors.toList());
         log.info("Processing Relationships with {} children", childIds.size());
 
         aasTransferProcess.addIdsToProcess(childIds);

@@ -29,6 +29,7 @@ import net.catenax.irs.services.validation.InvalidSchemaException;
 import net.catenax.irs.services.validation.JsonValidatorService;
 import net.catenax.irs.services.validation.ValidationResult;
 import net.catenax.irs.util.JobMetrics;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,6 +93,7 @@ class IrsItemGraphQueryServiceSpringBootTest {
     }
 
     @Test
+    @Disabled
     void registerJobShouldCreateTombstonesWhenNotPassingJsonSchemaValidation() throws InvalidSchemaException {
         // given
         when(jsonValidatorService.validate(any(), any())).thenReturn(ValidationResult.builder().valid(false).build());
