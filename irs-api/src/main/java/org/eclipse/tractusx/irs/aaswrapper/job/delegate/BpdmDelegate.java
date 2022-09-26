@@ -62,7 +62,7 @@ public class BpdmDelegate extends AbstractDelegate {
                 .flatMap(AssetAdministrationShellDescriptor::findManufacturerId)
                 .ifPresentOrElse(manufacturerId -> bpnFromManufacturerId(itemContainerBuilder, manufacturerId, itemId),
                         () -> {
-                            String message = String.format("Cannot find manufacturerId for Item: %s. Creating Tombstone.", itemId);
+                            final String message = String.format("Cannot find manufacturerId for Item: %s. Creating Tombstone.", itemId);
                             log.warn(message);
                             itemContainerBuilder.tombstone(Tombstone.from(itemId, null, new BpdmDelegateProcessingException(message), 0));
                         });
@@ -82,12 +82,12 @@ public class BpdmDelegate extends AbstractDelegate {
             if (BPN_RGX.matcher(bpn.getManufacturerId() + bpn.getManufacturerName()).find()) {
                 itemContainerBuilder.bpn(bpn);
             } else {
-                String message = String.format("BPN: %s for ItemId: %s is not valid. Creating Tombstone.", bpn.getManufacturerId() + bpn.getManufacturerName(), itemId);
+                final String message = String.format("BPN: %s for ItemId: %s is not valid. Creating Tombstone.", bpn.getManufacturerId() + bpn.getManufacturerName(), itemId);
                 log.warn(message);
                 itemContainerBuilder.tombstone(Tombstone.from(itemId, null, new BpdmDelegateProcessingException(message), 0));
             }
         }, () -> {
-            String message = String.format("BPN not exist in given Manufacturing ID: %s and for ItemId: %s. Creating Tombstone.", manufacturerId, itemId);
+            final String message = String.format("BPN not exist in given Manufacturing ID: %s and for ItemId: %s. Creating Tombstone.", manufacturerId, itemId);
             log.warn(message);
             itemContainerBuilder.tombstone(Tombstone.from(itemId, null, new BpdmDelegateProcessingException(message), 0));
         });
