@@ -36,10 +36,6 @@ import org.eclipse.tractusx.irs.component.assetadministrationshell.Endpoint;
 import org.eclipse.tractusx.irs.component.assetadministrationshell.SubmodelDescriptor;
 import org.eclipse.tractusx.irs.dto.JobParameter;
 import org.eclipse.tractusx.irs.exceptions.JsonParseException;
-import org.eclipse.tractusx.irs.semanticshub.SemanticsHubFacade;
-import org.eclipse.tractusx.irs.services.validation.InvalidSchemaException;
-import org.eclipse.tractusx.irs.services.validation.JsonValidatorService;
-import org.eclipse.tractusx.irs.services.validation.ValidationResult;
 import org.eclipse.tractusx.irs.util.JsonUtil;
 import org.springframework.web.client.RestClientException;
 
@@ -52,51 +48,48 @@ import org.springframework.web.client.RestClientException;
 public class SubmodelDelegate extends AbstractDelegate {
 
     private final SubmodelFacade submodelFacade;
-    private final SemanticsHubFacade semanticsHubFacade;
-    private final JsonValidatorService jsonValidatorService;
+    /*private final SemanticsHubFacade semanticsHubFacade;
+    private final JsonValidatorService jsonValidatorService;*/
     private final JsonUtil jsonUtil;
 
-    public SubmodelDelegate(final AbstractDelegate nextStep,
-            final SubmodelFacade submodelFacade,
-            final SemanticsHubFacade semanticsHubFacade,
-            final JsonValidatorService jsonValidatorService,
+    public SubmodelDelegate(final AbstractDelegate nextStep, final SubmodelFacade submodelFacade,
+            /*final SemanticsHubFacade semanticsHubFacade, final JsonValidatorService jsonValidatorService,*/
             final JsonUtil jsonUtil) {
         super(nextStep);
         this.submodelFacade = submodelFacade;
-        this.semanticsHubFacade = semanticsHubFacade;
-        this.jsonValidatorService = jsonValidatorService;
+        /*this.semanticsHubFacade = semanticsHubFacade;
+        this.jsonValidatorService = jsonValidatorService;*/
         this.jsonUtil = jsonUtil;
     }
 
     @Override
-    public ItemContainer process(final ItemContainer.ItemContainerBuilder itemContainerBuilder, final JobParameter jobData,
-            final AASTransferProcess aasTransferProcess, final String itemId) {
+    public ItemContainer process(final ItemContainer.ItemContainerBuilder itemContainerBuilder,
+            final JobParameter jobData, final AASTransferProcess aasTransferProcess, final String itemId) {
 
-        itemContainerBuilder.build().getShells().stream().findFirst().ifPresent(
-            shell -> {
-                try {
-                    final List<SubmodelDescriptor> aasSubmodelDescriptors = shell.getSubmodelDescriptors();
-                    log.info("Retrieved {} SubmodelDescriptor for itemId {}", aasSubmodelDescriptors.size(), itemId);
+        itemContainerBuilder.build().getShells().stream().findFirst().ifPresent(shell -> {
+            try {
+                final List<SubmodelDescriptor> aasSubmodelDescriptors = shell.getSubmodelDescriptors();
+                log.info("Retrieved {} SubmodelDescriptor for itemId {}", aasSubmodelDescriptors.size(), itemId);
 
-                    final List<SubmodelDescriptor> filteredSubmodelDescriptorsByAspectType = shell.filterDescriptorsByAspectTypes(
-                            jobData.getAspectTypes());
+                final List<SubmodelDescriptor> filteredSubmodelDescriptorsByAspectType = shell.filterDescriptorsByAspectTypes(
+                        jobData.getAspectTypes());
 
-                    if (jobData.isCollectAspects()) {
-                        log.info("Collecting Submodels.");
-                        filteredSubmodelDescriptorsByAspectType.forEach(submodelDescriptor -> itemContainerBuilder.submodels(
-                                getSubmodels(submodelDescriptor, itemContainerBuilder, itemId)));
-                    }
-                    log.debug("Unfiltered SubmodelDescriptor: {}", aasSubmodelDescriptors);
-                    log.debug("Filtered SubmodelDescriptor: {}", filteredSubmodelDescriptorsByAspectType);
-
-                    shell.setSubmodelDescriptors(filteredSubmodelDescriptorsByAspectType);
-
-                } catch (RestClientException e) {
-                    log.info("Shell Endpoint could not be retrieved for Item: {}. Creating Tombstone.", itemId);
-                    itemContainerBuilder.tombstone(Tombstone.from(itemId, null, e, retryCount));
+                if (jobData.isCollectAspects()) {
+                    log.info("Collecting Submodels.");
+                    filteredSubmodelDescriptorsByAspectType.forEach(
+                            submodelDescriptor -> itemContainerBuilder.submodels(
+                                    getSubmodels(submodelDescriptor, itemContainerBuilder, itemId)));
                 }
+                log.debug("Unfiltered SubmodelDescriptor: {}", aasSubmodelDescriptors);
+                log.debug("Filtered SubmodelDescriptor: {}", filteredSubmodelDescriptorsByAspectType);
+
+                shell.setSubmodelDescriptors(filteredSubmodelDescriptorsByAspectType);
+
+            } catch (RestClientException e) {
+                log.info("Shell Endpoint could not be retrieved for Item: {}. Creating Tombstone.", itemId);
+                itemContainerBuilder.tombstone(Tombstone.from(itemId, null, e, retryCount));
             }
-        );
+        });
 
         return next(itemContainerBuilder, jobData, aasTransferProcess, itemId);
     }
@@ -106,27 +99,29 @@ public class SubmodelDelegate extends AbstractDelegate {
         final List<Submodel> submodels = new ArrayList<>();
         submodelDescriptor.getEndpoints().forEach(endpoint -> {
             try {
-                final String jsonSchema = semanticsHubFacade.getModelJsonSchema(submodelDescriptor.getAspectType());
+                /*final String jsonSchema =
+                    semanticsHubFacade.getModelJsonSchema(submodelDescriptor.getAspectType());*/
                 final String submodelRawPayload = requestSubmodelAsString(endpoint);
 
-                final ValidationResult validationResult = jsonValidatorService.validate(jsonSchema, submodelRawPayload);
+                /*final ValidationResult validationResult =
+                    jsonValidatorService.validate(jsonSchema, submodelRawPayload);
 
-                if (validationResult.isValid()) {
-                    final Submodel submodel = Submodel.from(submodelDescriptor.getIdentification(),
-                            submodelDescriptor.getAspectType(), jsonUtil.fromString(submodelRawPayload, Map.class));
-                    submodels.add(submodel);
-                } else {
+                if (validationResult.isValid()) {*/
+                final Submodel submodel = Submodel.from(submodelDescriptor.getIdentification(),
+                        submodelDescriptor.getAspectType(), jsonUtil.fromString(submodelRawPayload, Map.class));
+                submodels.add(submodel);
+                /*} else {
                     final String errors = String.join(", ", validationResult.getValidationErrors());
                     itemContainerBuilder.tombstone(
                             Tombstone.from(itemId, endpoint.getProtocolInformation().getEndpointAddress(),
                                     new IllegalArgumentException("Submodel payload validation failed. " + errors), 0));
-                }
+                }*/
             } catch (JsonParseException e) {
                 itemContainerBuilder.tombstone(
                         Tombstone.from(itemId, endpoint.getProtocolInformation().getEndpointAddress(), e,
                                 RetryRegistry.ofDefaults().getDefaultConfig().getMaxAttempts()));
                 log.info("Submodel payload did not match the expected AspectType. Creating Tombstone.");
-            } catch (InvalidSchemaException | RestClientException e) {
+            } catch (/*InvalidSchemaException |*/ RestClientException e) {
                 itemContainerBuilder.tombstone(
                         Tombstone.from(itemId, endpoint.getProtocolInformation().getEndpointAddress(), e, 0));
                 log.info("Cannot load JSON schema for validation. Creating Tombstone.");

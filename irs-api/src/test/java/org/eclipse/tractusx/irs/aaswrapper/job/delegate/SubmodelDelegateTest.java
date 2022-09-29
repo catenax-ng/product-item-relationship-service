@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Test;
 class SubmodelDelegateTest {
 
     final SubmodelFacade submodelFacade = mock(SubmodelFacade.class);
-    final SemanticsHubFacade semanticsHubFacade = mock(SemanticsHubFacade.class);
-    final JsonValidatorService jsonValidatorService = mock(JsonValidatorService.class);
+    /*final SemanticsHubFacade semanticsHubFacade = mock(SemanticsHubFacade.class);
+    final JsonValidatorService jsonValidatorService = mock(JsonValidatorService.class);*/
     final SubmodelDelegate submodelDelegate = new SubmodelDelegate(null, submodelFacade,
-            semanticsHubFacade, jsonValidatorService, new JsonUtil());
+           /* semanticsHubFacade, jsonValidatorService,*/ new JsonUtil());
 
     @Test
     void shouldFilterSubmodelDescriptorsByAspectTypeFilter() {

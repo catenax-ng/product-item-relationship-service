@@ -102,7 +102,7 @@ public class JobConfiguration {
     public SubmodelDelegate submodelDelegate(
             final BpdmDelegate bpdmDelegate, final SubmodelFacade submodelFacade,
             final SemanticsHubFacade semanticsHubFacade, final JsonValidatorService jsonValidatorService) {
-        return new SubmodelDelegate(bpdmDelegate, submodelFacade, semanticsHubFacade, jsonValidatorService, jsonUtil());
+        return new SubmodelDelegate(bpdmDelegate, submodelFacade, /* semanticsHubFacade, jsonValidatorService,*/ jsonUtil());
     }
 
     @Bean
