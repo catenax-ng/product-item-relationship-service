@@ -47,6 +47,12 @@
             <artifactId>snakeyaml</artifactId>
             <version>1.33</version>
         </dependency>
+        <!-- Update jackson-databind manually to avoid vulnerability CVE-2022-42003, CVE-2022-42004; can be removed after Springdoc updates their dependency -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.14.0-rc1</version>
+        </dependency>
         <dependency>
             <groupId>net.datafaker</groupId>
             <artifactId>datafaker</artifactId>
