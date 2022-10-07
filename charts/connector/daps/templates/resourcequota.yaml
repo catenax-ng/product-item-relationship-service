@@ -4,5 +4,5 @@ metadata:
   name: {{ include "omejdn-server.fullname" . }}
 spec:
   hard:
-    cpu: {{ .Values.quota.hard.cpu }}
-    memory: {{ .Values.quota.hard.memory }}
+    cpu: {{ .Values.resources.limits.cpu }}
+    memory: {{ .Values.resources.limits.memory }}
