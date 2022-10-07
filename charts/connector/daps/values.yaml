@@ -107,6 +107,12 @@ resources:
     cpu: 200m
     memory: 300Mi
 
+# -- Resource Quota for namespace
+quota:
+  hard:
+    cpu: "10"
+    memory: 20Gi
+
 # -- DAPS autoscaling configuration
 autoscaling:
   enabled: false

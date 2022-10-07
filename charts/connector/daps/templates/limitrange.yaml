@@ -6,11 +6,5 @@ spec:
   limits:
     - type: Container
       max:
-        cpu: "2"
-        memory: "1Gi"
-      min:
-        cpu: "200m"
-        memory: "200mi"
-      default:
-        cpu: "400m"
-        memory: "400mi"
+        cpu: {{ .Values.resources.limits.cpu }}
+        memory: {{ .Values.resources.limits.memory }}
