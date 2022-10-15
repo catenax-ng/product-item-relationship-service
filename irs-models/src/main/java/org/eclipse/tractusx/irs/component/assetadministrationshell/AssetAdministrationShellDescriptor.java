@@ -27,8 +27,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,7 +44,6 @@ import org.eclipse.tractusx.irs.component.enums.AspectType;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @Slf4j
-@Schema(description = "AAS shells.")
 public class AssetAdministrationShellDescriptor {
 
     /**
@@ -56,7 +53,6 @@ public class AssetAdministrationShellDescriptor {
     /**
      * description
      */
-    @ArraySchema(maxItems = Integer.MAX_VALUE)
     private List<LangString> description;
     /**
      * globalAssetId
@@ -73,12 +69,10 @@ public class AssetAdministrationShellDescriptor {
     /**
      * specificAssetIds
      */
-    @ArraySchema(maxItems = Integer.MAX_VALUE)
     private List<IdentifierKeyValuePair> specificAssetIds;
     /**
      * submodelDescriptors
      */
-    @ArraySchema(maxItems = Integer.MAX_VALUE)
     private List<SubmodelDescriptor> submodelDescriptors;
 
     /**

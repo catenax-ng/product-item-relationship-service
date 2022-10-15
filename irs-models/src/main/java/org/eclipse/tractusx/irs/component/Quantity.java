@@ -21,9 +21,6 @@
  ********************************************************************************/
 package org.eclipse.tractusx.irs.component;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -36,8 +33,6 @@ import lombok.extern.jackson.Jacksonized;
 @Builder(toBuilder = true)
 public class Quantity {
 
-    @Min(0)
-    @Max(Integer.MAX_VALUE)
     private Double quantityNumber;
 
     private MeasurementUnit measurementUnit;

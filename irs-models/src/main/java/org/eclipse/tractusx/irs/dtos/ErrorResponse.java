@@ -24,7 +24,6 @@ package org.eclipse.tractusx.irs.dtos;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Value;
@@ -43,6 +42,6 @@ public class ErrorResponse {
     @Schema(description = "Error message.")
     private String message;
 
-    @ArraySchema(arraySchema = @Schema(description = "List of errors.", implementation = String.class), maxItems = Integer.MAX_VALUE)
+    @Schema(description = "List of errors.")
     private List<String> errors;
 }

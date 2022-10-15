@@ -24,7 +24,6 @@ package org.eclipse.tractusx.irs.component;
 import java.util.List;
 import java.util.Set;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,22 +46,22 @@ public class Jobs {
     @Schema(description = "Executable unit with meta information and item graph result.", implementation = Job.class)
     private Job job;
 
-    @ArraySchema(arraySchema = @Schema(description = "Relationships between parent and child items."), maxItems = Integer.MAX_VALUE)
+    @Schema(description = "Relationships between parent and child items.")
     @Singular
     private List<Relationship> relationships;
 
-    @ArraySchema(arraySchema = @Schema(description = "AAS shells."), maxItems = Integer.MAX_VALUE)
+    @Schema(description = "AAS shells.")
     private List<AssetAdministrationShellDescriptor> shells;
 
-    @ArraySchema(arraySchema = @Schema(description = "Collection of not resolvable endpoints as tombstones. Including cause of error and endpoint URL."), maxItems = Integer.MAX_VALUE)
+    @Schema(description = "Collection of not resolvable endpoints as tombstones. Including cause of error and endpoint URL.")
     @Singular
     private List<Tombstone> tombstones;
 
-    @ArraySchema(arraySchema = @Schema(description = "Collection of requested Submodels"), maxItems = Integer.MAX_VALUE)
+    @Schema(description = "Collection of requested Submodels")
     @Singular
     private List<Submodel> submodels;
 
-    @ArraySchema(arraySchema = @Schema(description = "Collection of bpn mappings"), maxItems = Integer.MAX_VALUE)
+    @Schema(description = "Collection of bpn mappings")
     @Singular
     private Set<Bpn> bpns;
 
