@@ -1,0 +1,2 @@
+extends:
+  - '@doubleslashde/rest-complete-set'
