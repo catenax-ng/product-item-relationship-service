@@ -11,7 +11,7 @@
 [![Spotbugs](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/spotbugs.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/spotbugs.yml)
 [![Eclipse-dash](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/eclipse-dash.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/eclipse-dash.yml)
 [![IRS Cucumber Xray execution](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/xray-cucumber.yaml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/xray-cucumber.yaml)
-   
+[![Tavern IRS API test](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/tavern.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/tavern.yml)
 
 ## What is the IRS?
 
