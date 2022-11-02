@@ -11,6 +11,11 @@ on:
         options:
           - 'https://irs.int.demo.catena-x.net'
           - 'https://irs.dev.demo.catena-x.net'
+      global-asset-id:
+        type: string
+        description: Global Asset ID to use for the tests
+        default: 'urn:uuid:a4a2ba57-1c50-48ad-8981-7a0ef032146b'
+        required: true
   schedule:
     - cron: '00 */1 * * 1-5'
 
@@ -23,7 +28,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9.5
+          python-version: 3.10.7
 
       - name: Install dependencies
         run: |
@@ -36,5 +41,6 @@ jobs:
           KEYCLOAK_HOST: ${{ secrets.KEYCLOAK_OAUTH2_CLIENT_TOKEN_URI }}
           KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_OAUTH2_CLIENT_ID }}
           KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_OAUTH2_CLIENT_SECRET }}
+          GLOBAL_ASSET_ID: ${{ github.event.inputs.global-asset-id || 'urn:uuid:a4a2ba57-1c50-48ad-8981-7a0ef032146b' }}
         run: |
           python -m pytest api-tests/irs-api-tests.tavern.yaml
