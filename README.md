@@ -10,6 +10,7 @@
 [![OWASP Dependency Check](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/owasp.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/owasp.yml)
 [![Spotbugs](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/spotbugs.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/spotbugs.yml)
 [![Eclipse-dash](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/eclipse-dash.yml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/eclipse-dash.yml)
+[![IRS Cucumber Xray execution](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/xray-cucumber.yaml/badge.svg)](https://github.com/catenax-ng/product-item-relationship-service/actions/workflows/xray-cucumber.yaml)
    
 
 ## What is the IRS?
