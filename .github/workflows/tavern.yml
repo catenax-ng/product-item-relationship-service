@@ -14,7 +14,7 @@ on:
       global-asset-id:
         type: string
         description: Global Asset ID to use for the tests
-        default: 'urn:uuid:a4a2ba57-1c50-48ad-8981-7a0ef032146b'
+        default: 'urn:uuid:cce14502-958a-42e1-8bb7-f4f41a9457d0'
         required: true
   schedule:
     - cron: '00 */1 * * 1-5'
@@ -34,6 +34,7 @@ jobs:
         run: |
           pip install pytest
           pip install tavern
+          pip list
 
       - name: Run tests
         env:
@@ -41,6 +42,6 @@ jobs:
           KEYCLOAK_HOST: ${{ secrets.KEYCLOAK_OAUTH2_CLIENT_TOKEN_URI }}
           KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_OAUTH2_CLIENT_ID }}
           KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_OAUTH2_CLIENT_SECRET }}
-          GLOBAL_ASSET_ID: ${{ github.event.inputs.global-asset-id || 'urn:uuid:a4a2ba57-1c50-48ad-8981-7a0ef032146b' }}
+          GLOBAL_ASSET_ID: ${{ github.event.inputs.global-asset-id || 'urn:uuid:cce14502-958a-42e1-8bb7-f4f41a9457d0' }}
         run: |
           python -m pytest api-tests/irs-api-tests.tavern.yaml
