@@ -33,6 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pytest
+          pip install py
           pip install tavern
           pip list
 
