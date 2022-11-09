@@ -51,7 +51,6 @@ import org.eclipse.tractusx.irs.component.RegisterJob;
 import org.eclipse.tractusx.irs.component.Relationship;
 import org.eclipse.tractusx.irs.component.Submodel;
 import org.eclipse.tractusx.irs.component.enums.AspectType;
-import org.eclipse.tractusx.irs.component.enums.BomLifecycle;
 import org.eclipse.tractusx.irs.component.enums.Direction;
 import org.eclipse.tractusx.irs.component.enums.JobState;
 import org.springframework.http.HttpStatus;
@@ -67,7 +66,6 @@ public class E2ETestStepDefinitions {
     @Before
     public void setup() {
         registerJobBuilder = RegisterJob.builder();
-
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -108,11 +106,6 @@ public class E2ETestStepDefinitions {
     @And("direction {string}")
     public void direction(String direction) {
         registerJobBuilder.direction(Direction.fromValue(direction));
-    }
-
-    @And("bomLifecycle {string}")
-    public void bomlifecycle(String bomLifecycle) {
-        registerJobBuilder.bomLifecycle(BomLifecycle.fromValue(bomLifecycle));
     }
 
     @And("aspects :")
@@ -246,6 +239,4 @@ public class E2ETestStepDefinitions {
     public void addJobIdToResult(Scenario scenario) {
         scenario.attach(jobId.toString(), MediaType.TEXT_PLAIN_VALUE, "jobId");
     }
-
-
 }
